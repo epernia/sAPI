@@ -28,5 +28,5 @@ certain peripheral.
 
 Now available for boards:
 
-- EDU-CIAA-NXP (NXP LPC4337 microcontroller). [Download documentation](docs/assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
+- EDU-CIAA-NXP (NXP LPC4337 microcontroller). [Download documentation.](docs/assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
 - CIAA-NXP (NXP LPC4337 microcontroller).

@@ -27,5 +27,5 @@ número de pines que tenga un cierto perifécico.
 
 Actualmente disponible para las plataformas:
 
-- EDU-CIAA-NXP (microcontrolador NXP LPC4337). [Descargar documentación](assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
+- EDU-CIAA-NXP (microcontrolador NXP LPC4337). [Descargar documentación.](assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
 - CIAA-NXP (microcontrolador NXP LPC4337).
