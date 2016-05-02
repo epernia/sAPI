@@ -1,0 +1,4 @@
+site_name: Biblioteca para microcontroladores sAPI
+pages:
+- Inicio: index.md
+theme: readthedocs
