@@ -1,14 +1,19 @@
-# Biblioteca para microcontroladores sAPI
+# Introducción a la biblioteca para microcontroladores sAPI
 
 Esta biblioteca implementa una API simple para la programación de
-microcontroladores que actúa como HAL (Hardware Abstraction
-Layer).
+microcontroladores.
 
-Toma ideas de la biblioteca *Wiring*, pero en lugar del concepto de *pin*
-utiliza el concepto *periférico*, logrando una API unificada sin importar el
-número de pines que tenga un cierto perifécico.
+## Motivación
 
-### Módulos incluidos
+La misma surge de la necesidad de manejar los periféricos directamente desde una
+VM de Java para el desarrollo de Java sobre la CIAA y corresponde a la parte de
+bajo nivel de las clases de periféricos en Java que básicamente bindea a
+funciones escritas en C.
+
+Luego se extendió la misma para facilitar el uso de la EDU-CIAA-NXP a personas
+no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma.
+
+## Módulos incluidos
 
 - Tipos de datos.
 - Mapa de periféricos.
@@ -19,13 +24,9 @@ número de pines que tenga un cierto perifécico.
 - E/S Analógica.
 - Uart.
 
-### Capas de software
-
-![Imagen "sapi-modulos-capas.png" no encontrada](assets/img/sapi-modulos-capas.png "Módulos y capas de la biblioteca sAPI")
-
-### Plataformas
+## Plataformas
 
 Actualmente disponible para las plataformas:
 
-- EDU-CIAA-NXP (microcontrolador NXP LPC4337). [Descargar documentación.](assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
+- EDU-CIAA-NXP (microcontrolador NXP LPC4337). [Descargar mapeo de periféricos.](assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
 - CIAA-NXP (microcontrolador NXP LPC4337).

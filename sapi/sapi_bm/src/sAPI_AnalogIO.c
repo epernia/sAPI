@@ -138,11 +138,6 @@ void analogConfig( uint8_t config ){
  * @param   AI0 ... AIn
  * @return  analog value
  */
-
-/* 46        47   48   49 */
-typedef enum{
-   AI2 = 46, AI1, AI0, AO
-
 uint16_t analogRead( uint8_t analogInput ){
 
    uint8_t lpcAdcChannel = 49 - analogInput;
