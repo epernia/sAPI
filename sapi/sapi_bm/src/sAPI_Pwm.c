@@ -56,7 +56,7 @@
 #include "chip.h"
 #include "sAPI_DataTypes.h"
 
-#include "sAPI_PWM.h"
+#include "sAPI_Pwm.h"
 
 /*==================[macros and definitions]=================================*/
 
