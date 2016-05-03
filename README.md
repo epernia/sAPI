@@ -1,9 +1,9 @@
 # sAPI library for microcontrollers
 
 This library implements a simple API that acts as a HAL (Hardware Abstraction
-Layer) for microcontrollers. T
+Layer) for microcontrollers.
 
-Takes ideas from *Wiring library*, but use the concept of *peripheral* instead
+It takes ideas from *Wiring library*, but use the concept of *peripheral* instead
 the concept of *pin*, making the API regardless of the number of pins that use
 certain peripheral.
 
