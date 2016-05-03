@@ -1,31 +1,5 @@
 # API de la biblioteca sAPI
 
-## Archivos que componen la biblioteca
-src (.c):
-
-- sAPI_AnalogIO.c
-- sAPI_Board.c
-- sAPI_Delay.c
-- sAPI_DigitalIO.c
-- sAPI_IsrVector.c
-- sAPI_Tick.c
-- sAPI_Uart.c
-
-inc (.h):
-
-- sAPI.h
-- sAPI_AnalogIO.h
-- sAPI_Board.h
-- sAPI_Config.h
-- sAPI_DataTypes.h
-- sAPI_Delay.h
-- sAPI_DigitalIO.h
-- sAPI_IsrVector.h
-- sAPI_PeripheralMap.h
-- sAPI_Tick.h
-- sAPI_Uart.h
-
-
 ## Módulos
 
 ### sAPI_Config
@@ -250,3 +224,30 @@ cuando se completo y se vuelve a relanzar automáticamente.
 
 Con ``delayWrite( &myDelay, 1000 );`` se puede cambiar la duración de un delay
 en tiempo de ejecución.
+
+
+## Archivos que componen la biblioteca
+
+**src** (.c):
+
+- sAPI_AnalogIO.c
+- sAPI_Board.c
+- sAPI_Delay.c
+- sAPI_DigitalIO.c
+- sAPI_IsrVector.c
+- sAPI_Tick.c
+- sAPI_Uart.c
+
+**inc** (.h):
+
+- sAPI.h
+- sAPI_AnalogIO.h
+- sAPI_Board.h
+- sAPI_Config.h
+- sAPI_DataTypes.h
+- sAPI_Delay.h
+- sAPI_DigitalIO.h
+- sAPI_IsrVector.h
+- sAPI_PeripheralMap.h
+- sAPI_Tick.h
+- sAPI_Uart.h
