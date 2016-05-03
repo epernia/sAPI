@@ -42,7 +42,10 @@ Contiene la tabla de vectores de interrupción.
 
 Contiene la función de configuración para inicialización de la plataforma de hardware:
 
-   void boardConfig( void );
+``void boardConfig( void );``
+
+- Parámetros: ``void``
+- Retorna: ``void``
 
 ### sAPI_PeripheralMap
 
@@ -156,7 +159,10 @@ automáticamente a cada tick.
 
 ### sAPI_Delay
 
-Todos los tiempos están en milisegundos.
+Para utilizar los retardos (con excepción del retardo inexacto) se debe
+configurar el Tick.
+
+Todos los tiempos de parámetros están en milisegundos.
 
 Define la constante ``#define INACCURATE_TO_MS 20400`` y contiene las funciones:
 
