@@ -35,7 +35,7 @@
 # library
 LIBS                   += sapi_bm
 # version
-sapi_bm_VERSION         = 0.2.0
+sapi_bm_VERSION         = 0.3.0
 # library path
 sapi_bm_PATH            = $(ROOT_DIR)$(DS)modules$(DS)sapi_bm
 # library source path

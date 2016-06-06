@@ -1,4 +1,6 @@
 /* Copyright 2016, Eric Pernia.
+ * Copyright 2016, Ian Olivieri.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -31,25 +33,7 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
+/* Date: 2016-05-02 */
 
 /*==================[inclusions]=============================================*/
 
@@ -72,11 +56,6 @@
 
 /*==================[external functions definition]==========================*/
 
-
-
 /*==================[ISR external functions definition]======================*/
 
-
-
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/

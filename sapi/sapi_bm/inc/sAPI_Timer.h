@@ -1,7 +1,9 @@
 /* Copyright 2016, Eric Pernia.
+ * Copyright 2016, Ian Olivieri.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,33 +33,10 @@
  *
  */
 
+/* Date: 2016-06-04 */
+
 #ifndef _SAPI_TIMER_H_
 #define _SAPI_TIMER_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
-
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
 
 /*==================[inclusions]=============================================*/
 
@@ -65,18 +44,29 @@
 
 /*==================[typedef]================================================*/
 
+typedef enum{
+   COUNT_TO_OVERFLOW, COUNT_TO_MATCH,
+   INPUT_PULSE_CAPTURE, OUTPUT_SIGNAL_GENERATOR,
+   PWM, DISABLE_TIMER
+} timerConfig_t;
+
 /*==================[external data declaration]==============================*/
 
-/*==================[ISR external functions definition]======================*/
+/*==================[external functions declaration]==========================*/
 
+/*==================[ISR external functions declaration]======================*/
 
+/* 0x1c 0x00000070 - Handler for ISR TIMER0 (IRQ 12) */
+void TIMER0_IRQHandler(void);
 
-/*==================[external functions definition]==========================*/
+/* 0x1d 0x00000074 - Handler for ISR TIMER1 (IRQ 13) */
+void TIMER1_IRQHandler(void);
 
+/* 0x1e 0x00000078 - Handler for ISR TIMER2 (IRQ 14) */
+void TIMER2_IRQHandler(void);
 
+/* 0x1f 0x0000007C - Handler for ISR TIMER3 (IRQ 15) */
+void TIMER3_IRQHandler(void);
 
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_TIMER_H_ */

@@ -1,7 +1,9 @@
 /* Copyright 2016, Eric Pernia.
+ * Copyright 2016, Ian Olivieri.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,33 +33,10 @@
  *
  */
 
+/* Date: 2016-05-02 */
+
 #ifndef _SAPI_SERVO_H_
 #define _SAPI_SERVO_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
-
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
 
 /*==================[inclusions]=============================================*/
 
@@ -69,14 +48,7 @@
 
 /*==================[ISR external functions definition]======================*/
 
-
-
 /*==================[external functions definition]==========================*/
 
-
-
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_SERVO_H_ */

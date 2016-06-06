@@ -1,9 +1,7 @@
 /* Copyright 2016, Eric Pernia.
- * Copyright 2016, Ian Olivieri.
- * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,15 +30,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-/* Date: 2016-05-02 */
+ 
+/* Date: 2016-06-05 */
 
 /*==================[inclusions]=============================================*/
 
-#include "chip.h"
 #include "sAPI_DataTypes.h"
-
-#include "sAPI_Pwm.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -56,6 +51,40 @@
 
 /*==================[external functions definition]==========================*/
 
+/* 
+ * Null Function Pointer definition
+ * --------------------------------------
+ * param:  void * - Not used
+ * return: bool_t - Return always true
+ */
+bool_t sAPI_NullFuncPtr(void *ptr){
+   return 1;
+}
+
 /*==================[ISR external functions definition]======================*/
 
+/*
+// FUNCTION POINTER VECTOR EXAMPLE
+
+// Función para no tener NULL pointer
+   void dummy(void){
+   }
+ 
+// Definición de un tipo con typedef.
+   typedef void (*voidFunctionPointer_t)(void);
+ 
+// Definición de una variable con el tipo de typedef, incializo en dummy (NULL)
+   voidFunctionPointer_t voidFunctionPointer[2] = {dummy, dummy};
+
+// Ejecuto la funcion
+   (* voidFunctionPointer[0] )();
+   (* voidFunctionPointer[1] )();
+      
+// Asigno una funcion a cada posición del vector
+   voidFunctionPointer[0] = ledB;
+   voidFunctionPointer[1] = led1;
+*/      
+
+
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/

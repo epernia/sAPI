@@ -1,8 +1,8 @@
-/* Copyright 2016, Ian Olivieri <ianolivieri93@gmail.com>.
- * Copyright 2016, Eric Pernia <ericpernia@gmail.com>
+/* Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of sAPI Library.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,13 +32,7 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
+/* Date: 2016-02-20 */
 
 #ifndef SAPI_ANALOGIO_H_
 #define SAPI_ANALOGIO_H_
