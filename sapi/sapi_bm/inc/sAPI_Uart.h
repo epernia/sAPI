@@ -1,7 +1,7 @@
 /* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,30 +31,11 @@
  *
  */
 
+/* Date: 2016-02-26 */
+
 #ifndef _SAPI_UART_H_
 #define _SAPI_UART_H_
-/** @brief Brief for this header file.
- **
- ** Full description for this header file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-02-26   v0.0.1   ENP   initial version
- */
-
+ 
 /*==================[inclusions]=============================================*/
 
 #include "sAPI_PeripheralMap.h"
@@ -67,12 +48,21 @@
 
 /*==================[external functions declaration]=========================*/
 
-   void uartConfig( uint8_t uart, uint32_t baudRate );
+void uartConfig( uint8_t uart, uint32_t baudRate );
 
-   uint8_t uartReadByte( uint8_t uart );
+uint8_t uartReadByte( uint8_t uart );
+void uartWriteByte( uint8_t uart, uint8_t byte );
 
-   void uartWriteByte( uint8_t uart, uint8_t byte );
-   void uartWriteString( uint8_t uart, uint8_t * str );
+void uartWriteString( uint8_t uart, uint8_t * str );
+
+/*==================[ISR external functions declaration]======================*/
+
+/* 0x28 0x000000A0 - Handler for ISR UART0 (IRQ 24) */
+void UART0_IRQHandler(void);
+/* 0x2a 0x000000A8 - Handler for ISR UART2 (IRQ 26) */
+void UART2_IRQHandler(void);
+/* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
+void UART3_IRQHandler(void);
 
 /*==================[end of file]============================================*/
 #endif /* _SAPI_UART_H_ */

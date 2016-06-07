@@ -1,4 +1,5 @@
 /* Copyright 2015, Eric Pernia.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -31,40 +32,17 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150923   v0.0.1   First version
- */
+/* Date: 2015-09-23 */
 
 /*==================[inclusions]=============================================*/
 
 #include "chip.h"
 #include "sAPI_DataTypes.h"
+#include "sAPI_Timer.h"
 
 #include "sAPI_Tick.h"
 
 /*==================[macros and definitions]=================================*/
-
-#include "sAPI_Config.h"  /* <= sAPI configuration header */
-
-#ifndef SAPI_USE_TICK_HOOK
-   #define SAPI_USE_TICK_HOOK FALSE
-#endif
 
 /*==================[internal data declaration]==============================*/
 
@@ -75,18 +53,23 @@
 /*==================[external data definition]===============================*/
 
 /* This global variable holds the tick count */
-volatile tick_t tickCounter = 0;
-volatile tick_t tickRateMS = 0;
+volatile tick_t tickCounter;
+volatile tick_t tickRateMS;
+volatile sAPI_FuncPtr_t tickHookFunction = sAPI_NullFuncPtr;
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
 
 /* Tick rate configuration 1 to 50 ms */
-bool_t tickConfig(tick_t tickRateMSvalue) {
+bool_t tickConfig(tick_t tickRateMSvalue, sAPI_FuncPtr_t tickHook ) {
 
    bool_t ret_val = 1;
    tick_t tickRateHz = 0;
+   
+   if( tickHook ){
+      tickHookFunction = tickHook;
+   }
 
    if( (tickRateMSvalue >= 1) && (tickRateMSvalue <= 50) ){
 
@@ -107,39 +90,32 @@ bool_t tickConfig(tick_t tickRateMSvalue) {
       /* Error, tickRateMS variable not in range (1 <= tickRateMS <= 50) */
       ret_val = 0;
    }
-
+   
    return ret_val;
-
 }
+
 
 /* Read Tick Counter */
 tick_t tickRead( void ) {
    return tickCounter;
 }
 
+
 /* Write Tick Counter */
 void tickWrite( tick_t ticks ) {
    tickCounter = ticks;
 }
 
-/* Must define Tick Hook function */
-#if SAPI_USE_TICK_HOOK == TRUE
-   extern void tickHook(void);
-#endif
-
 /*==================[ISR external functions definition]======================*/
 
-/* Systick Handler which is called each ms */
 __attribute__ ((section(".after_vectors")))
+
+/* SysTick Timer ISR Handler */
 void SysTick_Handler(void) {
    tickCounter++;
 
 	/* Execute Tick Hook function */
-	#if SAPI_USE_TICK_HOOK == TRUE
-	   tickHook();
-	#endif
+	(* tickHookFunction )( 0 );
 }
 
-
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -1,5 +1,7 @@
 /* Copyright 2015, Mariano Cerdeiro.
  * Copyright 2015, Eric Pernia.
+ * Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -32,26 +34,14 @@
  *
  */
 
+/* Date: 2015-09-23 */
+
 /** @brief Brief for this file.
  **
  **/
 
 /** \addtogroup groupName Group Name
  ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150923   v0.0.1   First version (extract from vectos.c from MaCe)
- */
 
 /*==================[inclusions]=============================================*/
 
@@ -95,7 +85,9 @@ static void ISR_NoHandler(void);
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
-   /* System ISRs */
+   
+   /*** System ISRs ***/
+   
    &_vStackTop,                    /* The initial stack pointer  */
    ResetISR,                       /* The reset handler          */
    NMI_Handler,                    /* The NMI handler            */
@@ -111,8 +103,12 @@ void (* const g_pfnVectors[])(void) = {
    DebugMon_Handler,               /* Debug monitor handler      */
    0,                              /* Reserved                   */
    0,                              /* The PendSV handler         */
-   SysTick_Handler,                /* The SysTick handler        is defined in sAPI_Tick.c */
+   
+   SysTick_Handler,                /* The SysTick handler        */
+   
+   
    /*** User Interruptions ***/
+   
    ISR_NoHandler,      /* 0x10 0x00000040 - No Handler set for ISR DAC (IRQ 0) */
    ISR_NoHandler,      /* 0x11 0x00000044 - No Handler set for ISR M0APP (IRQ 1) */
    ISR_NoHandler,      /* 0x12 0x00000048 - No Handler set for ISR DMA (IRQ 2) */
@@ -125,10 +121,12 @@ void (* const g_pfnVectors[])(void) = {
    ISR_NoHandler,      /* 0x19 0x00000064 - No Handler set for ISR USB1 (IRQ 9) */
    ISR_NoHandler,      /* 0x1a 0x00000068 - No Handler set for ISR SCT (IRQ 10) */
    ISR_NoHandler,      /* 0x1b 0x0000006C - No Handler set for ISR RIT (IRQ 11) */
-   ISR_NoHandler,      /* 0x1c 0x00000070 - No Handler set for ISR TIMER0 (IRQ 12) */
-   ISR_NoHandler,      /* 0x1d 0x00000074 - No Handler set for ISR TIMER1 (IRQ 13) */
-   ISR_NoHandler,      /* 0x1e 0x00000078 - No Handler set for ISR TIMER2 (IRQ 14) */
-   ISR_NoHandler,      /* 0x1f 0x0000007C - No Handler set for ISR TIMER3 (IRQ 15) */
+   
+   TIMER0_IRQHandler,  /* 0x1c 0x00000070 - No Handler set for ISR TIMER0 (IRQ 12) */
+   TIMER1_IRQHandler,  /* 0x1d 0x00000074 - No Handler set for ISR TIMER1 (IRQ 13) */
+   TIMER2_IRQHandler,  /* 0x1e 0x00000078 - No Handler set for ISR TIMER2 (IRQ 14) */
+   TIMER3_IRQHandler,  /* 0x1f 0x0000007C - No Handler set for ISR TIMER3 (IRQ 15) */
+   
    ISR_NoHandler,      /* 0x20 0x00000080 - No Handler set for ISR MCPWM (IRQ 16) */
    ISR_NoHandler,      /* 0x21 0x00000084 - No Handler set for ISR ADC0 (IRQ 17) */
    ISR_NoHandler,      /* 0x22 0x00000088 - No Handler set for ISR I2C0 (IRQ 18) */
@@ -137,10 +135,12 @@ void (* const g_pfnVectors[])(void) = {
    ISR_NoHandler,      /* 0x25 0x00000094 - No Handler set for ISR ADC1 (IRQ 21) */
    ISR_NoHandler,      /* 0x26 0x00000098 - No Handler set for ISR SSP0 (IRQ 22) */
    ISR_NoHandler,      /* 0x27 0x0000009C - No Handler set for ISR SSP1 (IRQ 23) */
+   
    UART0_IRQHandler,   /* 0x28 0x000000A0 - No Handler set for ISR UART0 (IRQ 24) */
    ISR_NoHandler,      /* 0x29 0x000000A4 - No Handler set for ISR UART1 (IRQ 25) */
    UART2_IRQHandler,   /* 0x2a 0x000000A8 - No Handler set for ISR UART2 (IRQ 26) */
    UART3_IRQHandler,   /* 0x2b 0x000000AC - No Handler set for ISR UART3 (IRQ 27) */
+   
    ISR_NoHandler,      /* 0x2c 0x000000B0 - No Handler set for ISR I2S0 (IRQ 28) */
    ISR_NoHandler,      /* 0x2d 0x000000B4 - No Handler set for ISR I2S1 (IRQ 29) */
    ISR_NoHandler,      /* 0x2e 0x000000B8 - No Handler set for ISR SPIFI (IRQ 30) */
