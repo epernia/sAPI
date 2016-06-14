@@ -1,7 +1,8 @@
 /* Copyright 2015, Eric Pernia.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,34 +31,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+ 
+/* Date: 2015-09-23 */
 
 #ifndef _SAPI_DATATYPES_H_
 #define _SAPI_DATATYPES_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
-
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150923   v0.0.1   First version
- */
 
 /*==================[inclusions]=============================================*/
 
@@ -89,6 +67,7 @@
 #ifndef TRUE
    #define TRUE   (!FALSE)
 #endif
+
 /*==================[typedef]================================================*/
 
 /* Define Boolean Data Type */
@@ -98,12 +77,25 @@ typedef uint8_t bool_t;
 //typedef real32_t float;
 //typedef real64_t double;
 
+/* 
+ * Function Pointer definition
+ * --------------------------------------
+ * param:  void * - For passing arguments
+ * return: bool_t - For Error Reports
+ */
+typedef bool_t (*sAPI_FuncPtr_t)(void *);
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
+/* 
+ * Null Function Pointer definition
+ * --------------------------------------
+ * param:  void * - Not used
+ * return: bool_t - Return always true
+ */
+bool_t sAPI_NullFuncPtr(void *);
+
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_DATATYPES_H_ */

@@ -1,4 +1,5 @@
-/* Copyright 2016, Ian Olivieri
+/* Copyright 2016, Eric Pernia.
+ * Copyright 2016, Ian Olivieri.
  * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
@@ -32,45 +33,22 @@
  *
  */
 
-/* Date: 2016-02-20 */
+/* Date: 2016-05-02 */
 
-#ifndef SAPI_ANALOGIO_H_
-#define SAPI_ANALOGIO_H_
+#ifndef _SAPI_PWM_H_
+#define _SAPI_PWM_H_
 
 /*==================[inclusions]=============================================*/
 
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
 
-typedef enum{
-   ENABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
-   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS 
-} analogConfig_t;
-
 /*==================[external data declaration]==============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[ISR external functions definition]======================*/
 
-void analogConfig( uint8_t config );
-
-uint16_t analogRead( uint8_t analogInput );
-
-void analogWrite( uint8_t analogOutput, uint16_t value );
-
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-}
-#endif
+/*==================[external functions definition]==========================*/
 
 /*==================[end of file]============================================*/
-
-#endif /* #ifndef _SAPI_ANALOGIO_H_ */
+#endif /* #ifndef _SAPI_PWM_H_ */

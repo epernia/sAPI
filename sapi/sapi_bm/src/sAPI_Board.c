@@ -1,7 +1,8 @@
 /* Copyright 2015, Eric Pernia.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,26 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150923   v0.0.1   First version
- */
+ 
+/* Date: 2015-09-23 */
 
 /*==================[inclusions]=============================================*/
 
@@ -69,20 +52,14 @@
 
 /*==================[internal functions definition]==========================*/
 
-static void coreInit(void) {
+/*==================[external functions definition]==========================*/
+
+/* Set up and initialize board hardware */
+void boardConfig(void) {
 
    /* Read clock settings and update SystemCoreClock variable */
    SystemCoreClockUpdate();
 
 }
 
-/* Set up and initialize board hardware */
-void boardConfig(void) {
-
-   /* Config Core */
-   coreInit();
-
-}
-
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/

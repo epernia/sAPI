@@ -1,8 +1,8 @@
-/* Copyright 2016, Ian Olivieri <ianolivieri93@gmail.com>.
- * Copyright 2016, Eric Pernia <ericpernia@gmail.com>
+/* Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of sAPI Library.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,12 +32,7 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
+/* Date: 2016-02-20 */
 
 /*==================[inclusions]=============================================*/
 #include "chip.h"
@@ -46,7 +41,6 @@
 #include "sAPI_PeripheralMap.h"
 
 #include "sAPI_AnalogIO.h"
-
 
 /*==================[macros and definitions]=================================*/
 
@@ -61,7 +55,6 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-
 
 /*
  * @brief:  enable/disable the ADC and DAC peripheral
@@ -153,7 +146,6 @@ uint16_t analogRead( uint8_t analogInput ){
 
    return analogValue;
 }
-
 
 /*
  * @brief   Write a value in the DAC.

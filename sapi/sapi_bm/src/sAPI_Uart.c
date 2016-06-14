@@ -31,25 +31,7 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
-
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-02-26   v0.0.1   ENP   initial version
- */
+/* Date: 2016-02-26 */
 
 /*==================[inclusions]=============================================*/
 
@@ -59,7 +41,6 @@
 #include "sAPI_PeripheralMap.h"
 
 #include "sAPI_Uart.h"
-
 
 /*==================[macros]=================================================*/
 
@@ -152,14 +133,19 @@ void uartWriteString( uint8_t uart, uint8_t * str ){
 }
 
 
-/*==================[IRQ Handlers]============================================*/
+/*==================[ISR external functions definition]======================*/
 
+__attribute__ ((section(".after_vectors")))
+
+/* 0x28 0x000000A0 - Handler for ISR UART0 (IRQ 24) */
 void UART0_IRQHandler(void){
 }
 
+/* 0x2a 0x000000A8 - Handler for ISR UART2 (IRQ 26) */
 void UART2_IRQHandler(void){
 }
 
+/* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
 void UART3_IRQHandler(void){
    //if (Chip_UART_ReadLineStatus(UART_232) & UART_LSR_RDR) {
 //      receivedByte = Chip_UART_ReadByte(UART_232);

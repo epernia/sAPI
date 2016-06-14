@@ -1,7 +1,10 @@
-/* Copyright 2015, Eric Pernia.
+/* Copyright 2015, Mariano Cerdeiro.
+ * Copyright 2015, Eric Pernia.
+ * Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,6 +34,8 @@
  *
  */
 
+/* Date: 2015-09-23 */
+
 #ifndef _SAPI_ISRS_H_
 #define _SAPI_ISRS_H_
 /** \brief Bare Metal example header file
@@ -41,23 +46,10 @@
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
+/** \addtogroup CIAA Firmware
  ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
+/** \addtogroup CIAA Firmware header file
  ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150923   v0.0.1   First version
- */
 
 /*==================[inclusions]=============================================*/
 
@@ -108,7 +100,6 @@ extern void SysTick_Handler(void);
  **/
 /*extern void ADC0_IRQHandler(void);*/
 
-
 /** \brief Timer IRQ Handlers
  **
  ** TIMER0,1,2 and 3 IRQ Handlers are defined in sAPI_Timer.c
@@ -116,14 +107,10 @@ extern void SysTick_Handler(void);
  ** \remark the definition is in
  **         modules/sapi/sAPI_Timer.c
  **/
-/*
 extern void TIMER0_IRQHandler(void);
 extern void TIMER1_IRQHandler(void);
 extern void TIMER2_IRQHandler(void);
 extern void TIMER3_IRQHandler(void);
-*/
-
-
 
 /** \brief UART IRQ Handlers
  **

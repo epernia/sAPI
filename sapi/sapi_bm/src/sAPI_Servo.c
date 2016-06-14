@@ -1,8 +1,9 @@
-/* Copyright 2016, Ian Olivieri
+/* Copyright 2016, Eric Pernia.
+ * Copyright 2016, Ian Olivieri.
  * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part sAPI library for microcontrollers.
+ * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,45 +33,29 @@
  *
  */
 
-/* Date: 2016-02-20 */
-
-#ifndef SAPI_ANALOGIO_H_
-#define SAPI_ANALOGIO_H_
+/* Date: 2016-05-02 */
 
 /*==================[inclusions]=============================================*/
 
-/*==================[cplusplus]==============================================*/
+#include "chip.h"
+#include "sAPI_DataTypes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "sAPI_Servo.h"
 
 /*==================[macros and definitions]=================================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal data declaration]==============================*/
 
-typedef enum{
-   ENABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
-   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS 
-} analogConfig_t;
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[external data definition]===============================*/
 
-void analogConfig( uint8_t config );
+/*==================[internal functions definition]==========================*/
 
-uint16_t analogRead( uint8_t analogInput );
+/*==================[external functions definition]==========================*/
 
-void analogWrite( uint8_t analogOutput, uint16_t value );
-
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-}
-#endif
+/*==================[ISR external functions definition]======================*/
 
 /*==================[end of file]============================================*/
-
-#endif /* #ifndef _SAPI_ANALOGIO_H_ */

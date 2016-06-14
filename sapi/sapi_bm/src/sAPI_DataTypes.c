@@ -1,5 +1,4 @@
-/* Copyright 2016, Ian Olivieri
- * Copyright 2016, Eric Pernia.
+/* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,46 +30,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
-/* Date: 2016-02-20 */
-
-#ifndef SAPI_ANALOGIO_H_
-#define SAPI_ANALOGIO_H_
+ 
+/* Date: 2016-06-05 */
 
 /*==================[inclusions]=============================================*/
 
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "sAPI_DataTypes.h"
 
 /*==================[macros and definitions]=================================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal data declaration]==============================*/
 
-typedef enum{
-   ENABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
-   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS 
-} analogConfig_t;
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[external data definition]===============================*/
 
-void analogConfig( uint8_t config );
+/*==================[internal functions definition]==========================*/
 
-uint16_t analogRead( uint8_t analogInput );
+/*==================[external functions definition]==========================*/
 
-void analogWrite( uint8_t analogOutput, uint16_t value );
-
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
+/* 
+ * Null Function Pointer definition
+ * --------------------------------------
+ * param:  void * - Not used
+ * return: bool_t - Return always true
+ */
+bool_t sAPI_NullFuncPtr(void *ptr){
+   return 1;
 }
-#endif
 
+/*==================[ISR external functions definition]======================*/
+
+/*
+// FUNCTION POINTER VECTOR EXAMPLE
+
+// Función para no tener NULL pointer
+   void dummy(void){
+   }
+ 
+// Definición de un tipo con typedef.
+   typedef void (*voidFunctionPointer_t)(void);
+ 
+// Definición de una variable con el tipo de typedef, incializo en dummy (NULL)
+   voidFunctionPointer_t voidFunctionPointer[2] = {dummy, dummy};
+
+// Ejecuto la funcion
+   (* voidFunctionPointer[0] )();
+   (* voidFunctionPointer[1] )();
+      
+// Asigno una funcion a cada posición del vector
+   voidFunctionPointer[0] = ledB;
+   voidFunctionPointer[1] = led1;
+*/      
+
+
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
-#endif /* #ifndef _SAPI_ANALOGIO_H_ */
