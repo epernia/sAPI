@@ -1,4 +1,8 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2014, 2015 Mariano Cerdeiro
+ * Copyright 2014, Pablo Ridolfi
+ * Copyright 2014, Juan Cecconi
+ * Copyright 2014, Gustavo Muro
+ * Copyright 2015, Eric Pernia
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -31,8 +35,8 @@
  *
  */
 
-#ifndef _SAPI_I2C_H_
-#define _SAPI_I2C_H_
+#ifndef _MAIN_H_
+#define _MAIN_H_
 /** \brief Bare Metal example header file
  **
  ** This is a mini example of the CIAA Firmware
@@ -56,33 +60,21 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
+ * 20150923   v0.0.1   First version
  */
 
 /*==================[inclusions]=============================================*/
-#include "sAPI_DataTypes.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
-typedef enum {
-	sapi_I2C0,				/**< ID I2C number 0 */
-	sapi_I2C1				/**< ID I2C number 11 */
-} sAPI_i2cID_t;
 
 /*==================[external data declaration]==============================*/
 
-/*==================[ISR external functions definition]======================*/
-
-
-
-/*==================[external functions definition]==========================*/
-bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz);
-bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
-bool_t i2cRead(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_I2C_H_ */
+#endif /* #ifndef _MAIN_H_ */

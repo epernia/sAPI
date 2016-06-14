@@ -54,7 +54,6 @@
 /*==================[inclusions]=============================================*/
 
 #include "chip.h"
-#include "sAPI_DataTypes.h"
 
 #include "sAPI_I2c.h"
 
@@ -73,6 +72,87 @@
 /*==================[external functions definition]==========================*/
 
 
+
+bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz)
+{
+    I2C_ID_T lpcI2cID;
+
+    switch (i2cID){
+    	case sapi_I2C0: lpcI2cID = I2C0; break;
+    	case sapi_I2C1: lpcI2cID = I2C1; break;
+    	default: return FALSE;
+    }
+
+	/* Configuracion de las lineas de SDA y SCL de la placa */
+    Chip_SCU_I2C0PinConfig(I2C0_STANDARD_FAST_MODE);
+
+    /* Inicializacion del periferico */
+    Chip_I2C_Init(i2cID);
+    /* Seleccion de velocidad del bus */
+    Chip_I2C_SetClockRate(i2cID, clockRateHz);
+    /* Configuracion para que los eventos se resuelvan por polliong
+     * (la otra opcion es por interrupcion) */
+    Chip_I2C_SetMasterEventHandler(i2cID, Chip_I2C_EventHandlerPolling);
+
+    return TRUE;
+}
+
+
+bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len)
+{
+    I2CM_XFER_T i2cData;
+
+    /**First, the record to be write must be sent */
+
+    i2cData.slaveAddr = addr;
+    i2cData.options = 0;
+    i2cData.status = 0;
+    i2cData.txBuff = &record;
+    i2cData.txSz = sizeof(record);
+    i2cData.rxBuff = NULL;
+    i2cData.rxSz = 0;
+
+    if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
+        return FALSE;
+    }
+
+    /**First, then, the data to be write must be sent */
+
+    i2cData.slaveAddr = addr;
+    i2cData.options = 0;
+    i2cData.status = 0;
+    i2cData.txBuff = buf;
+    i2cData.txSz = len;
+    i2cData.rxBuff = NULL;
+    i2cData.rxSz = 0;
+
+    if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
+        return FALSE;
+    }
+    return TRUE;
+
+}
+
+
+bool_t i2cRead(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len)
+{
+
+    I2CM_XFER_T i2cData;
+
+    i2cData.slaveAddr = addr;
+    i2cData.options = 0;
+    i2cData.status = 0;
+    i2cData.txBuff = &record;
+    i2cData.txSz = 1;
+    i2cData.rxBuff = buf;
+    i2cData.rxSz = len;
+
+    if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
+        return FALSE;
+    }
+    return TRUE;
+
+}
 
 /*==================[ISR external functions definition]======================*/
 
