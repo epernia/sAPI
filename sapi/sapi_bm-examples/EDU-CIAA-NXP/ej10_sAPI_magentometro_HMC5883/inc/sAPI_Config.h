@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef _SAPI_I2C_H_
-#define _SAPI_I2C_H_
+#ifndef _SAPI_CONFIG_H_
+#define _SAPI_CONFIG_H_
 /** \brief Bare Metal example header file
  **
  ** This is a mini example of the CIAA Firmware
@@ -56,33 +56,25 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
+ * 20160426   v0.0.1   First version
  */
 
 /*==================[inclusions]=============================================*/
+
 #include "sAPI_DataTypes.h"
 
 /*==================[macros]=================================================*/
 
+#define SAPI_USE_TICK_HOOK FALSE
+
 /*==================[typedef]================================================*/
-typedef enum {
-	sapi_I2C0,				/**< ID I2C number 0 */
-	sapi_I2C1				/**< ID I2C number 11 */
-} sAPI_i2cID_t;
 
 /*==================[external data declaration]==============================*/
 
-/*==================[ISR external functions definition]======================*/
-
-
-
-/*==================[external functions definition]==========================*/
-bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz);
-bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
-bool_t i2cRead(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_I2C_H_ */
+#endif /* #ifndef _SAPI_CONFIG_H_ */
