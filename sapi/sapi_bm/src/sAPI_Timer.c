@@ -1,9 +1,7 @@
-/* Copyright 2016, Eric Pernia.
- * Copyright 2016, Ian Olivieri.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,150 +31,256 @@
  *
  */
 
-/* Date: 2016-06-04 */
-
+/* Date: 2016-02-10 */
 
 /*
- * Timers
- * For more information about the Timers peripherals, refer to the Chapter 32
- * of the LPC43xx user manual.
- */
-
-/* The SCT (State Configurable Timer) is a feature included in some of LPC's 
- * microcontrollers that provides a high resolution PWM (or just another timer).
- * It's like a normal timer but with multiple Compare Match values (16),
- * and can be therefore used to generate several PWM signals with THE SAME 
- * PERIOD. For more information about the STCPWM peripheral, refer to the 
- * Chapter 39 of the LPC43xx user manual.
+ * For more information about the Timer peripheral, refer to the Chapter 32 of
+ * the LPC43xx user manual
  */
 
 /*==================[inclusions]=============================================*/
-
 #include "chip.h"
+/* Specific modules used:
+   #include "timer_18xx_43xx.h" for Chip_TIMER functions
+   #include "rgu_18xx_43xx.h" for Chip_RGU functions
+   #include "core_cm4.h" for NVIC functions
+*/
+
 #include "sAPI_DataTypes.h"
 #include "sAPI_PeripheralMap.h"
 
 #include "sAPI_Timer.h"
 
+
 /*==================[macros and definitions]=================================*/
+#define LPC4337_MAX_FREC 204000000 /* Microcontroller frequency */
+
+#define MAX_SYSCALL_INTERRUPT_PRIORITY 5
+
 
 /*==================[internal data declaration]==============================*/
+typedef struct
+{
+   LPC_TIMER_T *name;
+   uint32_t RGU; /* Reset Generator Unit */
+   uint32_t IRQn;
+
+}timerStaticData_t;
+
+typedef struct
+{
+   voidFunctionPointer_t timerCompareMatchFunctionPointer[4];
+}timerDinamicData_t;
+
 
 /*==================[internal functions declaration]=========================*/
+static void errorOcurred(void);
+static void doNothing(void);
 
 /*==================[internal data definition]===============================*/
+
+/*Timers Static Data, given by the uC libraries*/
+static const timerStaticData_t timer_sd[4] =
+{
+   {LPC_TIMER0,RGU_TIMER0_RST,TIMER0_IRQn},
+   {LPC_TIMER1,RGU_TIMER1_RST,TIMER1_IRQn},
+   {LPC_TIMER2,RGU_TIMER2_RST,TIMER2_IRQn},
+   {LPC_TIMER3,RGU_TIMER3_RST,TIMER3_IRQn}
+};
+
+/*Timers dynamic data. Function pointers and Compare match frequencies, which can vary.
+ * This is the default initialization*/
+static timerDinamicData_t timer_dd[4] =
+{
+   {doNothing,errorOcurred,errorOcurred,errorOcurred},
+   {doNothing,errorOcurred,errorOcurred,errorOcurred},
+   {doNothing,errorOcurred,errorOcurred,errorOcurred},
+   {doNothing,errorOcurred,errorOcurred,errorOcurred}
+};
+
 
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
 
+/* Causes:
+ * User forgot to initialize the functions for the compare match interrupt on Timer_init call
+ */
+static void errorOcurred(void){
+   while(1);
+}
+
+static void doNothing(void){
+}
+
 /*==================[external functions definition]==========================*/
 
+
 /*
- * uint8_t timer === SYSTICK, TIMER0, TIMER1, TIMER2, TIMER3, SCT
- * uint8_t mode === COUNT_TO_OVERFLOW, COUNT_TO_MATCH, 
- *                  INPUT_PULSE_CAPTURE, OUTPUT_SIGNAL_GENERATOR, PWM, 
- *                  DISABLE_TIMER
- * void * configValues === configurationStructure
+ * @Brief   Initialize Timer peripheral
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   ticks:   Number of ticks required to finish the cycle.
+ * @param   voidFunctionPointer:   function to be executed at the end of the timer cycle
+ * @return   nothing
+ * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
  */
-bool_t timerConfig( uint8_t timer, uint8_t mode, void *configValues ){
+void Timer_Init(uint8_t timerNumber , uint32_t ticks, voidFunctionPointer_t voidFunctionPointer)
+{
+   /* Source:
+   http://docs.lpcware.com/lpcopen/v1.03/lpc18xx__43xx_2examples_2periph_2periph__blinky_2blinky_8c_source.html */
 
-   bool_t ret_val = 1;
-
-	/* HACER UN VECTOR "TIMER CAPABILITIES" QUE TENGA FLAGS SEGUN EL MODO QUE
-	   SOPORTA CADA TIMER. ESTO ES PARA DAR ERROR CORRECTO SI NO SOPORTA CIERTO
-		MODO */
-
-   switch(mode){
-      
-      /* Timer reset on counter overflow */
-      case COUNT_TO_OVERFLOW:
-         ret_val = 0;
-      break;
-      
-      /* Clear timer on compare match */
-      case COUNT_TO_MATCH:
-         switch(timer){
-            case TIMER0:
-            case TIMER1:
-            case TIMER2:
-            case TIMER3:
-               ret_val = 0;
-            break;
-            case SCT:
-               ret_val = 0;
-            break;
-            default:
-               ret_val = 0;
-            break;
-         }
-      break;
-      
-      /* Pulse count */
-      case INPUT_PULSE_CAPTURE:
-         ret_val = 0;
-      break;
-      
-      /* Waveform generator */
-      case OUTPUT_SIGNAL_GENERATOR:
-         ret_val = 0;
-      break;
-      
-      /* Generate a Pulse Width Modulation output */
-      case PWM:
-         switch(timer){
-            case TIMER0:
-            case TIMER1:
-            case TIMER2:
-            case TIMER3:
-               ret_val = 0;
-            break;
-            case SCT:
-               ret_val = 0;
-            break;
-            default:
-               ret_val = 0;
-            break;
-         }
-      break;
-      
-      /* Turn Off a Timers */
-      case DISABLE_TIMER:
-         ret_val = 0;
-      break;
-      
-      
-      default:
-         ret_val = 0;
-      break;
+   /*If timer period = CompareMatch0 Period = 0 => ERROR*/
+   if (ticks==0)
+   {
+      errorOcurred();
    }
 
-   return ret_val;
+   /* Enable timer clock and reset it */
+   Chip_TIMER_Init(timer_sd[timerNumber].name);
+   Chip_RGU_TriggerReset(timer_sd[timerNumber].RGU);
+   while (Chip_RGU_InReset(timer_sd[timerNumber].RGU)) {}
+   Chip_TIMER_Reset(timer_sd[timerNumber].name);
 
+   /* Update the defalut function pointer name of the Compare match 0*/
+   timer_dd[timerNumber].timerCompareMatchFunctionPointer[TIMERCOMPAREMATCH0] = voidFunctionPointer;
+
+   /* Initialize compare match with the specified ticks (number of counts needed to clear the match counter) */
+   Chip_TIMER_MatchEnableInt(timer_sd[timerNumber].name, TIMERCOMPAREMATCH0);
+   Chip_TIMER_SetMatch(timer_sd[timerNumber].name, TIMERCOMPAREMATCH0, ticks);
+
+   /* Makes Timer Match 0 period the timer period*/
+   Chip_TIMER_ResetOnMatchEnable(timer_sd[timerNumber].name, TIMERCOMPAREMATCH0);
+
+   /*Enable timer*/
+   Chip_TIMER_Enable(timer_sd[timerNumber].name);
+
+   /* Enable timer interrupt */
+   NVIC_SetPriority(timer_sd[timerNumber].IRQn, MAX_SYSCALL_INTERRUPT_PRIORITY+1);
+   NVIC_EnableIRQ(timer_sd[timerNumber].IRQn);
+   NVIC_ClearPendingIRQ(timer_sd[timerNumber].IRQn);
+}
+
+/*
+ * @Brief   Disables timer peripheral
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @return   nothing
+ */
+void Timer_DeInit(uint8_t timerNumber)
+{
+   NVIC_DisableIRQ(timer_sd[timerNumber].IRQn);
+   Chip_TIMER_Disable(timer_sd[timerNumber].name);
+   Chip_TIMER_DeInit(timer_sd[timerNumber].name);
+}
+
+/*
+ * @Brief   Converts a value in microseconds (uS = 1x10^-6 sec) to ticks
+ * @param   uS:   Value in microseconds
+ * @return   Equivalent in Ticks for the LPC4337
+ * @note   Can be used for the second parameter in the Timer_init
+ */
+uint32_t Timer_microsecondsToTicks(uint32_t uS){
+   return (uS*(LPC4337_MAX_FREC/1000000));
+}
+
+/*
+ * @Brief   Enables a compare match in a timer
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   compareMatchNumber:   Compare match number, 1 to 3
+ * @param   ticks:   Number of ticks required to reach the compare match.
+ * @param   voidFunctionPointer: function to be executed when the compare match is reached
+ * @return   None
+ * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
+ */
+void Timer_EnableCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber , uint32_t ticks, voidFunctionPointer_t voidFunctionPointer){
+   
+   timer_dd[timerNumber].timerCompareMatchFunctionPointer[compareMatchNumber] = voidFunctionPointer;
+
+   Chip_TIMER_MatchEnableInt(timer_sd[timerNumber].name, compareMatchNumber);
+   Chip_TIMER_SetMatch(timer_sd[timerNumber].name, compareMatchNumber, ticks);
+}
+
+/*
+ * @brief   Disables a compare match of a timer
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   compareMatchNumber:   Compare match number, 1 to 3
+ * @return   None
+ */
+void Timer_DisableCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber){
+   
+   timer_dd[timerNumber].timerCompareMatchFunctionPointer[compareMatchNumber] = errorOcurred;
+
+   Chip_TIMER_ClearMatch(timer_sd[timerNumber].name, compareMatchNumber);
+   Chip_TIMER_MatchDisableInt(timer_sd[timerNumber].name, compareMatchNumber);
+}
+
+/*
+ * @Purpose:   Allows the user to change the compare value nº 'compareMatchNumber' of timer 'timerNumber'.
+ *    This is specially useful to generate square waves if used in the function for the TIMERCOMPAREMATCH0 (because
+ *    that compare match resets the timer counter), which will be passed as a parameter when initializing a timer
+ * @note:  The selected time (3rd parameter) must be less than TIMERCOMPAREMATCH0's compareMatchTime_uS
+ *   for the compare match to make the interruption
+ */
+void Timer_SetCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber,uint32_t ticks){
+
+   Chip_TIMER_SetMatch(timer_sd[timerNumber].name, compareMatchNumber,ticks);
 }
 
 /*==================[ISR external functions definition]======================*/
-
-__attribute__ ((section(".after_vectors")))
-
-/* 0x1c 0x00000070 - Handler for ISR TIMER0 (IRQ 12) */
+/*
+ * @Brief:   Executes the functions passed by parameter in the Timer_init,
+ *   at the chosen frequencies
+ */
 void TIMER0_IRQHandler(void){
+   
+   uint8_t compareMatchNumber = 0;
 
+   for(compareMatchNumber = TIMERCOMPAREMATCH0 ; compareMatchNumber <= TIMERCOMPAREMATCH3 ; compareMatchNumber++ ){
+      if (Chip_TIMER_MatchPending(LPC_TIMER0, compareMatchNumber)){
+         /*Run the functions saved in the timer dynamic data structure*/
+         (*timer_dd[TIMER0].timerCompareMatchFunctionPointer[compareMatchNumber])();
+         Chip_TIMER_ClearMatch(LPC_TIMER0, compareMatchNumber);
+      }
+   }
 }
 
-/* 0x1d 0x00000074 - Handler for ISR TIMER1 (IRQ 13) */
 void TIMER1_IRQHandler(void){
+   
+   uint8_t compareMatchNumber = 0;
 
+   for(compareMatchNumber = TIMERCOMPAREMATCH0 ; compareMatchNumber <= TIMERCOMPAREMATCH3 ; compareMatchNumber++ ){
+      if (Chip_TIMER_MatchPending(LPC_TIMER1, compareMatchNumber)){
+         /*Run the functions saved in the timer dynamic data structure*/
+         (*timer_dd[TIMER1].timerCompareMatchFunctionPointer[compareMatchNumber])();
+         Chip_TIMER_ClearMatch(LPC_TIMER1, compareMatchNumber);
+      }
+   }
 }
 
-/* 0x1e 0x00000078 - Handler for ISR TIMER2 (IRQ 14) */
-void TIMER2_IRQHandler(void){
+void TIMER2_IRQHandler(void)
+{
+   uint8_t compareMatchNumber = 0;
 
+   for(compareMatchNumber = TIMERCOMPAREMATCH0 ; compareMatchNumber <= TIMERCOMPAREMATCH3 ; compareMatchNumber++ ){
+      if (Chip_TIMER_MatchPending(LPC_TIMER2, compareMatchNumber)){
+         /*Run the functions saved in the timer dynamic data structure*/
+         (*timer_dd[TIMER2].timerCompareMatchFunctionPointer[compareMatchNumber])();
+         Chip_TIMER_ClearMatch(LPC_TIMER2, compareMatchNumber);
+      }
+   }
 }
 
-/* 0x1f 0x0000007C - Handler for ISR TIMER3 (IRQ 15) */
+/*fixme __attribute__ ((section(".after_vectors")))*/
 void TIMER3_IRQHandler(void){
    
+   uint8_t compareMatchNumber = 0;
+
+   for(compareMatchNumber = TIMERCOMPAREMATCH0 ; compareMatchNumber <= TIMERCOMPAREMATCH3 ; compareMatchNumber++ ){
+      if (Chip_TIMER_MatchPending(LPC_TIMER3, compareMatchNumber)){
+         /*Run the functions saved in the timer dynamic data structure*/
+         (*timer_dd[TIMER3].timerCompareMatchFunctionPointer[compareMatchNumber])();
+         Chip_TIMER_ClearMatch(LPC_TIMER3, compareMatchNumber);
+      }
+   }
 }
 
 /*==================[end of file]============================================*/

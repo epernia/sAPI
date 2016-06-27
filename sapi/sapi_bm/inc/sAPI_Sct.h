@@ -1,5 +1,4 @@
 /* Copyright 2016, Ian Olivieri
- * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -34,8 +33,8 @@
 
 /* Date: 2016-02-10 */
 
-#ifndef PWM_DRIVER_H_
-#define PWM_DRIVER_H_
+#ifndef SAPI_SCT_H_
+#define SAPI_SCT_H_
 
 /*==================[inclusions]=============================================*/
 
@@ -49,46 +48,52 @@ extern "C" {
 
 /*==================[typedef]================================================*/
 
+/*  SCT names are defined in sAPI_PeripheralMap.h:
+ * NOTE: CTOUT11 has no SCT mode associated, so it can't be used!
+
 typedef enum{
-   PWM_TIMERS_ENABLE, PWM_TIMERS_DISABLE, PWM_OUTPUT_ENABLE, PWM_OUTPUT_DISABLE
-} PwmConfig_t;
+   CTOUT0, CTOUT1, CTOUT2, CTOUT3, CTOUT4, CTOUT5, CTOUT6, CTOUT7, CTOUT8,
+   CTOUT9, CTOUT10, CTOUT11, CTOUT12, CTOUT13
+} SctMap_t;
+*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+/*
+ * @brief:   Initialize the SCT peripheral with the given frequency
+ * @param:   frequency:   value in Hz
+ * @note:   there can only be 1 frequency in all the SCT peripheral.
+ */
+void Sct_Init(uint32_t frequency);
 
 /*
- * @Brief: Initializes the pwm peripheral.
- * @param  uint8_t pwmNumber
- * @param  uint8_t config
- * @return bool_t true (1) if config it is ok
+ * @brief	Enables pwm function for the given pin
+ * @param	sctNumber:   pin where the pwm signal will be generated
  */
-bool_t pwmConfig( uint8_t pwmNumber, uint8_t config);
+void Sct_EnablePwmFor(uint8_t sctNumber);
 
 /*
- * @brief:   Tells if the pwm is currently active, and its position
- * @param:   pwmNumber:   ID of the pwm, from 0 to 10
- * @return:   position (1 ~ PWM_TOTALNUMBER), 0 if the element was not found.
+ * @brief   Converts a value in microseconds (uS = 1x10^-6 sec) to ticks
+ * @param   value:   8bit value, from 0 to 255
+ * @return   Equivalent in Ticks for the LPC4337
  */
-uint8_t pwmIsAttached( uint8_t pwmNumber );
+uint32_t Sct_Uint8ToTicks(uint8_t value);
 
 /*
- * @brief:   read the value of the pwm in the pin
- * @param:   pwmNumber:   ID of the pwm, from 0 to 10
- * @return:   value of the pwm in the pin (0 ~ 255).
- *   If an error ocurred, return = EMPTY_POSITION = 255
+ * @brief:   Sets the pwm duty cycle
+ * @param:	sctNumber:   pin where the pwm signal is generated
+ * @param	value:   8bit value, from 0 to 255
+ * @note   For the 'ticks' parameter, see function Sct_Uint8ToTicks
  */
-uint8_t pwmRead( uint8_t pwmNumber );
+void Sct_SetDutyCycle(uint8_t sctNumber, uint8_t value);
 
 /*
- * @brief:   change the value of the pwm at the selected pin
- * @param:   pwmNumber:   ID of the pwm, from 0 to 10
- * @param:   value:   8bit value, from 0 to 255
- * @return:   True if the value was successfully changed, False if not.
+ * @brief:   Gets the pwm duty cycle
+ * @param:	sctNumber:   pin where the pwm signal is generated
+ * @return:   duty cycle of the channel, from 0 to 255
  */
-bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );
-
-
+uint8_t Sct_GetDutyCycle(uint8_t sctNumber);
 
 /*==================[cplusplus]==============================================*/
 
@@ -98,5 +103,4 @@ bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );
 
 /*==================[end of file]============================================*/
 
-
-#endif /* PWM_DRIVER_H_ */
+#endif /* SAPI_SCT_H_ */

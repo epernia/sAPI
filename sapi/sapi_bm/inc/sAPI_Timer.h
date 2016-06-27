@@ -1,6 +1,4 @@
-/* Copyright 2016, Eric Pernia.
- * Copyright 2016, Ian Olivieri.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -33,40 +31,97 @@
  *
  */
 
-/* Date: 2016-06-04 */
+/* Date: 2016-02-10 */
 
-#ifndef _SAPI_TIMER_H_
-#define _SAPI_TIMER_H_
+#ifndef SAPI_TIMER_H_
+#define SAPI_TIMER_H_
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
-
-typedef enum{
-   COUNT_TO_OVERFLOW, COUNT_TO_MATCH,
-   INPUT_PULSE_CAPTURE, OUTPUT_SIGNAL_GENERATOR,
-   PWM, DISABLE_TIMER
-} timerConfig_t;
+typedef void (*voidFunctionPointer_t)(void);
 
 /*==================[external data declaration]==============================*/
 
-/*==================[external functions declaration]==========================*/
+/*==================[external functions declaration]=========================*/
+/*
+ * @Brief   Initialize Timer peripheral
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   ticks:   Number of ticks required to finish the cycle.
+ * @param   voidFunctionPointer:   function to be executed at the end of the timer cycle
+ * @return   nothing
+ * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
+ */
+void Timer_Init(uint8_t timerNumber , uint32_t ticks, voidFunctionPointer_t voidFunctionPointer);
 
-/*==================[ISR external functions declaration]======================*/
+/*
+ * @Brief   Disables timer peripheral
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @return   nothing
+ */
+void Timer_DeInit(uint8_t timerNumber);
 
-/* 0x1c 0x00000070 - Handler for ISR TIMER0 (IRQ 12) */
+/*
+ * @Brief   Converts a value in microseconds (uS = 1x10^-6 sec) to ticks
+ * @param   uS:   Value in microseconds
+ * @return   Equivalent in Ticks for the LPC4337
+ * @note   Can be used for the second parameter in the Timer_init
+ */
+uint32_t Timer_microsecondsToTicks(uint32_t uS);
+
+/*
+ * @Brief   Enables a compare match in a timer
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   compareMatchNumber:   Compare match number, 1 to 3
+ * @param   ticks:   Number of ticks required to reach the compare match.
+ * @param   voidFunctionPointer: function to be executed when the compare match is reached
+ * @return   None
+ * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
+ */
+void Timer_EnableCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber , uint32_t ticks, voidFunctionPointer_t voidFunctionPointer);
+
+/*
+ * @brief   Disables a compare match of a timer
+ * @param   timerNumber:   Timer number, 0 to 3
+ * @param   compareMatchNumber:   Compare match number, 1 to 3
+ * @return   None
+ */
+void Timer_DisableCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber);
+
+/*
+ * @Purpose:   Allows the user to change the compare value n? 'compareMatchNumber' of timer 'timerNumber'.
+ *    This is specially useful to generate square waves if used in the function for the TIMERCOMPAREMATCH0 (because
+ *    that compare match resets the timer counter), which will be passed as a parameter when initializing a timer
+ * @note:  The selected time (3rd parameter) must be less than TIMERCOMPAREMATCH0's compareMatchTime_uS
+ *   for the compare match to make the interruption
+ */
+void Timer_SetCompareMatch(uint8_t timerNumber, uint8_t compareMatchNumber,uint32_t ticks);
+
+/*==================[ISR external functions declaration]=====================*/
+/*
+ * @Brief:   Executes the functions passed by parameter in the Timer_init,
+ *   at the chosen frequencies
+ */
 void TIMER0_IRQHandler(void);
-
-/* 0x1d 0x00000074 - Handler for ISR TIMER1 (IRQ 13) */
 void TIMER1_IRQHandler(void);
-
-/* 0x1e 0x00000078 - Handler for ISR TIMER2 (IRQ 14) */
 void TIMER2_IRQHandler(void);
-
-/* 0x1f 0x0000007C - Handler for ISR TIMER3 (IRQ 15) */
 void TIMER3_IRQHandler(void);
 
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_TIMER_H_ */
+
+
+#endif /* SAPI_TIMER_H_ */

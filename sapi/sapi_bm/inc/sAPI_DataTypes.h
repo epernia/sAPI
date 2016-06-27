@@ -77,6 +77,9 @@ typedef uint8_t bool_t;
 //typedef real32_t float;
 //typedef real64_t double;
 
+/* Define Tick Data Type */
+typedef uint64_t tick_t;
+
 /* 
  * Function Pointer definition
  * --------------------------------------

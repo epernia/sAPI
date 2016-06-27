@@ -1,5 +1,4 @@
-/* Copyright 2016, Eric Pernia.
- * Copyright 2016, Ian Olivieri.
+/* Copyright 2016, Ian Olivieri
  * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
@@ -33,22 +32,83 @@
  *
  */
 
-/* Date: 2016-05-02 */
+/* Date: 2016-02-10 */
 
-#ifndef _SAPI_SERVO_H_
-#define _SAPI_SERVO_H_
+#ifndef SAPI_SERVO_H_
+#define SAPI_SERVO_H_
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
 
+typedef enum{
+   ENABLE_SERVO_TIMERS, DISABLE_SERVO_TIMERS, ENABLE_SERVO_OUTPUT, DISABLE_SERVO_OUTPUT
+} ServoConfig_t;
+
 /*==================[external data declaration]==============================*/
 
-/*==================[ISR external functions definition]======================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[external functions definition]==========================*/
+/*
+ * @Brief: Initializes the servo peripheral
+ * @param  uint8_t servoNumber
+ * @param  uint8_t config
+ * @return bool_t true (1) if config it is ok
+ * @IMPORTANT:   this function uses Timer 1, 2 and 3 to generate the servo signals, so
+ *   they won't be available to use.
+ */
+bool_t servoConfig( uint8_t servoNumber, uint8_t config );
+
+/*
+ * @brief:   Tells if the servo is currently active, and its position
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @param:   value:   value of the servo, from 0 to 180
+ * @return:   position (1 ~ SERVO_TOTALNUMBER), 0 if the element was not found.
+ */
+uint8_t servoIsAttached( uint8_t servoNumber);
+
+/*
+ * @brief: read the value of the servo
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @return: value of the servo (0 ~ 180).
+ *   If an error ocurred, return = EMPTY_POSITION = 255
+ */
+uint8_t servoRead( uint8_t servoNumber);
+
+/*
+ * @brief: change the value of the servo
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @param:   value:   value of the servo, from 0 to 180
+ * @return: True if the value was successfully changed, False if not.
+ */
+bool_t servoWrite( uint8_t servoNumber, uint8_t angle );
+
+
+
+/*
+
+bool_t servoConfig( uint8_t servoNumber, uint8_t config );
+void servoConfig(void);
+bool_t servoAttach( uint8_t servoNumber);
+bool_t servoDetach( uint8_t servoNumber);
+uint8_t servoIsAttached( uint8_t servoNumber);
+*/
+
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_SERVO_H_ */
+
+#endif /* SAPI_SERVO_H_ */
