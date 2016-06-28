@@ -89,30 +89,36 @@ typedef enum{
 
 /* Defined for sAPI_Timer.h */
 //NOTE: if servo is enable (servoConfig used) the only available timer to use is TIMER0
+/*
 typedef enum{
    TIMER0, TIMER1, TIMER2, TIMER3, SCT
 } TimerMap_t;
 
 typedef enum{
    TIMERCOMPAREMATCH0, TIMERCOMPAREMATCH1, TIMERCOMPAREMATCH2, TIMERCOMPAREMATCH3
-} TimerCompareMatch_t;
+} TimerCompareMatch_t;*/
 
-
-/* Defined for sAPI_Timer.h */
-// NOTE: CTOUT11 has no SCT mode associated, so it can't be used!
-// NOTE: if pwm is enable (pwmConfig used) there will be no sct channels available
+/*Defined for sAPI_Timer.h*/
+//NOTE: if servo is enable (servoConfig used) the only available timer to use is TIMER0
 typedef enum{
-   CTOUT0, CTOUT1, CTOUT2, CTOUT3, CTOUT4, CTOUT5, CTOUT6, CTOUT7, CTOUT8,
-   CTOUT9, CTOUT10, CTOUT11, CTOUT12, CTOUT13
-} SctMap_t;
-
-
+   TIMER0, TIMER1, TIMER2, TIMER3
+} TimerMap_t;
+typedef enum{
+   TIMERCOMPAREMATCH0, TIMERCOMPAREMATCH1, TIMERCOMPAREMATCH2, TIMERCOMPAREMATCH3
+} TimerCompareMatch_t;
 
 /*Defined for sAPI_Servo.h*/
 typedef enum{
    SERVO0, SERVO1, SERVO2, SERVO3, SERVO4, SERVO5, SERVO6, SERVO7, SERVO8
 } ServoMap_t;
 
+/*Defined for sAPI_Sct.h*/
+// NOTE: CTOUT11 has no SCT mode associated, so it can't be used!
+// NOTE: if pwm is enable (pwmConfig used) there will be no sct channels available
+typedef enum{
+   CTOUT0, CTOUT1, CTOUT2, CTOUT3, CTOUT4, CTOUT5, CTOUT6, CTOUT7, CTOUT8,
+   CTOUT9, CTOUT10, CTOUT11, CTOUT12, CTOUT13
+} SctMap_t;
 
 /*Defined for sAPI_Pwm.h*/
 typedef enum{

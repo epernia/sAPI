@@ -48,6 +48,8 @@
 #include "sAPI_AnalogIO.h"
 #include "sAPI_Uart.h"
 #include "sAPI_Timer.h"
+#include "sAPI_Servo.h"
+#include "sAPI_Pwm.h"
 
 #include "sAPI_Tick.h"
 #include "sAPI_Delay.h"
