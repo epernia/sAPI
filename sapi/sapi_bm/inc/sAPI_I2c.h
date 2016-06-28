@@ -1,4 +1,5 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2016, Eric Pernia
+ * Copyright 2016, Alejandro Permingeat.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -50,6 +51,7 @@
  * Initials     Name
  * ---------------------------
  * ENP          Eric Pernia
+ * AlPer		Alejandro Permingeat
  *
  */
 
@@ -57,6 +59,7 @@
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 2016-05-02   v0.0.1   ENP   First version
+ * 2016-06-23   v0.1   	 AlPer First functional version
  */
 
 /*==================[inclusions]=============================================*/
@@ -78,8 +81,8 @@ typedef enum {
 
 /*==================[external functions definition]==========================*/
 bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz);
-bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
-bool_t i2cRead(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+bool_t i2cRead(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -98,7 +98,7 @@ bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz)
 }
 
 
-bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len)
+bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len)
 {
     I2CM_XFER_T i2cData;
 
@@ -134,7 +134,7 @@ bool_t i2cWrite(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len)
 }
 
 
-bool_t i2cRead(uint32_t addr, uint8_t record, uint8_t* buf, uint16_t len)
+bool_t i2cRead(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len)
 {
 
     I2CM_XFER_T i2cData;
