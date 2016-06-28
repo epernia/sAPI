@@ -63,7 +63,6 @@
 
 #include "sAPI.h"         /* <= sAPI header */
 
-#include "sAPI_HMC5883L.h"         /* <= sAPI HMC5883L header */
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
@@ -98,12 +97,7 @@ bool_t myTickHook(void *ptr){
  /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
 int main(void)
 {
-	sAPI_HMC5883L_config_t hmc5883L_configValue;
-	uint16_t hmc5883l_x_raw;
-	uint16_t hmc5883l_y_raw;
-	uint16_t hmc5883l_z_raw;
-
-	/* ------------- INICIALIZACIONES ------------- */
+   /* ------------- INICIALIZACIONES ------------- */
 
    /* Inicializar la placa */
    boardConfig();
@@ -132,28 +126,34 @@ int main(void)
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   /* Variable de Retardo no bloqueante */
-   delay_t delayBase1;
-   delay_t delayBase2;
-   delay_t delayBase3;
+	bool_t valor = 0;
 
-   /* Inicializar Retardo no bloqueante con tiempo en ms
-	   500 ms = 0,5 s */
-   delayConfig( &delayBase1, 100 );
-   delayConfig( &delayBase2, 200 );
-   delayConfig( &delayBase3, 400 );
+   uint8_t servoAngle = 0; /* 0 a 180 grados */
 
-   HMC5883L_init();
-   HMC5883L_prepareDefaultConfig(&hmc5883L_configValue);
-   hmc5883L_configValue.mode = sapi_HMC5883L__continuous_measurement;
-   hmc5883L_configValue.samples = sapi_HMC5883L__8_sample;
-   HMC5883L_config(hmc5883L_configValue);
+   /* Config Servo */
+   valor = servoConfig( 0,      ENABLE_SERVO_TIMERS );
+
+   valor = servoConfig( SERVO0, ENABLE_SERVO_OUTPUT );
+
+   /* Use Servo */
+   valor = servoWrite( SERVO0, servoAngle );
+   servoAngle = servoRead( SERVO0 );
+
+   digitalWrite( LEDB, 1 );
+
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
 	while(1) {
 
-		HMC5883L_getXYZ_raw(&hmc5883l_x_raw, &hmc5883l_y_raw, &hmc5883l_z_raw);
-		delay(67); //Wait about 67 ms (if 15 Hz rate) in order to magnetometer could read values
+      servoWrite( SERVO0, 0 );
+      delay(500);
+
+      servoWrite( SERVO0, 90 );
+      delay(500);
+
+      servoWrite( SERVO0, 180 );
+      delay(500);
+
    }
 
 	/* NO DEBE LLEGAR NUNCA AQUI, debido a que a este

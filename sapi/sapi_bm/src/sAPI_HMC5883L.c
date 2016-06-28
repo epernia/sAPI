@@ -112,6 +112,15 @@ bool_t HMC5883L_getXYZ_raw(uint16_t *x, uint16_t *y, uint16_t *z)
 	i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Z_MSB,&z_MSB,1);
 	i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Z_LSB,&z_LSB,1);
 
+	*x = x_MSB;
+	*x = (*x << 8)|x_LSB;
+
+	*y = y_MSB;
+	*y = (*y << 8)|y_LSB;
+
+	*z = z_MSB;
+	*z = (*z << 8)|z_LSB;
+
 	return(result);
 
 }
