@@ -36,9 +36,11 @@
  ** This is a mini example of the CIAA Firmware using HMC5883L.
  **
  **/
+#include "chip.h"
+
+#include "sAPI_I2c.h"         	   /* <= sAPI I2C header */
 
 #include "sAPI_HMC5883L.h"         /* <= sAPI HMC5883L header */
-#include "sAPI_I2c.h"         	   /* <= sAPI I2C header */
 
 bool_t HMC5883L_init()
 {
@@ -89,12 +91,11 @@ bool_t HMC5883L_config(sAPI_HMC5883L_config_t config)
 
 	registerMode = config.mode;
 
-
 	i2cWrite(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__CONFIG_A,&registerA,1);
 	i2cWrite(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__CONFIG_B,&registerB,1);
 	i2cWrite(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__MODE,&registerMode,1);
 
-	return (TRUE);
+	return (TRUE); /** TODO: return value must reflect the result of the operation*/
 }
 
 bool_t HMC5883L_getXYZ_raw(uint16_t *x, uint16_t *y, uint16_t *z)
@@ -121,7 +122,7 @@ bool_t HMC5883L_getXYZ_raw(uint16_t *x, uint16_t *y, uint16_t *z)
 	*z = z_MSB;
 	*z = (*z << 8)|z_LSB;
 
-	return(result);
+	return(result); /** TODO: return value must reflect the result of the operation*/
 
 }
 

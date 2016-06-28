@@ -151,7 +151,6 @@ int main(void)
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
 	while(1) {
-
 		HMC5883L_getXYZ_raw(&hmc5883l_x_raw, &hmc5883l_y_raw, &hmc5883l_z_raw);
 		delay(67); //Wait about 67 ms (if 15 Hz rate) in order to magnetometer could read values
    }

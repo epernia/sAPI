@@ -58,6 +58,7 @@
 #include "sAPI_I2c.h"
 
 /*==================[macros and definitions]=================================*/
+#define I2C_MAX_TX_BUFF  16
 
 /*==================[internal data declaration]==============================*/
 
@@ -101,34 +102,43 @@ bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz)
 bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len)
 {
     I2CM_XFER_T i2cData;
+    uint8_t txBuff[I2C_MAX_TX_BUFF];
+    uint8_t i;
 
     /**First, the record to be write must be sent */
+    txBuff[0] = record;
+
+    /**If length of data to be sent is greater than (I2C_MAX_TX_BUFF-1),
+     * modify the length to be sent. Remember that the firs byte of
+     * the txBuff is reserved for the "record id"
+     */
+    if ((I2C_MAX_TX_BUFF-1)<len)
+    {
+    	len = I2C_MAX_TX_BUFF-1;
+    }
+
+    for (i=0;i<len; i++)
+    {
+    	txBuff[i+1] = buf[i];
+    }
+
+    /** Prepare the i2cData register*/
 
     i2cData.slaveAddr = addr;
     i2cData.options = 0;
     i2cData.status = 0;
-    i2cData.txBuff = &record;
-    i2cData.txSz = sizeof(record);
+    i2cData.txBuff = &txBuff;
+    i2cData.txSz = len+1;
     i2cData.rxBuff = NULL;
     i2cData.rxSz = 0;
+
+    /** Send the i2c data*/
 
     if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
         return FALSE;
     }
 
-    /**First, then, the data to be write must be sent */
 
-    i2cData.slaveAddr = addr;
-    i2cData.options = 0;
-    i2cData.status = 0;
-    i2cData.txBuff = buf;
-    i2cData.txSz = len;
-    i2cData.rxBuff = NULL;
-    i2cData.rxSz = 0;
-
-    if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
-        return FALSE;
-    }
     return TRUE;
 
 }
