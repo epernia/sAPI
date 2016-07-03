@@ -1,8 +1,11 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2014, 2015 Mariano Cerdeiro
+ * Copyright 2014, Pablo Ridolfi
+ * Copyright 2014, Juan Cecconi
+ * Copyright 2014, Gustavo Muro
+ * Copyright 2015, Eric Pernia
  * All rights reserved.
  *
- * This file is part sAPI library for microcontrollers.
+ * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,30 +35,35 @@
  *
  */
 
-/* Date: 2015-09-23 */
- 
-#ifndef _SAPI_H_
-#define _SAPI_H_
+#ifndef _MAIN_H_
+#define _MAIN_H_
+/** \brief Bare Metal example header file
+ **
+ ** This is a mini example of the CIAA Firmware
+ **
+ **/
+
+/** \addtogroup CIAA_Firmware CIAA Firmware
+ ** @{ */
+/** \addtogroup Examples CIAA Firmware Examples
+ ** @{ */
+/** \addtogroup Baremetal Bare Metal example header file
+ ** @{ */
+
+/*
+ * Initials     Name
+ * ---------------------------
+ * ENP          Eric Pernia
+ *
+ */
+
+/*
+ * modification history (new versions first)
+ * -----------------------------------------------------------
+ * 20150923   v0.0.1   First version
+ */
 
 /*==================[inclusions]=============================================*/
-
-#include "sAPI_DataTypes.h"
-#include "sAPI_IsrVector.h"
-
-#include "sAPI_Board.h"
-#include "sAPI_PeripheralMap.h"
-#include "sAPI_DigitalIO.h"
-#include "sAPI_AnalogIO.h"
-#include "sAPI_Uart.h"
-#include "sAPI_Timer.h"
-#include "sAPI_Pwm.h"
-#include "sAPI_I2c.h"
-#include "sAPI_Rtc.h"
-
-#include "sAPI_Tick.h"
-#include "sAPI_Delay.h"
-
-#include "sAPI_Servo.h"
 
 /*==================[macros]=================================================*/
 
@@ -65,5 +73,8 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_H_ */
+#endif /* #ifndef _MAIN_H_ */
