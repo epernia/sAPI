@@ -50,13 +50,13 @@ extern "C" {
 /*==================[typedef]================================================*/
 
 typedef struct {
-   uint16_t year;	 /* 1..4095 */
-   uint8_t  month; /* 1..12   */
-   uint8_t  mday;	 /* 1.. 31  */
-   uint8_t  wday;	 /* 1..7    */
-   uint8_t  hour;	 /* 0..23   */
-   uint8_t  min;	 /* 0..59   */
-   uint8_t  sec;	 /* 0..59   */
+   uint16_t year;	 /* 1 to 4095 */
+   uint8_t  month; /* 1 to 12   */
+   uint8_t  mday;	 /* 1 to 31   */
+   uint8_t  wday;	 /* 1 to 7    */
+   uint8_t  hour;	 /* 0 to 23   */
+   uint8_t  min;	 /* 0 to 59   */
+   uint8_t  sec;	 /* 0 to 59   */
 } RTC_t;
 
 /*==================[external data declaration]==============================*/

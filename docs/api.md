@@ -54,44 +54,41 @@ siempre TRUE, esta se utiliza para evitar errores de NULL POINTER.
 
 Contiene el mapa de periféricos.
 
-DigitalIO Map
+**DigitalIO Map**
 
-      EDU-CIAA-NXP
+EDU-CIAA-NXP:
 
-      DIO0,  DIO1,  DIO2,  DIO3,  DIO4,  DIO5,  DIO6,  DIO7,
-      DIO8,  DOI9,  DIO10, DIO11, DIO12, DIO13, DIO14, DIO15,
-      DIO16, DIO17, DIO18, DIO19, DIO20, DIO21, DIO22, DIO23,
-      DIO24, DIO25, DIO26, DIO27, DIO28, DIO29, DIO30, DIO31,
-      DIO32, DIO33, DIO34, DIO35,
-      TEC1,  TEC2,  TEC3,  TEC4,
-      LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB
+``DIO0,  DIO1,  DIO2,  DIO3,  DIO4,  DIO5,  DIO6,  DIO7,
+ DIO8,  DOI9,  DIO10, DIO11, DIO12, DIO13, DIO14, DIO15,
+ DIO16, DIO17, DIO18, DIO19, DIO20, DIO21, DIO22, DIO23,
+ DIO24, DIO25, DIO26, DIO27, DIO28, DIO29, DIO30, DIO31,
+ DIO32, DIO33, DIO34, DIO35,
+ TEC1,  TEC2,  TEC3,  TEC4,
+ LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB``
 
-      CIAA-NXP
+CIAA-NXP:
 
-      DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,
-      DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
+``DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,
+ DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
+``
 
-AnalogIO Map
+**AnalogIO Map**
 
-      EDU-CIAA-NXP
+EDU-CIAA-NXP: ``AI0, AI1, AI2, AO``
 
-      AI0, AI1, AI2, AO
+CIAA-NXP: ``AI0, AI1, AI2, AI3, AO``
 
-      CIAA-NXP
+**Uart Map**
 
-      AI0, AI1, AI2, AI3, AO
+``UART_USB, UART_232, UART_485``
 
-Uart Map
+**Pwm Map**
 
-      UART_USB, UART_232, UART_485
+``PWM0, PWM1, PWM2, PWM3, PWM4, PWM5, PWM6, PWM7, PWM8, PWM9, PWM10``
 
-Pwm Map
+**Servo Map**
 
-      PWM0, PWM1, PWM2, PWM3, PWM4, PWM5, PWM6, PWM7, PWM8, PWM9, PWM10
-
-Servo Map
-
-      SERVO0, SERVO1, SERVO2, SERVO3, SERVO4, SERVO5, SERVO6, SERVO7, SERVO8
+``SERVO0, SERVO1, SERVO2, SERVO3, SERVO4, SERVO5, SERVO6, SERVO7, SERVO8``
 
 
 ### sAPI_IsrVector
@@ -300,35 +297,146 @@ Posibles configuraciones:
 - Retorna: ``void``.
 
 
->>>>>>>>>FALTA REVISAR LA API DESDE UART>>>>>>>>>>>>>>>>>>>>>>>><
-
 ### sAPI_Uart
+
+Manejo del periférico de comunicación UART (puerto serie asincrónico).
+
+**Configuración**
 
 ``void uartConfig( uint8_t uart, uint32_t baudRate );``
 
-   baudRate:
-      9600, 115200, etc.
+- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uint32_t baudRate`` tasa de  bits.
+- Retorna: ``void``.
+
+Posibles configuraciones de baudRate: ``9600, 57600, 115200, etc.``
+
+**Recibir Byte**
 
 ``uint8_t uartReadByte( uint8_t uart );``
+
+- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Retorna: ``uint8_t`` 0 si no hay dato recibido o el Byte recibido.
+
+**Enviar Byte**
+
 ``void uartWriteByte( uint8_t uart, uint8_t byte );``
+
+- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uint8_t byte`` Byte a enviar.
+- Retorna: ``void``.
+
+**Enviar String**
 
 ``void uartWriteString( uint8_t uart, uint8_t * str );``
 
-``void uartWriteByteArray( uint8_t uart, uint8_t * byteArray, uint16_t byteArraySize );``
+- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uint8_t * str`` String a enviar, puede ser un literal, por ejemplo "hola", o un vector de uint8_t terminado en 0 o '\0' (caracter NULL).
+- Retorna: ``void``.
+
 
 ### sAPI_I2c
+
+Manejo del periférico de comunicación I2C (Inter Integrated Circuits bus).
+
+>>>>>>>>> FALTA REVISAR LA API DESDE ACA >>>>>>>>>>>>>>>>>>>>>>>>
+
+Manejo de Entradas y Salidas digitales.
+
+**Configuración inicial y modo de una entrada o salida**
+
+``bool_t digitalConfig( int8_t pin, int8_t config);``
+
+- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
+- Parámetro: ``int8_t config`` configuración.
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+Posibles configuraciones:
+
+
+
+
 
 
 ### sAPI_Rtc
 
+Manejo del periférico RTC (reloj de tiempo real).
+
+**Configuración**
+
+``bool_t rtcConfig( RTC_t * rtc );``
+
+- Parámetro: ``RTC_t * rtc`` Puntero a estructura de configuración del tipo RTC_t.
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+La estructura del tipo ``RTC_t`` contiene los parámetros:
+
+- ``uint16_t year`` año, con valores desde 1 a 4095.
+- ``uint8_t month`` mes, con valores desde 1 a 12.
+- ``uint8_t mday`` día, con valores desde 1 a 31.
+- ``uint8_t wday`` día de la semana, con valores desde 1 a 7.
+- ``uint8_t hour`` horas, con valores desde 0 a 23.
+- ``uint8_t min`` minutos, con valores desde 0 a 59.
+- ``uint8_t sec`` segundos, con valores desde 0 a 59.
+
+**Lectura de fecha y hora**
+
+``bool_t rtcRead( RTC_t * rtc );``
+
+- Parámetro: ``RTC_t * rtc`` Puntero a estructura del tipo RTC_t donde se guarda la fecha y hora.
+- Retorna: ``bool_t`` TRUE.
+
+**Setear la fecha y hora**
+
+``bool_t rtcWrite( RTC_t * rtc );``
+
+- Parámetro: ``RTC_t * rtc`` Puntero a estructura del tipo RTC_t con la nueva fecha y hora a setear.
+- Retorna: ``bool_t`` TRUE.
+
 
 ### sAPI_Pwm
+
+Manejo de Entradas y Salidas digitales.
+
+**Configuración inicial y modo de una entrada o salida**
+
+``bool_t digitalConfig( int8_t pin, int8_t config);``
+
+- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
+- Parámetro: ``int8_t config`` configuración.
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+Posibles configuraciones:
 
 
 ### sAPI_Servo
 
+Manejo de Entradas y Salidas digitales.
+
+**Configuración inicial y modo de una entrada o salida**
+
+``bool_t digitalConfig( int8_t pin, int8_t config);``
+
+- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
+- Parámetro: ``int8_t config`` configuración.
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+Posibles configuraciones:
+
 
 ### sAPI_Hmc5883l
+
+Manejo de Entradas y Salidas digitales.
+
+**Configuración inicial y modo de una entrada o salida**
+
+``bool_t digitalConfig( int8_t pin, int8_t config);``
+
+- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
+- Parámetro: ``int8_t config`` configuración.
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+Posibles configuraciones:
 
 
 ## Archivos que componen la biblioteca
@@ -337,22 +445,38 @@ Posibles configuraciones:
 
 - sAPI_AnalogIO.c
 - sAPI_Board.c
+- sAPI_DataTypes.c
 - sAPI_Delay.c
 - sAPI_DigitalIO.c
+- sAPI_Hmc5883l.c
+- sAPI_I2c.c
 - sAPI_IsrVector.c
+- sAPI_Pwm.c
+- sAPI_Rtc.c
+- sAPI_Sct.c
+- sAPI_Servo.c
+- sAPI_Spi.c
 - sAPI_Tick.c
+- sAPI_Timer.c
 - sAPI_Uart.c
 
 **inc** (.h):
 
-- sAPI.h
 - sAPI_AnalogIO.h
 - sAPI_Board.h
-- sAPI_Config.h
 - sAPI_DataTypes.h
 - sAPI_Delay.h
 - sAPI_DigitalIO.h
+- sAPI_Hmc5883l.h
+- sAPI_I2c.h
 - sAPI_IsrVector.h
 - sAPI_PeripheralMap.h
+- sAPI_Pwm.h
+- sAPI_Rtc.h
+- sAPI_Sct.h
+- sAPI_Servo.h
+- sAPI_Spi.h
 - sAPI_Tick.h
+- sAPI_Timer.h
 - sAPI_Uart.h
+- sAPI.h
