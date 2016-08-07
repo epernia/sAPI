@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -31,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
- 
+
 /* Date: 2015-09-23 */
 
 /*==================[inclusions]=============================================*/
@@ -58,8 +57,8 @@ const pinConfigDigitalLpc4337_t digitalPinsConfig[] = {
 	/*                           EDU-CIAA-NXP                          */
    /* --------------------------------------------------------------- */
    /*                             Snap  sAPI   Connector  Serigraphy  */
-   /* --------------------------------------------------------------- */ 
-   
+   /* --------------------------------------------------------------- */
+
    // { {1,15}, FUNC0, {0, 2} },   /*  0   DIO0    CON2_09   ENET_RXD0   */
 
    // { {1, 4}, FUNC0, {0,11} },   /*  1   DIO1    CON2_21   SPI_MOSI    */
@@ -152,8 +151,8 @@ const pinConfigDigitalLpc4337_t digitalPinsConfig[] = {
    { {1, 4}, FUNC0, {0,11} },   /*  34   CON2_21   SPI_MOSI         */
 
    { {1,15}, FUNC0, {0, 2} },   /*  35   CON2_09   ENET_RXD0        */
-   
-   
+
+
    { {1, 0}, FUNC0, {0, 4} },   /* 36   TEC1    TEC_1                 */
    { {1, 1}, FUNC0, {0, 8} },   /* 37   TEC2    TEC_2                 */
    { {1, 2}, FUNC0, {0, 9} },   /* 38   TEC3    TEC_3                 */

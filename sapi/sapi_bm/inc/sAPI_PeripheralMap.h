@@ -64,15 +64,17 @@ typedef struct{
 
 /* Defined for sAPI_DigitalIO.h */
 typedef enum{
-	DIO0,  DIO1,  DIO2,  DIO3,  DIO4,  DIO5,  DIO6,  DIO7,  DIO8,  DOI9,
+   /* EDU-CIAA-NXP */
+   DIO0,  DIO1,  DIO2,  DIO3,  DIO4,  DIO5,  DIO6,  DIO7,  DIO8,  DOI9,
    DIO10, DIO11, DIO12, DIO13, DIO14, DIO15, DIO16, DIO17, DIO18, DIO19,
    DIO20, DIO21, DIO22, DIO23, DIO24, DIO25, DIO26, DIO27, DIO28, DIO29,
    DIO30, DIO31, DIO32, DIO33, DIO34, DIO35,
    TEC1,  TEC2,  TEC3,  TEC4,
    LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB,
 
-	DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,
-	DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
+   /* CIAA-NXP */
+   DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,
+   DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
 } DigitalIOMap_t;
 
 /* Defined for sAPI_AnalogIO.h */

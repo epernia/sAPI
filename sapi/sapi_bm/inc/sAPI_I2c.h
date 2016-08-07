@@ -2,7 +2,7 @@
  * Copyright 2016, Alejandro Permingeat.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,60 +32,43 @@
  *
  */
 
+ /*
+  * Date:
+  * 2016-05-02 Eric Pernia - Only define API
+  * 2016-06-23 Alejandro Permingeat - First functional version
+  */
+
 #ifndef _SAPI_I2C_H_
 #define _SAPI_I2C_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
-
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- * AlPer		Alejandro Permingeat
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- * 2016-06-23   v0.1   	 AlPer First functional version
- */
 
 /*==================[inclusions]=============================================*/
+
 #include "sAPI_DataTypes.h"
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
+
 typedef enum {
-	sapi_I2C0,				/**< ID I2C number 0 */
-	sapi_I2C1				/**< ID I2C number 11 */
+   sapi_I2C0,				/**< ID I2C number 0 */
+   sapi_I2C1				/**< ID I2C number 1 */
 } sAPI_i2cID_t;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[ISR external functions definition]======================*/
 
-
-
 /*==================[external functions definition]==========================*/
+
 bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz);
 bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
 bool_t i2cRead(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
 
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_I2C_H_ */

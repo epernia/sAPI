@@ -102,5 +102,4 @@ uint8_t Sct_GetDutyCycle(uint8_t sctNumber);
 #endif
 
 /*==================[end of file]============================================*/
-
 #endif /* SAPI_SCT_H_ */

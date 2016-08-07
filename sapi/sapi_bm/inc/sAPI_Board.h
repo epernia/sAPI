@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,9 +30,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
- 
+
 /* Date: 2015-09-23 */
- 
+
 #ifndef _SAPI_BOARD_H_
 #define _SAPI_BOARD_H_
 

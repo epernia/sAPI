@@ -2,10 +2,6 @@
 
 ## Módulos
 
-### sAPI_Config
-
-Contiene configuraciones de la biblioteca.
-
 ### sAPI_DataTypes
 
 Define las siguientes constantes:

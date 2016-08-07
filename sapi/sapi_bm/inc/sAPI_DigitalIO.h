@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.

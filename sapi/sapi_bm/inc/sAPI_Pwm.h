@@ -88,8 +88,6 @@ uint8_t pwmRead( uint8_t pwmNumber );
  */
 bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );
 
-
-
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
@@ -97,6 +95,4 @@ bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );
 #endif
 
 /*==================[end of file]============================================*/
-
-
 #endif /* PWM_DRIVER_H_ */

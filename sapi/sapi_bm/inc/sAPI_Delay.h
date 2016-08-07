@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,13 +30,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
- 
+
 /* Date: 2015-09-23 */
 
 #ifndef _SAPI_DELAY_H_
 #define _SAPI_DELAY_H_
 
 /*==================[inclusions]=============================================*/
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -66,6 +71,12 @@ void delay ( tick_t delay );
 void delayConfig( delay_t * delay, tick_t duration );
 bool_t delayRead( delay_t * delay );
 void delayWrite( delay_t * delay, tick_t duration );
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_DELAY_H_ */

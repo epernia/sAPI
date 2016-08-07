@@ -122,6 +122,4 @@ void TIMER3_IRQHandler(void);
 #endif
 
 /*==================[end of file]============================================*/
-
-
 #endif /* SAPI_TIMER_H_ */

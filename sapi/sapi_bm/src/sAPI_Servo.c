@@ -47,7 +47,7 @@ DISABLE_SERVO_OUTPUT
 
 /*TODO: make a graphic and explanation of the timer ramp and compare match values
  to make everything clear */
- 
+
 /*==================[inclusions]=============================================*/
 
 #include "sAPI_DataTypes.h"
@@ -188,7 +188,7 @@ static attachedServo_t AttachedServoList[SERVO_TOTALNUMBER] =
  *   the functions in the sAPI_Timer that requires ticks as a parameter
 */
 static uint32_t valueToMicroseconds(uint8_t value){
-   
+
    return (SERVO_MINUPTIME_PERIOD+(value*SERVO_MAXUPTIME_PERIOD)/180);
 }
 
@@ -293,7 +293,7 @@ static void timer3CompareMatch3func(void){
  *   they won't be available to use.
  */
 static void servoInitTimers(void){
-   Timer_Init( TIMER1, 
+   Timer_Init( TIMER1,
                Timer_microsecondsToTicks(SERVO_COMPLETECYCLE_PERIOD),
                timer1CompareMatch0func
               );
@@ -316,7 +316,7 @@ static bool_t servoAttach( uint8_t servoNumber)
 {
    bool_t success = FALSE;
    uint8_t position = 0;
-   
+
    /* Pin must b config as Output */
    digitalConfig( servoNumber, OUTPUT );
 
@@ -436,7 +436,7 @@ uint8_t servoIsAttached( uint8_t servoNumber )
  *   If an error ocurred, return = EMPTY_POSITION = 255
  */
 uint8_t servoRead( uint8_t servoNumber ){
-   
+
    uint8_t position = 0, value = 0;
    position = servoIsAttached(servoNumber);
 

@@ -35,10 +35,16 @@
 
 #ifndef _SAPI_UART_H_
 #define _SAPI_UART_H_
- 
+
 /*==================[inclusions]=============================================*/
 
 #include "sAPI_PeripheralMap.h"
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -62,7 +68,18 @@ void UART0_IRQHandler(void);
 /* 0x2a 0x000000A8 - Handler for ISR UART2 (IRQ 26) */
 void UART2_IRQHandler(void);
 /* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
-void UART3_IRQHandler(void);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endifvoid UART3_IRQHandler(void);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
 
 /*==================[end of file]============================================*/
 #endif /* _SAPI_UART_H_ */

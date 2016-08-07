@@ -91,18 +91,6 @@ uint8_t servoRead( uint8_t servoNumber);
  */
 bool_t servoWrite( uint8_t servoNumber, uint8_t angle );
 
-
-
-/*
-
-bool_t servoConfig( uint8_t servoNumber, uint8_t config );
-void servoConfig(void);
-bool_t servoAttach( uint8_t servoNumber);
-bool_t servoDetach( uint8_t servoNumber);
-uint8_t servoIsAttached( uint8_t servoNumber);
-*/
-
-
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
@@ -110,5 +98,4 @@ uint8_t servoIsAttached( uint8_t servoNumber);
 #endif
 
 /*==================[end of file]============================================*/
-
 #endif /* SAPI_SERVO_H_ */

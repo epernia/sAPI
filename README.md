@@ -11,14 +11,28 @@ certain peripheral.
 
 ### Included modules
 
+**Internal Peripherals**
+
 - Data types.
 - Peripheral Map.
 - Board.
 - Tick.
+- ISR Vector.
 - Delay.
 - Digital I/O.
 - Analog I/O.
-- Uart.
+- UART.
+- I2C.
+- RTC.
+- PWM.
+
+**External Peripherals**
+
+- Angular Servo (0 to 180°).
+- Magnetometer (compass) sensor HMC5883L.
+- WiFi module ESP8266.
+
+Every module includes an example.
 
 ### Software layers
 

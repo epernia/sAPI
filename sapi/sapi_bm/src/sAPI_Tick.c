@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -66,7 +65,7 @@ bool_t tickConfig(tick_t tickRateMSvalue, sAPI_FuncPtr_t tickHook ) {
 
    bool_t ret_val = 1;
    tick_t tickRateHz = 0;
-   
+
    if( tickHook ){
       tickHookFunction = tickHook;
    }
@@ -90,7 +89,7 @@ bool_t tickConfig(tick_t tickRateMSvalue, sAPI_FuncPtr_t tickHook ) {
       /* Error, tickRateMS variable not in range (1 <= tickRateMS <= 50) */
       ret_val = 0;
    }
-   
+
    return ret_val;
 }
 

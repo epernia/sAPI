@@ -51,7 +51,7 @@ extern "C" {
 
 typedef enum{
    ENABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
-   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS 
+   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS
 } analogConfig_t;
 
 /*==================[external data declaration]==============================*/
@@ -72,5 +72,4 @@ void analogWrite( uint8_t analogOutput, uint16_t value );
 #endif
 
 /*==================[end of file]============================================*/
-
 #endif /* #ifndef _SAPI_ANALOGIO_H_ */

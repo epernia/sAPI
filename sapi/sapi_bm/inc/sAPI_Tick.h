@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -41,6 +40,12 @@
 
 #include "sAPI_DataTypes.h"
 
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
@@ -61,6 +66,12 @@ void tickWrite( tick_t ticks );
 
 /* SysTick Timer ISR Handler */
 void SysTick_Handler(void);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_TICK_H_ */

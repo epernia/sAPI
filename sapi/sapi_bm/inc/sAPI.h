@@ -1,5 +1,4 @@
-/* Copyright 2015, Eric Pernia.
- * Copyright 2016, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -33,7 +32,7 @@
  */
 
 /* Date: 2015-09-23 */
- 
+
 #ifndef _SAPI_H_
 #define _SAPI_H_
 
@@ -57,6 +56,12 @@
 
 #include "sAPI_Servo.h"
 
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
@@ -64,6 +69,12 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_H_ */

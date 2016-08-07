@@ -31,35 +31,18 @@
  *
  */
 
+/* Date: 2016-05-02 */
+
 #ifndef _SAPI_SPI_H_
 #define _SAPI_SPI_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
-
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
 
 /*==================[inclusions]=============================================*/
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -69,14 +52,13 @@
 
 /*==================[ISR external functions definition]======================*/
 
-
-
 /*==================[external functions definition]==========================*/
 
+/*==================[cplusplus]==============================================*/
 
+#ifdef __cplusplus
+}
+#endif
 
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_SPI_H_ */

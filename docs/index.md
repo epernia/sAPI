@@ -15,14 +15,28 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 
 ## Módulos incluidos
 
+**Periféricos internos**
+
 - Tipos de datos.
 - Mapa de periféricos.
 - Plataforma.
 - Tick.
+- Vector de ISRs.
 - Retardo.
 - E/S Digital.
 - E/S Analógica.
-- Uart.
+- UART.
+- I2C.
+- RTC.
+- PWM.
+
+**Periféricos externos**
+
+- Servo angular (0 a 180°).
+- Sensor magnetómetro (compass) HMC5883L.
+- Módulo WiFi ESP8266.
+
+Cada módulo incluye un ejemplo.
 
 ## Plataformas
 
