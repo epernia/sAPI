@@ -8,7 +8,7 @@ Para usar la biblioteca bajar la release actual desde github:
 
 y copiar la carpeta sapi_bm en **Firmware/modules**.
 
-Luego copiar el proyecto bare_metal de **Firmware/examples** y renombrarlo a, por
+Luego copiar el proyecto bare_metal de **Firmware/examples** y renombrarlo, por
 ejemplo, **miProyectoConSapi** y modificar el Makefile del mismo dentro de la
 carpeta **mak** cambiando la última linea de:
 
@@ -18,12 +18,20 @@ por:
 
 ``MODS += modules$(DS)sapi_bm``
 
+si es un proyecto que no utiliza FreeOSEK. O bien:
+
+``MODS += modules$(DS)sapi_osek``
+
+si el proyecto utiliza FreeOSEK.
+
 Para usarla en el programa incluir
 
 ``#include "sAPI.h"``
 
-en el archivo .c donde se requiera. Ya no es necesario incluir **chip.h** ya que
-la propia biblioteca sAPI lo incluye.
+en el archivo .c donde se requiera.
+
+Ya no es necesario incluir **chip.h** ya que la propia biblioteca sAPI lo
+incluye.
 
 La sAPI también maneja el vector de interrupción, es por esto que es necesario
 eliminar el archivo **vector.c** que trae el ejemplo **bare_metal**.

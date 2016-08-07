@@ -19,9 +19,9 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 
 - Tipos de datos.
 - Mapa de periféricos.
+- Vector de ISRs.
 - Plataforma.
 - Tick.
-- Vector de ISRs.
 - Retardo.
 - E/S Digital.
 - E/S Analógica.
@@ -34,7 +34,6 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 
 - Servo angular (0 a 180°).
 - Sensor magnetómetro (compass) HMC5883L.
-- Módulo WiFi ESP8266.
 
 Cada módulo incluye un ejemplo.
 

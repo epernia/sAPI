@@ -15,9 +15,9 @@ certain peripheral.
 
 - Data types.
 - Peripheral Map.
+- ISR Vector.
 - Board.
 - Tick.
-- ISR Vector.
 - Delay.
 - Digital I/O.
 - Analog I/O.
@@ -30,7 +30,6 @@ certain peripheral.
 
 - Angular Servo (0 to 180°).
 - Magnetometer (compass) sensor HMC5883L.
-- WiFi module ESP8266.
 
 Every module includes an example.
 

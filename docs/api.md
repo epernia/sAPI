@@ -30,19 +30,6 @@ Además define los tipos de datos:
 - **Enteros sin signo** ``uint8_t, uint16_t, uint32_t, uint64_t``
 - **Enteros con signo** ``int8_t, int16_t, int32_t, int64_t``
 
-### sAPI_IsrVector
-
-Contiene la tabla de vectores de interrupción.
-
-### sAPI_Board
-
-Contiene la función de configuración para inicialización de la plataforma de hardware:
-
-``void boardConfig( void );``
-
-- Parámetros: ``void``
-- Retorna: ``void``
-
 ### sAPI_PeripheralMap
 
 Contiene el mapa de periféricos.
@@ -65,41 +52,18 @@ Uart Map
 
       UART_USB, UART_232, UART_485
 
-### sAPI_DigitalIO
+### sAPI_IsrVector
 
-Manejo de Entradas y Salidas digitales.
+Contiene la tabla de vectores de interrupción.
 
-**Configuración inicial y modo de una entrada o salida**
+### sAPI_Board
 
-``bool_t digitalConfig( int8_t pin, int8_t config);``
+Contiene la función de configuración para inicialización de la plataforma de hardware:
 
-- Parámetros: ``int8_t pin, int8_t config``
-- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+``void boardConfig( void );``
 
-Configuraciones:
-
-``INITIALIZE``
-
-``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER``
-
-``OUTPUT``
-
-**Lectura de Entrada digital**
-
-``bool_t digitalRead( int8_t pin );``
-
-- Parámetros: ``int8_t pin``
-- Retorna: ``bool_t`` valor de la entrada digital.
-
-
-**Escritura de Salida Digital**
-
-``bool_t digitalWrite( int8_t pin, bool_t value );``
-
-- Parámetros: ``int8_t pin, bool_t value``
-- Retorna: ``bool_t`` FALSE en caso de errores.
-
-
+- Parámetros: ``void``
+- Retorna: ``void``
 
 ### sAPI_Tick
 
@@ -226,6 +190,82 @@ cuando se completo y se vuelve a relanzar automáticamente.
 
 Con ``delayWrite( &myDelay, 1000 );`` se puede cambiar la duración de un delay
 en tiempo de ejecución.
+
+
+### sAPI_DigitalIO
+
+Manejo de Entradas y Salidas digitales.
+
+**Configuración inicial y modo de una entrada o salida**
+
+``bool_t digitalConfig( int8_t pin, int8_t config);``
+
+- Parámetros: ``int8_t pin, int8_t config``
+- Retorna: ``bool_t`` TRUE si la configuración es correcta.
+
+Configuraciones:
+
+``INITIALIZE``
+
+``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER``
+
+``OUTPUT``
+
+**Lectura de Entrada digital**
+
+``bool_t digitalRead( int8_t pin );``
+
+- Parámetros: ``int8_t pin``
+- Retorna: ``bool_t`` valor de la entrada digital.
+
+
+**Escritura de Salida Digital**
+
+``bool_t digitalWrite( int8_t pin, bool_t value );``
+
+- Parámetros: ``int8_t pin, bool_t value``
+- Retorna: ``bool_t`` FALSE en caso de errores.
+
+### sAPI_AnalogIO
+
+``void analogConfig( uint8_t config );``
+
+      Configuraciones:
+         ENEABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
+         ENEABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS
+
+``uint16_t analogRead( uint8_t analogInput );``
+
+``void analogWrite( uint8_t analogOutput, uint16_t value );``
+
+
+### sAPI_Uart
+
+``void uartConfig( uint8_t uart, uint32_t baudRate );``
+
+   baudRate:
+      9600, 115200, etc.
+
+``uint8_t uartReadByte( uint8_t uart );``
+``void uartWriteByte( uint8_t uart, uint8_t byte );``
+
+``void uartWriteString( uint8_t uart, uint8_t * str );``
+
+``void uartWriteByteArray( uint8_t uart, uint8_t * byteArray, uint16_t byteArraySize );``
+
+### sAPI_I2c
+
+
+### sAPI_Rtc
+
+
+### sAPI_Pwm
+
+
+### sAPI_Servo
+
+
+### sAPI_Hmc5883l
 
 
 ## Archivos que componen la biblioteca
