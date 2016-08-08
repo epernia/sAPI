@@ -336,26 +336,39 @@ Posibles configuraciones de baudRate: ``9600, 57600, 115200, etc.``
 
 ### sAPI_I2c
 
-Manejo del periférico de comunicación I2C (Inter Integrated Circuits bus).
+Manejo del periférico bus comunicación I2C (Inter Integrated Circuits).
 
->>>>>>>>> FALTA REVISAR LA API DESDE ACA >>>>>>>>>>>>>>>>>>>>>>>>
+**Configuración**
 
-Manejo de Entradas y Salidas digitales.
+``bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );``
 
-**Configuración inicial y modo de una entrada o salida**
-
-``bool_t digitalConfig( int8_t pin, int8_t config);``
-
-- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
-- Parámetro: ``int8_t config`` configuración.
+- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a configurar (ver I2C Map). Por ahora funciona únicamente el I2C0.
+- Parámetro: ``uint32_t clockRateHz`` configuración de velocidad del bus I2C.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
-Posibles configuraciones:
+Posibles configuraciones de clockRateHz: 100000, etc.
 
+**Lectura**
 
+``bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len );``
 
+- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a leer (ver I2C Map). Por ahora funciona únicamente el I2C0.
+- Parámetro: ``uint8_t addr`` Dirección del sensor conectado por I2C a leer.
+- Parámetro: ``uint8_t record`` Registro a leer.
+- Parámetro: ``uint8_t * buf`` puntero al buffer donde se almacenarán los datos leídos.
+- Parámetro: ``uint16_t len`` tamaño del buffer donde se almacenarán los datos leídos.
+- Retorna: ``bool_t`` TRUE si se pudo leer correctamente.
 
+**Escritura**
 
+``bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len );``
+
+- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a escribir (ver I2C Map). Por ahora funciona únicamente el I2C0.
+- Parámetro: ``uint8_t addr`` Dirección del sensor conectado por I2C a escribir.
+- Parámetro: ``uint8_t record`` Registro a escribir.
+- Parámetro: ``uint8_t * buf`` puntero al buffer donde se encuentran los datos a escribir.
+- Parámetro: ``uint16_t len`` tamaño del buffer donde se encuentran los datos a escribir.
+- Retorna: ``bool_t`` TRUE si se pudo escribir correctamente.
 
 ### sAPI_Rtc
 
@@ -467,17 +480,71 @@ Posibles configuraciones:
 
 ### sAPI_Hmc5883l
 
-Manejo de Entradas y Salidas digitales.
+Manejo del sensor magnetómetro vectorial (x,y,z) HMC5883L de Honeywell.
+Este sensor se conecta mediante I2C.
 
-**Configuración inicial y modo de una entrada o salida**
+**Configuración**
 
-``bool_t digitalConfig( int8_t pin, int8_t config);``
+``bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t * config );``
 
-- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
-- Parámetro: ``int8_t config`` configuración.
+- Parámetro: ``HMC5883L_config_t *config`` puntero a estructura del tipo HMC5883L_config_t a donde se cargarán los valores por defecto de configuración.
+- Retorna: ``bool_t`` TRUE.
+
+``bool_t hmc5883lConfig( HMC5883L_config_t config );``
+
+- Parámetro: ``HMC5883L_config_t *config`` estructura del tipo HMC5883L_config_t desde donde se cargarán los valores de configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
-Posibles configuraciones:
+La estructura del tipo ``HMC5883L_config_t`` contiene:
+
+- ``HMC5883L_samples_t samples`` Numero de muestras que promedia para calcular la salida de la medición. Valores admitidos:
+    - HMC5883L_1_sample
+    - HMC5883L_2_sample
+    - HMC5883L_4_sample
+    - HMC5883L_8_sample
+    - HMC5883L_DEFAULT_sample = HMC5883L_1_sample
+- ``HMC5883L_rate_t rate`` Bits de tasa de datos de salida. Estos bits establecen la tasa de escritura de los 3 registros de datos de salida del sensor. Valores admitidos:
+    - HMC5883L_0_75_Hz
+    - HMC5883L_1_50_Hz
+    - HMC5883L_3_Hz
+    - HMC5883L_7_50_Hz
+    - HMC5883L_15_Hz
+    - HMC5883L_30_Hz
+    - HMC5883L_75_Hz
+    - HMC5883L_DEFAULT_rate = HMC5883L_15_Hz
+- ``HMC5883L_messurement_t meassurement`` Bits de configuración de medición. Estos bits definen el flujo de medición del sensor. Específicamente si se aplica, o no, un bias a la medición. Valores admitidos:
+    - HMC5883L_normal
+    - HMC5883L_positive
+    - HMC5883L_regative
+    - HMC5883L_DEFAULT_messurement = HMC5883L_normal
+- ``HMC5883L_gain_t gain`` Bits de configuración de ganancia. Estos bits configuran la ganancia del sensor. Esta configuración se aplica a todos los canales. Valores admitidos:
+    - HMC5883L_1370 para ± 0.88 Ga
+    - HMC5883L_1090 para ± 1.3 Ga
+    - HMC5883L_820 para ± 1.9 Ga
+    - HMC5883L_660 para ± 2.5 Ga
+    - HMC5883L_440 para ± 4.0 Ga
+    - HMC5883L_390 para ± 4.7 Ga
+    - HMC5883L_330 para ± 5.6 Ga
+    - HMC5883L_230 para ± 8.1 Ga
+    - HMC5883L_DEFAULT_gain = HMC5883L_1090
+- ``HMC5883L_mode_t mode``. Modo de medición. Valores admitidos:
+    - HMC5883L_continuous_measurement
+    - HMC5883L_single_measurement
+    - HMC5883L_idle
+    - HMC5883L_DEFAULT_mode = HMC5883L_single_measurement
+
+``bool_t hmc5883lIsAlive( void );``
+
+- Parámetro: ``void`` ninguno.
+- Retorna: ``bool_t`` TRUE si puede comunicarse con el sensor.
+
+``bool_t hmc5883lRead( int16_t * x, int16_t * y, int16_t * z );``
+
+- Parámetro: ``int16_t * x`` puntero entero de 16 bits con signo donde se guardará el valor leído del sensor HMC5883L en la componente x.
+- Parámetro: ``int16_t * y`` puntero entero de 16 bits con signo donde se guardará el valor leído del sensor HMC5883L en la componente y.
+- Parámetro: ``int16_t * z`` puntero entero de 16 bits con signo donde se guardará el valor leído del sensor HMC5883L en la componente z.
+- Retorna: ``bool_t`` TRUE si puede leer correctamente el sensor magnetómetro.
+
 
 
 ## Archivos que componen la biblioteca

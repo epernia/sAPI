@@ -39,7 +39,7 @@
 #include "sAPI_Hmc5883l.h"         /* <= sAPI HMC5883L header */
 
 
-bool_t hmc5883lIsAlive(){
+bool_t hmc5883lIsAlive( void ){
 
    uint8_t idRegister[3];
 
@@ -56,7 +56,7 @@ bool_t hmc5883lIsAlive(){
    }
 }
 
-bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t *config ){
+bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t * config ){
 
    config->gain = HMC5883L_DEFAULT_gain;
    config->meassurement = HMC5883L_DEFAULT_messurement;
@@ -93,7 +93,7 @@ bool_t hmc5883lConfig( HMC5883L_config_t config ){
 }
 
 
-bool_t hmc5883lRead( int16_t *x, int16_t *y, int16_t *z ){
+bool_t hmc5883lRead( int16_t * x, int16_t * y, int16_t * z ){
 
    bool_t result = TRUE;
 

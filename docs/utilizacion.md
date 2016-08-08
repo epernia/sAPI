@@ -18,12 +18,6 @@ por:
 
 ``MODS += modules$(DS)sapi_bm``
 
-si es un proyecto que no utiliza FreeOSEK. O bien:
-
-``MODS += modules$(DS)sapi_osek``
-
-si el proyecto utiliza FreeOSEK.
-
 Para usarla en el programa incluir
 
 ``#include "sAPI.h"``

@@ -1,5 +1,6 @@
 /* Copyright 2016, Eric Pernia
  * Copyright 2016, Alejandro Permingeat.
+ * Copyright 2016, Eric Pernia
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -36,6 +37,7 @@
   * Date:
   * 2016-05-02 Eric Pernia - Only define API
   * 2016-06-23 Alejandro Permingeat - First functional version
+  * 2016-08-07 Eric Pernia - Improve names
   */
 
 /*==================[inclusions]=============================================*/
@@ -60,86 +62,32 @@
 
 /*==================[external functions definition]==========================*/
 
+bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz){
 
-bool_t i2cID;
-
-bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
-
-   switch(i2cNumber){
-      case I2C0:
-         /* Configuracion de las lineas de SDA y SCL de la placa */
-    	 Chip_SCU_I2C0PinConfig( I2C0_STANDARD_FAST_MODE );
-      break;
-
-      case I2C1:
-
-      default:
-         return FALSE;
-   }
-
-   /* Inicializacion del periferico */
-   Chip_I2C_Init( i2cNumber );
-
-   /* Seleccion de velocidad del bus */
-   Chip_I2C_SetClockRate( i2cNumber, clockRateHz );
-
-   /* Configuracion para que los eventos se resuelvan por polliong
-    * (la otra opcion es por interrupcion) */
-   Chip_I2C_SetMasterEventHandler( i2cNumber, Chip_I2C_EventHandlerPolling );
-
-   return TRUE;
-}
-
-
-bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len){
-
-   I2CM_XFER_T i2cData;
-   LPC_I2C_T* lpcI2c;
-
-   switch(i2cNumber){
-	  case I2C0:
-		  lpcI2c = LPC_I2C0;
-	  break;
-
-	  case I2C1:
-
-	  default:
-		 return FALSE;
-   }
-
-   i2cData.slaveAddr = addr;
-   i2cData.options = 0;
-   i2cData.status = 0;
-   i2cData.txBuff = &record;
-   i2cData.txSz = 1;
-   i2cData.rxBuff = buf;
-   i2cData.rxSz = len;
-
-   if (Chip_I2CM_XferBlocking( lpcI2c, &i2cData ) == 0) {
+   if( !((i2cID==I2C0) || (i2cID==I2C1)) ){
       return FALSE;
    }
 
+   /* Configuracion de las lineas de SDA y SCL de la placa */
+   Chip_SCU_I2C0PinConfig(I2C0_STANDARD_FAST_MODE);
+
+   /* Inicializacion del periferico */
+   Chip_I2C_Init(i2cID);
+   /* Seleccion de velocidad del bus */
+   Chip_I2C_SetClockRate(i2cID, clockRateHz);
+   /* Configuracion para que los eventos se resuelvan por polliong
+    * (la otra opcion es por interrupcion) */
+   Chip_I2C_SetMasterEventHandler(i2cID, Chip_I2C_EventHandlerPolling);
+
    return TRUE;
 }
 
 
-bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len){
+bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len){
 
    I2CM_XFER_T i2cData;
    uint8_t txBuff[I2C_MAX_TX_BUFF];
    uint8_t i;
-   LPC_I2C_T* lpcI2c;
-
-   switch(i2cNumber){
-	  case I2C0:
-		  lpcI2c = LPC_I2C0;
-	  break;
-
-	  case I2C1:
-
-	  default:
-		 return FALSE;
-   }
 
    /* First, the record to be write must be sent */
    txBuff[0] = record;
@@ -148,11 +96,11 @@ bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, 
     * modify the length to be sent. Remember that the firs byte of
     * the txBuff is reserved for the "record id"
     */
-   if( (I2C_MAX_TX_BUFF-1)<len ){
+   if ((I2C_MAX_TX_BUFF-1)<len){
       len = I2C_MAX_TX_BUFF-1;
    }
 
-   for( i=0; i<len; i++ ){
+   for (i=0;i<len; i++){
       txBuff[i+1] = buf[i];
    }
 
@@ -166,7 +114,27 @@ bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, 
    i2cData.rxSz = 0;
 
    /* Send the i2c data */
-   if ( Chip_I2CM_XferBlocking( lpcI2c, &i2cData ) == 0 ){
+   if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0){
+      return FALSE;
+   }
+
+   return TRUE;
+}
+
+
+bool_t i2cRead(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len){
+
+   I2CM_XFER_T i2cData;
+
+   i2cData.slaveAddr = addr;
+   i2cData.options = 0;
+   i2cData.status = 0;
+   i2cData.txBuff = &record;
+   i2cData.txSz = 1;
+   i2cData.rxBuff = buf;
+   i2cData.rxSz = len;
+
+   if (Chip_I2CM_XferBlocking(LPC_I2C0, &i2cData) == 0) {
       return FALSE;
    }
 

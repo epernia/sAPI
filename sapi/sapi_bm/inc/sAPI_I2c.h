@@ -1,5 +1,6 @@
 /* Copyright 2016, Eric Pernia
  * Copyright 2016, Alejandro Permingeat.
+ * Copyright 2016, Eric Pernia
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -36,6 +37,7 @@
   * Date:
   * 2016-05-02 Eric Pernia - Only define API
   * 2016-06-23 Alejandro Permingeat - First functional version
+  * 2016-08-07 Eric Pernia - Improve names
   */
 
 #ifndef _SAPI_I2C_H_
@@ -62,8 +64,8 @@ extern "C" {
 /*==================[external functions definition]==========================*/
 
 bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );
-bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
-bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len);
+bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len);
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_I2C_H_ */
