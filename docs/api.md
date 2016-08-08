@@ -241,12 +241,10 @@ Manejo de Entradas y Salidas digitales.
 
 Posibles configuraciones:
 
-``ENABLE_DIGITAL_IO`` Habilita las entradas y salidas digitales.
-
-``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER`` Pin configurado como
+- ``ENABLE_DIGITAL_IO`` Habilita las entradas y salidas digitales.
+- ``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER`` Pin configurado como
 entrada digital en sus distintas variantes.
-
-``OUTPUT`` Pin configurado como salida digital.
+- ``OUTPUT`` Pin configurado como salida digital.
 
 **Lectura de Entrada digital**
 
@@ -276,6 +274,7 @@ Manejo de Entradas y Salidas analógicas.
 - Retorna: ``void``.
 
 Posibles configuraciones:
+
 - ``ENEABLE_ANALOG_INPUTS`` Habilita las entradas analógicas.
 - ``DISABLE_ANALOG_INPUTS`` Deshabilita las entradas analógicas.
 - ``ENEABLE_ANALOG_OUTPUTS`` Habilita las salidas analógicas.
@@ -386,7 +385,7 @@ La estructura del tipo ``RTC_t`` contiene los parámetros:
 - Parámetro: ``RTC_t * rtc`` Puntero a estructura del tipo RTC_t donde se guarda la fecha y hora.
 - Retorna: ``bool_t`` TRUE.
 
-**Setear la fecha y hora**
+**Establecer la fecha y hora**
 
 ``bool_t rtcWrite( RTC_t * rtc );``
 
@@ -396,32 +395,74 @@ La estructura del tipo ``RTC_t`` contiene los parámetros:
 
 ### sAPI_Pwm
 
-Manejo de Entradas y Salidas digitales.
+Manejo de salidas PWM (modulación por ancho de pulso). En la EDU-CIAA-NXP se
+utiliza internamente el periférico SCT para generar los PWM.
 
-**Configuración inicial y modo de una entrada o salida**
+**Configuración**
 
-``bool_t digitalConfig( int8_t pin, int8_t config);``
+``bool_t pwmConfig( uint8_t pwmNumber, uint8_t config);``
 
-- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
-- Parámetro: ``int8_t config`` configuración.
+- Parámetro: ``uint8_t pwmNumber`` pin a configurar como salida PWM (ver PWM Map).
+- Parámetro: ``uint8_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
+
+- ``ENABLE_PWM_TIMERS`` habilita el o los Timers en modo PWM.
+- ``DISABLE_PWM_TIMERS`` deshabilita el o los Timers en modo PWM.
+- ``ENABLE_PWM_OUTPUT`` habilita la salida PWM particular.
+- ``DISABLE_PWM_OUTPUT`` deshabilita la salida PWM particular.
+
+**Lectura del ciclo de trabajo (duty cycle) de la salida PWM**
+
+``uint8_t pwmRead( uint8_t pwmNumber );``
+
+- Parámetro: ``uint8_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
+- Retorna: ``uint8_t`` el ciclo de trabajo de la salida PWM.
+
+ **Establecer el ciclo de trabajo de la salida PWM**
+
+``bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );``
+
+- Parámetro: ``uint8_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
+- Parámetro: ``uint8_t percent`` valor de ciclo de trabajo a setear en la salida PWM.
+- Retorna: ``bool_t`` TRUE.
 
 
 ### sAPI_Servo
 
-Manejo de Entradas y Salidas digitales.
+Manejo de salidas para Servomortores angulares (usan modulación por ancho de pulso). En la EDU-CIAA-NXP se utilizan internamente los periféricos TIMER para
+generar estas salidas.
 
-**Configuración inicial y modo de una entrada o salida**
+**Configuración**
 
-``bool_t digitalConfig( int8_t pin, int8_t config);``
+``bool_t servoConfig( uint8_t servoNumber, uint8_t config );``
 
-- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
-- Parámetro: ``int8_t config`` configuración.
+- Parámetro: ``uint8_t servoNumber`` pin a configurar como salida Servo (ver Servo Map).
+- Parámetro: ``uint8_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
+
+- ``ENABLE_SERVO_TIMERS`` habilita el o los Timers en modo PWM para Servo.
+- ``DISABLE_SERVO_TIMERS`` deshabilita el o los Timers en modo PWM para Servo.
+- ``ENABLE_SERVO_OUTPUT`` habilita la salida PWM particular.
+- ``DISABLE_SERVO_OUTPUT`` deshabilita la salida PWM particular.
+
+**Lectura del valor angular actual de la salida Servo**
+
+``uint8_t servoRead( uint8_t servoNumber);``
+
+- Parámetro: ``uint8_t servoNumber`` pin como salida Servo a leer.
+- Retorna: ``bool_t`` el valor angular actual de la salida Servo (de 0 a 180°).
+
+**Establecer el valor angular de la salida Servo**
+
+``bool_t servoWrite( uint8_t servoNumber, uint8_t angle );``
+
+- Parámetro: ``uint8_t servoNumber`` pin como salida Servo a escribir.
+- Parámetro: ``uint8_t angle`` valor angular a establecer en la salida Servo (de 0 a 180°).
+- Retorna: ``bool_t`` TRUE.
 
 
 ### sAPI_Hmc5883l

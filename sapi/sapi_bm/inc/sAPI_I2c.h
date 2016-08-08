@@ -55,20 +55,15 @@ extern "C" {
 
 /*==================[typedef]================================================*/
 
-typedef enum {
-   sapi_I2C0,				/**< ID I2C number 0 */
-   sapi_I2C1				/**< ID I2C number 1 */
-} sAPI_i2cID_t;
-
 /*==================[external data declaration]==============================*/
 
 /*==================[ISR external functions definition]======================*/
 
 /*==================[external functions definition]==========================*/
 
-bool_t i2cConfig(sAPI_i2cID_t i2cID, uint32_t clockRateHz);
-bool_t i2cWrite(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
-bool_t i2cRead(uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
+bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t* buf, uint16_t len);
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_I2C_H_ */

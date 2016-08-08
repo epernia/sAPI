@@ -50,7 +50,8 @@ extern "C" {
 /*==================[typedef]================================================*/
 
 typedef enum{
-   PWM_TIMERS_ENABLE, PWM_TIMERS_DISABLE, PWM_OUTPUT_ENABLE, PWM_OUTPUT_DISABLE
+   ENABLE_PWM_TIMERS, DISABLE_PWM_TIMERS,
+   ENABLE_PWM_OUTPUT, DISABLE_PWM_OUTPUT
 } PwmConfig_t;
 
 /*==================[external data declaration]==============================*/

@@ -53,10 +53,9 @@
 
 
 /*==================[macros and definitions]=================================*/
+
 #define LPC4337_MAX_FREC 204000000 /* Microcontroller frequency */
-
 #define MAX_SYSCALL_INTERRUPT_PRIORITY 5
-
 
 /*==================[internal data declaration]==============================*/
 typedef struct
@@ -82,16 +81,15 @@ static void doNothing(void);
 /*Timers Static Data, given by the uC libraries*/
 static const timerStaticData_t timer_sd[4] =
 {
-   {LPC_TIMER0,RGU_TIMER0_RST,TIMER0_IRQn},
-   {LPC_TIMER1,RGU_TIMER1_RST,TIMER1_IRQn},
-   {LPC_TIMER2,RGU_TIMER2_RST,TIMER2_IRQn},
-   {LPC_TIMER3,RGU_TIMER3_RST,TIMER3_IRQn}
+   { LPC_TIMER0, RGU_TIMER0_RST, TIMER0_IRQn },
+   { LPC_TIMER1, RGU_TIMER1_RST, TIMER1_IRQn },
+   { LPC_TIMER2, RGU_TIMER2_RST, TIMER2_IRQn },
+   { LPC_TIMER3, RGU_TIMER3_RST, TIMER3_IRQn }
 };
 
 /*Timers dynamic data. Function pointers and Compare match frequencies, which can vary.
  * This is the default initialization*/
-static timerDinamicData_t timer_dd[4] =
-{
+static timerDinamicData_t timer_dd[4] = {
    {doNothing,errorOcurred,errorOcurred,errorOcurred},
    {doNothing,errorOcurred,errorOcurred,errorOcurred},
    {doNothing,errorOcurred,errorOcurred,errorOcurred},

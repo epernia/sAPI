@@ -73,7 +73,7 @@ static void pwmInitTimers(void);
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:   True if pwm was successfully attached, False if not.
  */
-static bool_t pwmAttach( uint8_t pwmNumber);
+static bool_t pwmAttach( uint8_t pwmNumber );
 
 /*
  * @brief:   removes pwm (attached to pwmNumber) from the list
@@ -103,18 +103,18 @@ static const uint8_t pwmMap[PWM_TOTALNUMBER] =
    /* PWM8 */  CTOUT5,  /* LED2   */
    /* PWM9 */  CTOUT4,  /* LED3   */
    /* PWM10 */ CTOUT6   /* GPIO2  */
-   
-   
+
+
    /* PWM0  */  //CTOUT6,  /* GPIO2  */
    /* PWM1  */  //CTOUT7,  /* GPIO8  */
-   
+
    /* PWM2  */  //CTOUT13, /* T_COL1 */
    /* PWM3  */  //CTOUT3,  /* T_FIL3 */
-   /* PWM4  */  //CTOUT0,  /* T_FIL2 */   
+   /* PWM4  */  //CTOUT0,  /* T_FIL2 */
    /* PWM5  */  //CTOUT10, /* T_COL0 */
    /* PWM6  */  //CTOUT12, /* T_COL2 */
    /* PWM7  */  //CTOUT1,  /* T_FIL1 */
-   
+
    /* PWM8  */  //CTOUT2,  /* LED1   */
    /* PWM9  */  //CTOUT5,  /* LED2   */
    /* PWM10 */  //CTOUT4   /* LED3   */
@@ -248,24 +248,24 @@ uint8_t pwmRead( uint8_t pwmNumber )
  * @return bool_t true (1) if config it is ok
  */
 bool_t pwmConfig( uint8_t pwmNumber, uint8_t config){
-   
+
    bool_t ret_val = 1;
 
    switch(config){
 
-      case PWM_TIMERS_ENABLE:
+      case ENABLE_PWM_TIMERS:
          pwmInitTimers();
       break;
 
-      case PWM_TIMERS_DISABLE:
-         ret_val = 0;         
+      case DISABLE_PWM_TIMERS:
+         ret_val = 0;
       break;
 
-      case PWM_OUTPUT_ENABLE:
-         ret_val = pwmAttach( pwmNumber );         
+      case ENABLE_PWM_OUTPUT:
+         ret_val = pwmAttach( pwmNumber );
       break;
 
-      case PWM_OUTPUT_DISABLE:
+      case DISABLE_PWM_OUTPUT:
          ret_val = pwmDetach( pwmNumber );
       break;
 
@@ -303,4 +303,3 @@ uint8_t pwmIsAttached( uint8_t pwmNumber )
 }
 
 /*==================[end of file]============================================*/
-

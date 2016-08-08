@@ -43,11 +43,11 @@ bool_t hmc5883lIsAlive(){
 
    uint8_t idRegister[3];
 
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__ID_REG_A,&idRegister,3);
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_ID_REG_A, &idRegister, 3 );
 
-   if( (sapi_HMC5883L__VALUE_ID_REG_A == idRegister[0]) &&
-       (sapi_HMC5883L__VALUE_ID_REG_B == idRegister[1]) &&
-       (sapi_HMC5883L__VALUE_ID_REG_C == idRegister[2])
+   if( (HMC5883L_VALUE_ID_REG_A == idRegister[0]) &&
+       (HMC5883L_VALUE_ID_REG_B == idRegister[1]) &&
+       (HMC5883L_VALUE_ID_REG_C == idRegister[2])
      ){
       return (TRUE);
    }
@@ -56,19 +56,19 @@ bool_t hmc5883lIsAlive(){
    }
 }
 
-bool_t hmc5883lPrepareDefaultConfig(sAPI_HMC5883L_config_t *config){
+bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t *config ){
 
-   config->gain = sapi_HMC5883L__DEFAULT_gain;
-   config->meassurement = sapi_HMC5883L__DEFAULT_messurement;
-   config->rate = sapi_HMC5883L__DEFAULT_rate;
-   config->samples = sapi_HMC5883L__DEFAULT_sample;
-   config->mode = sapi_HMC5883L__DEFAULT_mode;
+   config->gain = HMC5883L_DEFAULT_gain;
+   config->meassurement = HMC5883L_DEFAULT_messurement;
+   config->rate = HMC5883L_DEFAULT_rate;
+   config->samples = HMC5883L_DEFAULT_sample;
+   config->mode = HMC5883L_DEFAULT_mode;
 
    return (TRUE);
 }
 
 
-bool_t hmc5883lConfig(sAPI_HMC5883L_config_t config){
+bool_t hmc5883lConfig( HMC5883L_config_t config ){
 
    uint8_t registerA, registerB, registerMode;
 
@@ -83,16 +83,17 @@ bool_t hmc5883lConfig(sAPI_HMC5883L_config_t config){
 
    registerMode = config.mode;
 
-   i2cConfig( sapi_I2C0, 100000 );
+   i2cConfig( I2C0, 100000 );
 
-   i2cWrite( sapi_HMC5883L_ADD, sapi_HMC5883L_REG__CONFIG_A, &registerA, 1 );
-   i2cWrite( sapi_HMC5883L_ADD, sapi_HMC5883L_REG__CONFIG_B, &registerB, 1 );
-   i2cWrite( sapi_HMC5883L_ADD, sapi_HMC5883L_REG__MODE, &registerMode, 1 );
+   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_A, &registerA, 1 );
+   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_B, &registerB, 1 );
+   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_MODE, &registerMode, 1 );
 
    return ( hmc5883lIsAlive() );
 }
 
-bool_t hmc5883lRead( uint16_t *x, uint16_t *y, uint16_t *z ){
+
+bool_t hmc5883lRead( int16_t *x, int16_t *y, int16_t *z ){
 
    bool_t result = TRUE;
 
@@ -100,12 +101,12 @@ bool_t hmc5883lRead( uint16_t *x, uint16_t *y, uint16_t *z ){
    uint8_t y_MSB, y_LSB;
    uint8_t z_MSB, z_LSB;
 
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__X_MSB,&x_MSB,1);
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__X_LSB,&x_LSB,1);
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Y_MSB,&y_MSB,1);
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Y_LSB,&y_LSB,1);
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Z_MSB,&z_MSB,1);
-   i2cRead(sapi_HMC5883L_ADD,sapi_HMC5883L_REG__Z_LSB,&z_LSB,1);
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_MSB, &x_MSB, 1 );
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_LSB, &x_LSB, 1 );
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_MSB, &y_MSB, 1 );
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_LSB, &y_LSB, 1 );
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_MSB, &z_MSB, 1 );
+   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_LSB, &z_LSB, 1 );
 
    *x = x_MSB;
    *x = (*x << 8)|x_LSB;
@@ -116,5 +117,5 @@ bool_t hmc5883lRead( uint16_t *x, uint16_t *y, uint16_t *z ){
    *z = z_MSB;
    *z = (*z << 8)|z_LSB;
 
-   return(result); /** TODO: return value must reflect the result of the operation*/
+   return(result); /** TODO: return value must reflect the result of the operation */
 }

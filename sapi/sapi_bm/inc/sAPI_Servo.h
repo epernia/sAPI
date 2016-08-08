@@ -50,7 +50,8 @@ extern "C" {
 /*==================[typedef]================================================*/
 
 typedef enum{
-   ENABLE_SERVO_TIMERS, DISABLE_SERVO_TIMERS, ENABLE_SERVO_OUTPUT, DISABLE_SERVO_OUTPUT
+   ENABLE_SERVO_TIMERS, DISABLE_SERVO_TIMERS,
+   ENABLE_SERVO_OUTPUT, DISABLE_SERVO_OUTPUT
 } ServoConfig_t;
 
 /*==================[external data declaration]==============================*/

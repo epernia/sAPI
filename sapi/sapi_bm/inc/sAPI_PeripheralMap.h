@@ -40,6 +40,8 @@
 
 /*==================[inclusions]=============================================*/
 
+#include "chip.h"
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
@@ -120,6 +122,14 @@ typedef enum{
 typedef enum{
    SERVO0, SERVO1, SERVO2, SERVO3, SERVO4, SERVO5, SERVO6, SERVO7, SERVO8
 } ServoMap_t;
+
+/*Defined for sAPI_I2c.h*/
+/* Comment because already defined in "i2c_18xx_43xx.h"*/
+/*
+typedef enum{
+   I2C0 // TODO: Add support for I2C1
+} I2cMap_t;
+*/
 
 /* ------- End EDU-CIAA-NXP Peripheral Map -------- */
 
