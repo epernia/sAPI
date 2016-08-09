@@ -63,6 +63,9 @@ int main(void){
    /* Inicializar la placa */
    boardConfig();
 
+   /* Inicializar el conteo de Ticks con resolución de 1ms, sin tickHook */
+   tickConfig( 1, 0 );
+
    /* Inicializar DigitalIO */
    digitalConfig( 0, ENABLE_DIGITAL_IO );
 
