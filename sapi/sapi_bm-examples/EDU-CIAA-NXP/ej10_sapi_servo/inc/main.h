@@ -1,4 +1,4 @@
-/* Copyright 2015-2016, Eric Pernia.
+/* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,37 +31,10 @@
  *
  */
 
-/* Date: 2015-09-23 */
-
-#ifndef _SAPI_H_
-#define _SAPI_H_
+#ifndef _MAIN_H_
+#define _MAIN_H_
 
 /*==================[inclusions]=============================================*/
-
-#include "sAPI_DataTypes.h"
-#include "sAPI_IsrVector.h"
-
-#include "sAPI_Board.h"
-#include "sAPI_PeripheralMap.h"
-#include "sAPI_DigitalIO.h"
-#include "sAPI_AnalogIO.h"
-#include "sAPI_Uart.h"
-#include "sAPI_Timer.h"
-#include "sAPI_Pwm.h"
-#include "sAPI_I2c.h"
-#include "sAPI_Rtc.h"
-
-#include "sAPI_Tick.h"
-#include "sAPI_Delay.h"
-
-#include "sAPI_Servo.h"
-#include "sAPI_Hmc5883l.h"
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*==================[macros]=================================================*/
 
@@ -71,11 +44,5 @@ extern "C" {
 
 /*==================[external functions declaration]=========================*/
 
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-}
-#endif
-
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_H_ */
+#endif /* #ifndef _MAIN_H_ */

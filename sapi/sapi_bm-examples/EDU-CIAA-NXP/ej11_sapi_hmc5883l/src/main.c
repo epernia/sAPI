@@ -1,4 +1,5 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2016, Alejandro Permingeat.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -32,7 +33,7 @@
  */
 
 /*
- * Date: 2016-04-26
+ * Date: 2016-07-28
  */
 
 /*==================[inclusions]=============================================*/
@@ -43,7 +44,16 @@
 
 /*==================[macros and definitions]=================================*/
 
+#define BAUD_RATE 115200
+
 /*==================[internal data declaration]==============================*/
+
+static int16_t hmc5883l_x_raw;
+static int16_t hmc5883l_y_raw;
+static int16_t hmc5883l_z_raw;
+
+/* Buffers */
+static uint8_t uartBuff[10];
 
 /*==================[internal functions declaration]=========================*/
 
@@ -55,6 +65,25 @@
 
 /*==================[external functions definition]==========================*/
 
+void sendHmc5883lToUart( int16_t axis, uint8_t axisName ){
+   
+   /* Envio la primer parte dle mensaje a la Uart */
+   uartWriteString( UART_USB, (uint8_t*) "HMC5883L eje ");
+   uartWriteByte( UART_USB, axisName );
+   uartWriteString( UART_USB, (uint8_t*) ": ");
+
+   /* Conversion de muestra entera a ascii con base decimal */
+   itoa( (int) axis, (char*)uartBuff, 10 ); /* 10 significa decimal */
+   
+   /* Envio el valor del eje */
+   uartBuff[4] = 0;    /* NULL */
+   uartWriteString( UART_USB, uartBuff );
+   
+   /* Envio un 'enter' */
+   uartWriteString( UART_USB, (uint8_t*) "\r\n");
+}
+
+
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
 int main(void){
 
@@ -62,6 +91,9 @@ int main(void){
 
    /* Inicializar la placa */
    boardConfig();
+
+   /* Inicializar el conteo de Ticks con resolución de 1ms, sin tickHook */
+   tickConfig( 1, 0 );
 
    /* Inicializar DigitalIO */
    digitalConfig( 0, ENABLE_DIGITAL_IO );
@@ -72,8 +104,6 @@ int main(void){
    digitalConfig( TEC3, INPUT );
    digitalConfig( TEC4, INPUT );
 
-   digitalConfig( DIO14, INPUT );
-
    /* Configuración de pines de salida para Leds de la CIAA-NXP */
    digitalConfig( LEDR, OUTPUT );
    digitalConfig( LEDG, OUTPUT );
@@ -82,34 +112,40 @@ int main(void){
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   digitalConfig( DIO15, OUTPUT );
+   /* Inicializar HMC5883L */
+   HMC5883L_config_t hmc5883L_configValue;
 
-   /* Variable para almacenar el valor de tecla leido */
-   bool_t valor;
+   hmc5883lPrepareDefaultConfig( &hmc5883L_configValue );
+
+   hmc5883L_configValue.mode = HMC5883L_continuous_measurement;
+   hmc5883L_configValue.samples = HMC5883L_8_sample;
+
+   hmc5883lConfig( hmc5883L_configValue );
+
+   /* Inicializar Uart */
+   uartConfig(UART_USB, BAUD_RATE);
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 
-      valor = !digitalRead( TEC1 );
-      digitalWrite( LEDB, valor );
+      hmc5883lRead( &hmc5883l_x_raw, &hmc5883l_y_raw, &hmc5883l_z_raw );
+      /* Se debe esperar minimo 67ms entre lecturas su la tasa es de 15Hz
+        para leer un nuevo valor del magnetómetro */
+      
+      sendHmc5883lToUart( hmc5883l_x_raw, 'x' );
+      sendHmc5883lToUart( hmc5883l_y_raw, 'y' );
+      sendHmc5883lToUart( hmc5883l_z_raw, 'z' );
 
-      valor = !digitalRead( TEC2 );
-      digitalWrite( LED1, valor );
-
-      valor = !digitalRead( TEC3 );
-      digitalWrite( LED2, valor );
-
-      valor = !digitalRead( TEC4 );
-      digitalWrite( LED3, valor );
-
-      valor = !digitalRead( DIO14 );
-      digitalWrite( DIO15, valor );
+      /* Envio un 'enter' */
+      uartWriteString( UART_USB, (uint8_t*) "\r\n");
+      
+      delay(1000); 
 
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
       por ningun S.O. */
-	return 0 ;
+   return 0 ;
 }
 
 /*==================[end of file]============================================*/

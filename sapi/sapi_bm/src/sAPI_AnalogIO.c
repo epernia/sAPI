@@ -133,7 +133,7 @@ void analogConfig( uint8_t config ){
  */
 uint16_t analogRead( uint8_t analogInput ){
 
-   uint8_t lpcAdcChannel = 49 - analogInput;
+   uint8_t lpcAdcChannel = 66 - analogInput;
    uint16_t analogValue = 0;
 
    Chip_ADC_EnableChannel(LPC_ADC0, lpcAdcChannel, ENABLE);
@@ -155,10 +155,12 @@ uint16_t analogRead( uint8_t analogInput ){
  */
 void analogWrite( uint8_t analogOutput, uint16_t value ){
 
-   if( value > 1023 ){
-      value = 1023;
+   if( analogOutput == AO ){
+      if( value > 1023 ){
+         value = 1023;
+      }
+      Chip_DAC_UpdateValue( LPC_DAC, value );
    }
-   Chip_DAC_UpdateValue( LPC_DAC, value );
 }
 
 /*==================[end of file]============================================*/

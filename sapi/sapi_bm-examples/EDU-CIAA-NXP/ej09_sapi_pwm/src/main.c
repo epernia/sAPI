@@ -32,7 +32,7 @@
  */
 
 /*
- * Date: 2016-04-26
+ * Date: 2016-07-03
  */
 
 /*==================[inclusions]=============================================*/
@@ -63,6 +63,9 @@ int main(void){
    /* Inicializar la placa */
    boardConfig();
 
+   /* Inicializar el conteo de Ticks con resolución de 1ms, sin tickHook */
+   tickConfig( 1, 0 );
+
    /* Inicializar DigitalIO */
    digitalConfig( 0, ENABLE_DIGITAL_IO );
 
@@ -72,8 +75,6 @@ int main(void){
    digitalConfig( TEC3, INPUT );
    digitalConfig( TEC4, INPUT );
 
-   digitalConfig( DIO14, INPUT );
-
    /* Configuración de pines de salida para Leds de la CIAA-NXP */
    digitalConfig( LEDR, OUTPUT );
    digitalConfig( LEDG, OUTPUT );
@@ -82,10 +83,35 @@ int main(void){
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   digitalConfig( DIO15, OUTPUT );
+   /* Variables de Retardos no bloqueantes */
+   delay_t delayBase1;
+   delay_t delayBase2;
+   delay_t delayBase3;
 
-   /* Variable para almacenar el valor de tecla leido */
-   bool_t valor;
+   /* Inicializar Retardo no bloqueante con tiempo en milisegundos 
+      (500ms = 0,5s) */
+   delayConfig( &delayBase1, 50 );
+   delayConfig( &delayBase2, 200 );
+   delayConfig( &delayBase3, 1000 );
+
+   bool_t valor = 0;
+
+   uint8_t  dutyCycle1 = 0; /* 0 a 255 */
+   uint16_t dutyCycle2 = 0;
+   uint16_t dutyCycle3 = 0;
+
+   uint8_t pwmVal = 0; /* 0 a 255 */
+
+   /* Configurar PWM */
+   valor = pwmConfig( 0,    ENABLE_PWM_TIMERS );
+
+   valor = pwmConfig( PWM7, ENABLE_PWM_OUTPUT );
+   valor = pwmConfig( PWM8, ENABLE_PWM_OUTPUT );
+   valor = pwmConfig( PWM9, ENABLE_PWM_OUTPUT );
+
+   /* Usar PWM */
+   valor = pwmWrite( PWM7, dutyCycle1 );
+   pwmVal = pwmRead( PWM7 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
@@ -93,23 +119,29 @@ int main(void){
       valor = !digitalRead( TEC1 );
       digitalWrite( LEDB, valor );
 
-      valor = !digitalRead( TEC2 );
-      digitalWrite( LED1, valor );
+      if( delayRead(&delayBase1) )
+         dutyCycle1++;
+      if( dutyCycle1>255 )
+         dutyCycle1 = 0;
+      pwmWrite( PWM7, dutyCycle1 );
 
-      valor = !digitalRead( TEC3 );
-      digitalWrite( LED2, valor );
+      if( delayRead(&delayBase2) )
+          dutyCycle2 += 25;
+      if( dutyCycle2>255 )
+         dutyCycle2 = 0;
+      pwmWrite( PWM8, (uint8_t)dutyCycle2 );
 
-      valor = !digitalRead( TEC4 );
-      digitalWrite( LED3, valor );
-
-      valor = !digitalRead( DIO14 );
-      digitalWrite( DIO15, valor );
+      if( delayRead(&delayBase3) )
+          dutyCycle3 += 50;
+      if( dutyCycle3>255 )
+         dutyCycle3 = 0;
+      pwmWrite( PWM9, (uint8_t)dutyCycle3 );
 
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
       por ningun S.O. */
-	return 0 ;
+   return 0 ;
 }
 
 /*==================[end of file]============================================*/

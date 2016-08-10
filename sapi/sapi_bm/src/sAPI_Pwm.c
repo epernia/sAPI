@@ -103,21 +103,6 @@ static const uint8_t pwmMap[PWM_TOTALNUMBER] =
    /* PWM8 */  CTOUT5,  /* LED2   */
    /* PWM9 */  CTOUT4,  /* LED3   */
    /* PWM10 */ CTOUT6   /* GPIO2  */
-
-
-   /* PWM0  */  //CTOUT6,  /* GPIO2  */
-   /* PWM1  */  //CTOUT7,  /* GPIO8  */
-
-   /* PWM2  */  //CTOUT13, /* T_COL1 */
-   /* PWM3  */  //CTOUT3,  /* T_FIL3 */
-   /* PWM4  */  //CTOUT0,  /* T_FIL2 */
-   /* PWM5  */  //CTOUT10, /* T_COL0 */
-   /* PWM6  */  //CTOUT12, /* T_COL2 */
-   /* PWM7  */  //CTOUT1,  /* T_FIL1 */
-
-   /* PWM8  */  //CTOUT2,  /* LED1   */
-   /* PWM9  */  //CTOUT5,  /* LED2   */
-   /* PWM10 */  //CTOUT4   /* LED3   */
 };
 
 /*when the user adds a pwm with pwmAttach the list updates with the pin number of the element*/

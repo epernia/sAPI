@@ -32,7 +32,7 @@
  */
 
 /*
- * Date: 2016-04-26
+ * Date: 2016-07-03
  */
 
 /*==================[inclusions]=============================================*/
@@ -63,6 +63,9 @@ int main(void){
    /* Inicializar la placa */
    boardConfig();
 
+   /* Inicializar el conteo de Ticks con resolución de 1ms, sin tickHook */
+   tickConfig( 1, 0 );
+
    /* Inicializar DigitalIO */
    digitalConfig( 0, ENABLE_DIGITAL_IO );
 
@@ -72,8 +75,6 @@ int main(void){
    digitalConfig( TEC3, INPUT );
    digitalConfig( TEC4, INPUT );
 
-   digitalConfig( DIO14, INPUT );
-
    /* Configuración de pines de salida para Leds de la CIAA-NXP */
    digitalConfig( LEDR, OUTPUT );
    digitalConfig( LEDG, OUTPUT );
@@ -82,34 +83,38 @@ int main(void){
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   digitalConfig( DIO15, OUTPUT );
+   bool_t valor = 0;
 
-   /* Variable para almacenar el valor de tecla leido */
-   bool_t valor;
+   uint8_t servoAngle = 0; /* 0 a 180 grados */
+
+   /* Configurar Servo */
+   valor = servoConfig( 0,      ENABLE_SERVO_TIMERS );
+
+   valor = servoConfig( SERVO0, ENABLE_SERVO_OUTPUT );
+
+   /* Usar Servo */
+   valor = servoWrite( SERVO0, servoAngle );
+   servoAngle = servoRead( SERVO0 );
+
+   digitalWrite( LEDB, 1 );
 
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 
-      valor = !digitalRead( TEC1 );
-      digitalWrite( LEDB, valor );
+      servoWrite( SERVO0, 0 );
+      delay(500);
 
-      valor = !digitalRead( TEC2 );
-      digitalWrite( LED1, valor );
+      servoWrite( SERVO0, 90 );
+      delay(500);
 
-      valor = !digitalRead( TEC3 );
-      digitalWrite( LED2, valor );
-
-      valor = !digitalRead( TEC4 );
-      digitalWrite( LED3, valor );
-
-      valor = !digitalRead( DIO14 );
-      digitalWrite( DIO15, valor );
+      servoWrite( SERVO0, 180 );
+      delay(500);
 
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
       por ningun S.O. */
-	return 0 ;
+   return 0 ;
 }
 
 /*==================[end of file]============================================*/

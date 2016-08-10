@@ -120,45 +120,15 @@ static bool_t servoDetach( uint8_t servoNumber );
 static const uint8_t servoMap[SERVO_TOTALNUMBER] =
 {
    /* Servo name | DIOMap name | Name in the board*/
-
-   /* New table */
-
-   /* SERVO0 */ //DIO4,  /* GPIO2  */
-   /* SERVO1 */ //DIO17, /* LCD3   */
-   /* SERVO2 */ //DIO18, /* LCD2   */
-   /* SERVO3 */ //DIO19, /* LCD1   */
-   /* SERVO4 */ //DIO24, /* GPIO8  */
-
-   /* SERVO5 */ //DIO31, /* T_FIL3 */
-   /* SERVO6 */ //DIO32, /* T_FIL2 */
-   /* SERVO7 */ //DIO33, /* T_COL0 */
-   /* SERVO8 */ //DIO35  /* T_FIL1 */
-
-   /* New table 2 */
-
-   /* SERVO0 */ //DIO35, /* T_FIL1 */
-   /* SERVO1 */ //DIO33, /* T_COL0 */
-   /* SERVO2 */ //DIO32, /* T_FIL2 */
-   /* SERVO3 */ //DIO31, /* T_FIL3 */
-
-   /* SERVO4 */ //DIO24, /* GPIO8  */
-   /* SERVO5 */ //DIO19, /* LCD1   */
-   /* SERVO6 */ //DIO18, /* LCD2   */
-   /* SERVO7 */ //DIO17, /* LCD3   */
-   /* SERVO8 */ //DIO4   /* GPIO2  */
-
-   /* Old table */
-
-   /* SERVO0 */ DIO0, /* T_FIL1 */
-   /* SERVO1 */ DIO2, /* T_COL0 */
-   /* SERVO2 */ DIO3, /* T_FIL2 */
-   /* SERVO3 */ DIO4, /* T_FIL3 */
-   /* SERVO4 */ DIO11, /* GPIO8 */
-   /* SERVO5 */ DIO16, /* LCD1 */
-   /* SERVO6 */ DIO17, /* LCD2 */
-   /* SERVO7 */ DIO18, /* LCD3 */
-   /* SERVO8 */ DIO31 /* GPIO2 */
-
+   /* SERVO0 */ DIO0,  /* T_FIL1 */
+   /* SERVO1 */ DIO2,  /* T_COL0 */
+   /* SERVO2 */ DIO3,  /* T_FIL2 */
+   /* SERVO3 */ DIO4,  /* T_FIL3 */
+   /* SERVO4 */ DIO11, /* GPIO8  */
+   /* SERVO5 */ DIO16, /* LCD1   */
+   /* SERVO6 */ DIO17, /* LCD2   */
+   /* SERVO7 */ DIO18, /* LCD3   */
+   /* SERVO8 */ DIO31  /* GPIO2  */
 };
 
 /*when the user adds a servo with servoAttach the list updates with the servo number*/

@@ -45,7 +45,7 @@ UART_USB.
 
 **ej07_sapi_adc_dac**
 
-Ejemplo de utilización de ADC y DAC. También utiliza DigitalIO, Tick , Delay y
+Ejemplo de utilización de ADC y DAC. También utiliza DigitalIO, Tick, Delay y
 UART. Utiliza dos retardos NO bloqueantes para realizar dos tareas periódicas
 sin interferencias. La primera lee el ADC CH1 (AI0), escribe el valor en el DAC
 (AO) y envía el dato por la UART_USB. La segunda hace titilar el LED1 10 veces
@@ -53,19 +53,22 @@ rápidamente y después cambia el valor del retardo para que titile lentamente.
 
 **ej08_sapi_rtc**
 
-Ejemplo de utilización de RTC. También utiliza Delay y UART. Establece la fecha
+Ejemplo de utilización de RTC. Además utiliza Delay y UART. Establece la fecha
 y hora del reloj de tiempo real y la muestra por UART_USB.
 
 **ej09_sapi_pwm**
 
-Ejemplo de utilización de PWM. <<<<<<<<<<<<<<<
+Ejemplo de utilización de PWM. Con DigitalIO y Delay. Muestra 3 saidas PWM sobre
+los leds 1, 2 y 3.
 
 **ej10_sapi_servo**
 
-Ejemplo de utilización de Servomotor angular (0 a 180°). <<<<<<<<<<<<<<<
+Ejemplo de utilización de Servomotor angular (0 a 180°) y Delay. El servo
+utilizado es el SG90 y va conectado en 5V (cable rojo), GND (cable marrón) y
+señal al pin SERVO0 (T_F1 con cable naranja).
 
 **ej11_sapi_hmc5883l**
 
-Ejemplo de utilización de sensor Magnetómetro (compass) HMC5883L, I2C y Uart.
-Este sensor se conecta a la EDU-CIAA-NXP mediante I2C para leer los valores de
-campo magnético en (x,y,z) y los muestra por UART.  <<<<<<<<<<<<<<<
+Ejemplo de utilización de sensor Magnetómetro (compass) HMC5883L, I2C, Delay y
+UART. Este sensor se conecta a la EDU-CIAA-NXP mediante I2C (I2C0) para leer los
+valores de campo magnético en (x,y,z) y los muestra por UART.
