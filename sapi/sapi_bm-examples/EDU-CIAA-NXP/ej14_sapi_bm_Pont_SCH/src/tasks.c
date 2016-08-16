@@ -28,16 +28,13 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-/*
- * Date: 2016-04-26
- */
+/* Date: 2016-08-16 */
 
 /*==================[inclusions]=============================================*/
 
-#include "main.h"         /* <= own header */
+#include "tasks.h"        /* <= own header */
 
 #include "sAPI.h"         /* <= sAPI header */
 
@@ -55,38 +52,13 @@
 
 /*==================[external functions definition]==========================*/
 
-/* FUNCION que se ejecuta cada vezque ocurre un Tick. */
-bool_t myTickHook(void *ptr){
+/* ------------ INICIALIZACION DE TAREAS ------------ */
 
-   static bool_t ledState = OFF;
-
-   if( ledState ){
-      ledState = OFF;
-   }
-   else{
-      ledState = ON;
-   }
-   digitalWrite( LED3, ledState );
-
-   return 1;
-}
-
-
-/* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
-int main(void){
-
-   /* ------------- INICIALIZACIONES ------------- */
+/* FUNCION que inicializa las tareas. */
+void tasksInit(void){
 
    /* Inicializar la placa */
    boardConfig();
-
-   /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta 
-      periódicamente una interrupcón cada 50ms que incrementa un contador de 
-      Ticks obteniendose una base de tiempos). Se agrega además un "tick hook"
-      nombrado myTickHook. El tick hook es simplemente una función que se 
-      ejecutará períodicamente con cada interrupción de Tick, este nombre se
-      refiere a una función "enganchada" a una interrupción */
-   tickConfig( 50, myTickHook );
 
    /* Inicializar DigitalIO */
    digitalConfig( 0, ENABLE_DIGITAL_IO );
@@ -105,13 +77,51 @@ int main(void){
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   /* ------------- REPETIR POR SIEMPRE ------------- */
-   while(1) {
-   }
+}
 
-   /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
-      por ningun S.O. */
-   return 0 ;
+/* --------------------- TAREAS --------------------- */
+
+/* FUNCION que realiza la tarea 1.
+   Esta tarea lee una tecla cada 40ms y escribe su valor
+   en LEDB */
+void task1(void){
+
+   digitalWrite( LEDB, !digitalRead(TEC1) );
+
+}
+
+/* FUNCION que realiza la tarea 2.
+   Esta tarea hace destellar el LED2 (blink) cada
+   250ms. */
+void task2(void){
+
+   static bool_t led2Status = OFF;
+   
+   if(led2Status){
+      led2Status = OFF;
+   }
+   else{
+      led2Status = ON;
+   }
+   digitalWrite( LED2, led2Status );
+
+}
+
+/* FUNCION que realiza la tarea 3.
+   Esta tarea hace destellar el LED3 (blink) cada
+   500ms. */
+void task3(void){
+
+   static bool_t led3Status = OFF;
+   
+   if(led3Status){
+      led3Status = OFF;
+   }
+   else{
+      led3Status = ON;
+   }
+   digitalWrite( LED3, led3Status );
+
 }
 
 /*==================[end of file]============================================*/

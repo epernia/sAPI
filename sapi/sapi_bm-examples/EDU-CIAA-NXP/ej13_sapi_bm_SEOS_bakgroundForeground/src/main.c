@@ -28,11 +28,20 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-/*
- * Date: 2016-04-26
+/* Date: 2016-08-16
+ *
+ * SEOS del ingés Simple Embedded Operating System. 
+ * Ejemplo de Planificador de tareas cooperativo disparado por tiempo 
+ * (Time-Triggered). Variante background-foreground. El despachador de tareas 
+ * (dispatcher) en el while(1) (background) y planificador de tareas 
+ * (scheduler) se ejecuta en una Interrupción periódica de tiempo (foreground).
+ * Solamente la primer tarea es Real-Time. La suma de la duración de todas las 
+ * tareas debe ser menor a 1 Tick (1ms en el ejemplo), si alguna se excede un 
+ * poco de tiempo el sistema puede recuperarse, es decir, no pierde 
+ * temporización pero sin embargo se atrasa un poco en la ejecución.
+ * Las tareas deben ser NO bloqueantes.
  */
 
 /*==================[inclusions]=============================================*/
@@ -40,6 +49,9 @@
 #include "main.h"         /* <= own header */
 
 #include "sAPI.h"         /* <= sAPI header */
+
+#include "tasks.h"        /* <= tasks header */
+#include "seos.h"         /* <= scheduler and dispatcher header */
 
 /*==================[macros and definitions]=================================*/
 
@@ -55,58 +67,32 @@
 
 /*==================[external functions definition]==========================*/
 
-/* FUNCION que se ejecuta cada vezque ocurre un Tick. */
-bool_t myTickHook(void *ptr){
-
-   static bool_t ledState = OFF;
-
-   if( ledState ){
-      ledState = OFF;
-   }
-   else{
-      ledState = ON;
-   }
-   digitalWrite( LED3, ledState );
-
-   return 1;
-}
-
-
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
 int main(void){
 
    /* ------------- INICIALIZACIONES ------------- */
 
-   /* Inicializar la placa */
-   boardConfig();
+   /* Inicializacion de las tareas. */
+   tasksInit();
 
-   /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta 
-      periódicamente una interrupcón cada 50ms que incrementa un contador de 
-      Ticks obteniendose una base de tiempos). Se agrega además un "tick hook"
-      nombrado myTickHook. El tick hook es simplemente una función que se 
-      ejecutará períodicamente con cada interrupción de Tick, este nombre se
-      refiere a una función "enganchada" a una interrupción */
-   tickConfig( 50, myTickHook );
+   /* Inicializacion de la interrpción periódica 
+      del sistema operativo cada 1ms. */   
+   seosInterruptInit(1);
 
-   /* Inicializar DigitalIO */
-   digitalConfig( 0, ENABLE_DIGITAL_IO );
-
-   /* Configuración de pines de entrada para Teclas de la CIAA-NXP */
-   digitalConfig( TEC1, INPUT );
-   digitalConfig( TEC2, INPUT );
-   digitalConfig( TEC3, INPUT );
-   digitalConfig( TEC4, INPUT );
-
-   /* Configuración de pines de salida para Leds de la CIAA-NXP */
-   digitalConfig( LEDR, OUTPUT );
-   digitalConfig( LEDG, OUTPUT );
-   digitalConfig( LEDB, OUTPUT );
-   digitalConfig( LED1, OUTPUT );
-   digitalConfig( LED2, OUTPUT );
-   digitalConfig( LED3, OUTPUT );
-
-   /* ------------- REPETIR POR SIEMPRE ------------- */
+   /* ----- REPETIR POR SIEMPRE (SUPER LOOP) ----- */
+   
    while(1) {
+      
+      /* Se despachan (ejecutan) las tareas marcadas para su ejecucion. */
+      seosDispatchTask();
+
+      /* Se pone el sistema en bajo consumo hasta que ocurra la proxima 
+         interrupcion, en este caso la de Tick. */
+      sleepUntilNextInterrupt();
+      
+      /* Al ocurrir la interrupcion de Tick se ejecutara el planificador 
+         que revisa cuales son las tareas a marcar para su ejecucion. */
+
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado

@@ -31,10 +31,20 @@
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+/* Date: 2016-08-16 */
+
+#ifndef _SEOS_H_
+#define _SEOS_H_
 
 /*==================[inclusions]=============================================*/
+
+#include "sAPI.h"         /* <= sAPI header */
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -44,5 +54,21 @@
 
 /*==================[external functions declaration]=========================*/
 
+/* FUNCION que contiene el planificador de tareas. */
+bool_t seosScheduleTasks(void *ptr);
+
+/* FUNCION que contiene el despachador de tareas. */
+void seosDispatchTask(void);
+
+/* FUNCION que inicializa la interrupcion que ejecuta
+   el planificador de tareas. */
+void seosInterruptInit( tick_t tickRateMs );
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MAIN_H_ */
+#endif /* #ifndef _SEOS_H_ */

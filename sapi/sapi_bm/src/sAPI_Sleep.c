@@ -31,15 +31,13 @@
  *
  */
 
-/*
- * Date: 2016-04-26
- */
+/* Date: 2016-08-15 */
 
 /*==================[inclusions]=============================================*/
 
-#include "main.h"         /* <= own header */
+#include "sAPI_DataTypes.h"
 
-#include "sAPI.h"         /* <= sAPI header */
+#include "sAPI_Sleep.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -55,63 +53,16 @@
 
 /*==================[external functions definition]==========================*/
 
-/* FUNCION que se ejecuta cada vezque ocurre un Tick. */
-bool_t myTickHook(void *ptr){
+/*
+ * @Brief: Sleep mode, sleep until next interrupt occur.
+ * @param  nothing
+ * @return nothing
+ */
+void sleepUntilNextInterrupt( void ){
 
-   static bool_t ledState = OFF;
+   /* Instert an assembly instruction wfi (wait for interrupt) */
+   __asm volatile( "wfi" ); 
 
-   if( ledState ){
-      ledState = OFF;
-   }
-   else{
-      ledState = ON;
-   }
-   digitalWrite( LED3, ledState );
-
-   return 1;
-}
-
-
-/* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
-int main(void){
-
-   /* ------------- INICIALIZACIONES ------------- */
-
-   /* Inicializar la placa */
-   boardConfig();
-
-   /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta 
-      periódicamente una interrupcón cada 50ms que incrementa un contador de 
-      Ticks obteniendose una base de tiempos). Se agrega además un "tick hook"
-      nombrado myTickHook. El tick hook es simplemente una función que se 
-      ejecutará períodicamente con cada interrupción de Tick, este nombre se
-      refiere a una función "enganchada" a una interrupción */
-   tickConfig( 50, myTickHook );
-
-   /* Inicializar DigitalIO */
-   digitalConfig( 0, ENABLE_DIGITAL_IO );
-
-   /* Configuración de pines de entrada para Teclas de la CIAA-NXP */
-   digitalConfig( TEC1, INPUT );
-   digitalConfig( TEC2, INPUT );
-   digitalConfig( TEC3, INPUT );
-   digitalConfig( TEC4, INPUT );
-
-   /* Configuración de pines de salida para Leds de la CIAA-NXP */
-   digitalConfig( LEDR, OUTPUT );
-   digitalConfig( LEDG, OUTPUT );
-   digitalConfig( LEDB, OUTPUT );
-   digitalConfig( LED1, OUTPUT );
-   digitalConfig( LED2, OUTPUT );
-   digitalConfig( LED3, OUTPUT );
-
-   /* ------------- REPETIR POR SIEMPRE ------------- */
-   while(1) {
-   }
-
-   /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
-      por ningun S.O. */
-   return 0 ;
 }
 
 /*==================[end of file]============================================*/

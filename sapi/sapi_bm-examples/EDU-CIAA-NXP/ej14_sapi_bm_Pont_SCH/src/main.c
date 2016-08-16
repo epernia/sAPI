@@ -28,11 +28,28 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-/*
- * Date: 2016-04-26
+/* Date: 2016-08-16
+ *
+ * Ejemplo de Sistema Operativo Cooperativo Simple de M. J. Pont. En este RTOS 
+ * todas las tareas pueden ser Real-Time si se planifican utilizando offsets 
+ * adecuados y además tienen un comportamiento cooperativo (las tareas deben 
+ * ser NO bloqueantes, la duración de cada tarea menor a 1 Tick si se aplican 
+ * offsets).
+ * 
+ * Este planificador cooperativo contiene:
+ * 
+ *  - Estructura de datos del planificador. Contiene información de 
+ *    planificación y ejecución de cada tarea: sTask
+ *  - Función de inicialización del planificador: SCH_Init();
+ *  - Una única RTI que actualice el planificador periódicamente: SCH_Update();
+ *  - Una función de despacho de tareas que arranque la tarea que corresponda
+ *    ejecutar: SCH_Dispatch_Tasks();
+ *  - Una función para agregar tareas al planificador 
+ *    SCH_Add_Task(Task_Name, Delay, Period );
+ *  - Una función para remover tareas del planificador (si fuese necesario): 
+ *    SCH_Delete_Task(char TASK_INDEX);
  */
 
 /*==================[inclusions]=============================================*/
@@ -40,6 +57,10 @@
 #include "main.h"         /* <= own header */
 
 #include "sAPI.h"         /* <= sAPI header */
+
+#include "tasks.h"        /* <= tasks header */
+#include "isr.h"          /* <= scheduler and systema initialization header */
+#include "sch.h"          /* <= dispatcher and task management header */
 
 /*==================[macros and definitions]=================================*/
 
@@ -55,58 +76,44 @@
 
 /*==================[external functions definition]==========================*/
 
-/* FUNCION que se ejecuta cada vezque ocurre un Tick. */
-bool_t myTickHook(void *ptr){
-
-   static bool_t ledState = OFF;
-
-   if( ledState ){
-      ledState = OFF;
-   }
-   else{
-      ledState = ON;
-   }
-   digitalWrite( LED3, ledState );
-
-   return 1;
-}
-
-
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
 int main(void){
 
    /* ------------- INICIALIZACIONES ------------- */
 
-   /* Inicializar la placa */
-   boardConfig();
+   /* Inicializacion del planificador. */
+   SCH_Init();
 
-   /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta 
-      periódicamente una interrupcón cada 50ms que incrementa un contador de 
-      Ticks obteniendose una base de tiempos). Se agrega además un "tick hook"
-      nombrado myTickHook. El tick hook es simplemente una función que se 
-      ejecutará períodicamente con cada interrupción de Tick, este nombre se
-      refiere a una función "enganchada" a una interrupción */
-   tickConfig( 50, myTickHook );
+   /* Inicializacion de las tareas. */
+   tasksInit();
 
-   /* Inicializar DigitalIO */
-   digitalConfig( 0, ENABLE_DIGITAL_IO );
+   /* Se agrega task1 al planificador */
+   SCH_Add_Task( task1, /* tarea a añadir */
+                     0, /* offset de ejecucion en ticks */
+                    40  /* periodicidad de ejecucion en ticks */
+               );
 
-   /* Configuración de pines de entrada para Teclas de la CIAA-NXP */
-   digitalConfig( TEC1, INPUT );
-   digitalConfig( TEC2, INPUT );
-   digitalConfig( TEC3, INPUT );
-   digitalConfig( TEC4, INPUT );
+   /* Se agrega task2 al planificador */
+   SCH_Add_Task( task2, 1, 500 );
 
-   /* Configuración de pines de salida para Leds de la CIAA-NXP */
-   digitalConfig( LEDR, OUTPUT );
-   digitalConfig( LEDG, OUTPUT );
-   digitalConfig( LEDB, OUTPUT );
-   digitalConfig( LED1, OUTPUT );
-   digitalConfig( LED2, OUTPUT );
-   digitalConfig( LED3, OUTPUT );
-
-   /* ------------- REPETIR POR SIEMPRE ------------- */
+   /* Se agrega task3 al planificador */
+   SCH_Add_Task( task3, 2, 1000 );
+   
+   /* Se inicializa la interrupcion que ejecuta el planificador de tareas.
+      Se puede poner de 1 a 50ms */
+   SCH_Start(1);
+   
+   /* ----- REPETIR POR SIEMPRE (SUPER LOOP) ----- */
+   
    while(1) {
+      
+      /* Se despachan (ejecutan) las tareas marcadas para su ejecucion.
+         Luego se pone el sistema en bajo consumo hasta que ocurra la 
+         proxima interrupcion, en este caso la de Tick.
+         Al ocurrir la interrupcion de Tick se ejecutara el planificador 
+         que revisa cuales son las tareas a marcar para su ejecucion. */
+	   SCH_Dispatch_Tasks();
+
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado

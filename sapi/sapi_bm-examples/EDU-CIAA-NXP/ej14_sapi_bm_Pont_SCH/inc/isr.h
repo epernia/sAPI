@@ -1,4 +1,5 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2013, Michael J. Pont.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,10 +32,20 @@
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+/* Date: 2016-08-16 */
+
+#ifndef _ISR_H_
+#define _ISR_H_
 
 /*==================[inclusions]=============================================*/
+
+#include "sAPI.h"         /* <= sAPI header */
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -44,5 +55,21 @@
 
 /*==================[external functions declaration]=========================*/
 
+/* FUNCION que inicializa el planificador de tareas. */
+void SCH_Init(void);
+
+/* FUNCION que inicializa la interrupcion que ejecuta
+   el planificador de tareas. */
+void SCH_Start(tick_t);
+
+/* FUNCION que contiene el planificador de tareas. */
+bool_t SCH_Update(void *ptr);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MAIN_H_ */
+#endif /* #ifndef _ISR_H_ */

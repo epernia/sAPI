@@ -31,10 +31,18 @@
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+/* Date: 2016-08-16 */
+
+#ifndef _TASKS_H_
+#define _TASKS_H_
 
 /*==================[inclusions]=============================================*/
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros]=================================================*/
 
@@ -44,5 +52,27 @@
 
 /*==================[external functions declaration]=========================*/
 
+/* ------------ INICIALIZACION DE TAREAS ------------ */
+
+/* FUNCION que inicializa las tareas. */
+void tasksInit(void);
+
+/* --------------------- TAREAS --------------------- */
+
+/* FUNCION que realiza la tarea 1. */
+void task1(void);
+
+/* FUNCION que realiza la tarea 2. */
+void task2(void);
+
+/* FUNCION que realiza la tarea 3. */
+void task3(void);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MAIN_H_ */
+#endif /* #ifndef _TASKS_H_ */

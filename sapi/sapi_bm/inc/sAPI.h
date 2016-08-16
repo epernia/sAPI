@@ -41,7 +41,10 @@
 #include "sAPI_DataTypes.h"
 #include "sAPI_IsrVector.h"
 
+/* Board initialization */
 #include "sAPI_Board.h"
+
+/* Internal Peripherals */
 #include "sAPI_PeripheralMap.h"
 #include "sAPI_DigitalIO.h"
 #include "sAPI_AnalogIO.h"
@@ -49,11 +52,16 @@
 #include "sAPI_Timer.h"
 #include "sAPI_Pwm.h"
 #include "sAPI_I2c.h"
+#include "sAPI_Tick.h"
 #include "sAPI_Rtc.h"
 
-#include "sAPI_Tick.h"
+/* Time management */
 #include "sAPI_Delay.h"
 
+/* Low consumption management */
+#include "sAPI_Sleep.h"
+
+/* External Peripherals */
 #include "sAPI_Servo.h"
 #include "sAPI_Hmc5883l.h"
 

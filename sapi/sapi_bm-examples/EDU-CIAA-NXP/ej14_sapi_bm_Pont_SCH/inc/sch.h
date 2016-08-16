@@ -1,4 +1,5 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2013, Michael J. Pont.
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,18 +32,66 @@
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+/* Date: 2016-08-16 */
+
+#ifndef _SEOS_H_
+#define _SEOS_H_
 
 /*==================[inclusions]=============================================*/
 
+#include "sAPI.h"         /* <= sAPI header */
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*==================[macros]=================================================*/
 
+/* The maximum number of tasks required at any one time during the execution
+   of the program. MUST BE ADJUSTED FOR EACH NEW PROJECT */
+#define SCH_MAX_TASKS (3)
+
 /*==================[typedef]================================================*/
+
+/* Store in DATA area, if possible, for rapid access.
+   Total memory per task is 7 bytes. */
+typedef struct
+{
+   /* Pointer to the task (must be a 'void (void)' function) */
+   void (* pTask)(void);
+   /* Delay (ticks) until the function will (next) be run
+      - see SCH_Add_Task() for further details */
+   int Delay;
+   /* Interval (ticks) between subsequent runs.
+      - see SCH_Add_Task() for further details */
+   int Period;
+   /* Incremented (by scheduler) when task is due to execute */
+   int RunMe;
+} sTask;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
+/* FUNCION que contiene el despachador de tareas. */
+void SCH_Dispatch_Tasks(void);
+
+/* FUNCION que añade una tarea al planificador. */
+char SCH_Add_Task(void (*) (void), const int, const int);
+
+/* FUNCION que remueve una tarea del planificador. */
+char SCH_Delete_Task(const int);
+
+/* FUNCION que reporta el estado del sistema. */
+void SCH_Report_Status(void);
+
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+}
+#endif
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MAIN_H_ */
+#endif /* #ifndef _SEOS_H_ */
