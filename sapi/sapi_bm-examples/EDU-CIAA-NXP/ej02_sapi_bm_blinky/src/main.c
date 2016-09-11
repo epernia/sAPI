@@ -83,9 +83,6 @@ int main(void){
    digitalConfig( LED2, OUTPUT );
    digitalConfig( LED3, OUTPUT );
 
-   /* Variable para almacenar el valor de tecla leido */
-   bool_t valor;
-
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
 

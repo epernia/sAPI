@@ -43,7 +43,7 @@ bool_t hmc5883lIsAlive( void ){
 
    uint8_t idRegister[3];
 
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_ID_REG_A, &idRegister, 3 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_ID_REG_A, &idRegister, 3 );
 
    if( (HMC5883L_VALUE_ID_REG_A == idRegister[0]) &&
        (HMC5883L_VALUE_ID_REG_B == idRegister[1]) &&
@@ -83,11 +83,11 @@ bool_t hmc5883lConfig( HMC5883L_config_t config ){
 
    registerMode = config.mode;
 
-   i2cConfig( I2C0, 100000 );
+   // i2cConfig( I2C0, 100000 );
 
-   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_A, &registerA, 1 );
-   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_B, &registerB, 1 );
-   i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_MODE, &registerMode, 1 );
+   // i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_A, &registerA, 1 );
+   // i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_CONFIG_B, &registerB, 1 );
+   // i2cWrite( I2C0, HMC5883L_ADD, HMC5883L_REG_MODE, &registerMode, 1 );
 
    return ( hmc5883lIsAlive() );
 }
@@ -101,12 +101,12 @@ bool_t hmc5883lRead( int16_t * x, int16_t * y, int16_t * z ){
    uint8_t y_MSB, y_LSB;
    uint8_t z_MSB, z_LSB;
 
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_MSB, &x_MSB, 1 );
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_LSB, &x_LSB, 1 );
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_MSB, &y_MSB, 1 );
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_LSB, &y_LSB, 1 );
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_MSB, &z_MSB, 1 );
-   i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_LSB, &z_LSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_MSB, &x_MSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_X_LSB, &x_LSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_MSB, &y_MSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Y_LSB, &y_LSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_MSB, &z_MSB, 1 );
+   // i2cRead( I2C0, HMC5883L_ADD, HMC5883L_REG_Z_LSB, &z_LSB, 1 );
 
    *x = x_MSB;
    *x = (*x << 8)|x_LSB;

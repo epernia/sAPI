@@ -128,7 +128,7 @@ void uartWriteString( uint8_t uart, uint8_t * str ){
 
    while(*str != 0){
 	  uartWriteByte(uart, *str);
-	  *str++;
+	  str++;
    }
 }
 

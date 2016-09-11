@@ -48,8 +48,6 @@
 
 /*==================[macros and definitions]=================================*/
 
-#define I2C_MAX_TX_BUFF  16
-
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
@@ -83,10 +81,69 @@ bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
 }
 
 
-bool_t i2cRead( uint8_t i2cNumber, 
-                uint8_t addr, 
-                uint8_t record, 
-                uint8_t * buf, 
+bool_t i2cRead( uint8_t  i2cNumber,
+                uint8_t  i2cSlaveAddress,
+                uint8_t* dataToReadBuffer,
+                uint16_t dataToReadBufferSize,
+                uint8_t* reciveDataBuffer,
+                uint16_t reciveDataBufferSize ){
+
+   I2CM_XFER_T i2cData;
+
+   if( i2cNumber != I2C0 ){
+      return FALSE;
+   }
+
+   i2cData.slaveAddr = i2cSlaveAddress;
+   i2cData.options   = 0;
+   i2cData.status    = 0;
+   i2cData.txBuff    = dataToReadBuffer;
+   i2cData.txSz      = dataToReadBufferSize;
+   i2cData.rxBuff    = reciveDataBuffer;
+   i2cData.rxSz      = reciveDataBufferSize;
+
+   if( Chip_I2CM_XferBlocking( LPC_I2C0, &i2cData ) == 0 ) {
+      return FALSE;
+   }
+
+   return TRUE;
+}
+
+
+bool_t i2cWrite( uint8_t  i2cNumber,
+                 uint8_t  i2cSlaveAddress,
+                 uint8_t* transmitDataBuffer,
+                 uint16_t transmitDataBufferSize ){
+
+   I2CM_XFER_T i2cData;
+
+   if( i2cNumber != I2C0 ){
+      return FALSE;
+   }
+
+   /* Prepare the i2cData register */
+   i2cData.slaveAddr = i2cSlaveAddress;
+   i2cData.options   = 0;
+   i2cData.status    = 0;
+   i2cData.txBuff    = transmitDataBuffer;
+   i2cData.txSz      = transmitDataBufferSize;
+   i2cData.rxBuff    = 0;
+   i2cData.rxSz      = 0;
+
+   /* Send the i2c data */
+   if( Chip_I2CM_XferBlocking( LPC_I2C0, &i2cData ) == 0 ){
+      return FALSE;
+   }
+
+   return TRUE;
+}
+
+
+/*
+bool_t i2cRead( uint8_t i2cNumber,
+                uint8_t addr,
+                uint8_t record,
+                uint8_t * buf,
                 uint16_t len ){
 
    I2CM_XFER_T i2cData;
@@ -111,6 +168,7 @@ bool_t i2cRead( uint8_t i2cNumber,
 }
 
 
+
 bool_t i2cWrite( uint8_t i2cNumber, 
                  uint8_t addr, 
                  uint8_t record, 
@@ -125,13 +183,13 @@ bool_t i2cWrite( uint8_t i2cNumber,
       return FALSE;
    }
 
-   /* First, the record to be write must be sent */
+   // First, the record to be write must be sent
    txBuff[0] = record;
 
-   /* If length of data to be sent is greater than (I2C_MAX_TX_BUFF-1),
-    * modify the length to be sent. Remember that the firs byte of
-    * the txBuff is reserved for the "record id"
-    */
+   // If length of data to be sent is greater than (I2C_MAX_TX_BUFF-1),
+   // modify the length to be sent. Remember that the first byte of
+   // the txBuff is reserved for the "record id"
+
    if( (I2C_MAX_TX_BUFF-1) < len ){
       len = I2C_MAX_TX_BUFF - 1;
    }
@@ -140,7 +198,7 @@ bool_t i2cWrite( uint8_t i2cNumber,
       txBuff[i+1] = buf[i];
    }
 
-   /* Prepare the i2cData register */
+   // Prepare the i2cData register
    i2cData.slaveAddr = addr;
    i2cData.options = 0;
    i2cData.status = 0;
@@ -149,13 +207,15 @@ bool_t i2cWrite( uint8_t i2cNumber,
    i2cData.rxBuff = NULL;
    i2cData.rxSz = 0;
 
-   /* Send the i2c data */
+   // Send the i2c data
    if( Chip_I2CM_XferBlocking( LPC_I2C0, &i2cData ) == 0 ){
       return FALSE;
    }
 
    return TRUE;
 }
+
+*/
 
 /*==================[ISR external functions definition]======================*/
 
