@@ -354,25 +354,37 @@ Posibles configuraciones de clockRateHz: 100000, etc.
 
 **Lectura**
 
-``bool_t i2cWrite( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len );``
+``bool_t i2cRead( uint8_t i2cNumber, uint8_t  i2cSlaveAddress, uint8_t* dataToRead, uint16_t dataToReadSize, uint8_t* recivedData, uint16_t recivedDataSize );``
 
-- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a leer (ver I2C Map). Por ahora funciona únicamente el I2C0.
-- Parámetro: ``uint8_t addr`` Dirección del sensor conectado por I2C a leer.
-- Parámetro: ``uint8_t record`` Registro a leer.
-- Parámetro: ``uint8_t * buf`` puntero al buffer donde se almacenarán los datos leídos.
-- Parámetro: ``uint16_t len`` tamaño del buffer donde se almacenarán los datos leídos.
+- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a leer (ver I2C Map). Actualmente funciona únicamente el I2C0.
+- Parámetro: ``uint8_t i2cSlaveAddress`` Dirección del sensor conectado por I2C a leer.
+- Parámetro: ``uint8_t * dataToRead`` puntero al buffer con los bytes a escribir para indicar que se debe leer.
+- Parámetro: ``uint16_t dataToReadSize`` tamaño del buffer con los bytes a escribirr.
+- Parámetro: ``uint8_t * recivedData`` puntero al buffer donde se almacenarán los datos leídos.
+- Parámetro: ``uint16_t recivedDataSize`` tamaño del buffer donde se almacenarán los datos leídos.
 - Retorna: ``bool_t`` TRUE si se pudo leer correctamente.
 
 **Escritura**
 
-``bool_t i2cRead( uint8_t i2cNumber, uint8_t addr, uint8_t record, uint8_t * buf, uint16_t len );``
+``bool_t i2cWrite( uint8_t  i2cNumber, uint8_t  i2cSlaveAddress, uint8_t* transmitDataBuffer, uint16_t transmitDataBufferSize );``
 
-- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a escribir (ver I2C Map). Por ahora funciona únicamente el I2C0.
-- Parámetro: ``uint8_t addr`` Dirección del sensor conectado por I2C a escribir.
-- Parámetro: ``uint8_t record`` Registro a escribir.
+- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a escribir (ver I2C Map). Actualmente funciona únicamente el I2C0.
+- Parámetro: ``uint8_t i2cSlaveAddress`` Dirección del sensor conectado por I2C a escribir.
 - Parámetro: ``uint8_t * buf`` puntero al buffer donde se encuentran los datos a escribir.
 - Parámetro: ``uint16_t len`` tamaño del buffer donde se encuentran los datos a escribir.
 - Retorna: ``bool_t`` TRUE si se pudo escribir correctamente.
+
+### sAPI_Sleep
+
+Manejo de modos de bajo consumo del microcontrolador.
+
+**Dormir hasta que ocurra la próxima interrupción**
+
+``void sleepUntilNextInterrupt( void );``
+
+- Parámetro: ninguno.
+- Retorna: nada.
+
 
 ### sAPI_Rtc
 
