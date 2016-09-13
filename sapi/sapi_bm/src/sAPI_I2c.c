@@ -85,8 +85,12 @@ bool_t i2cRead( uint8_t  i2cNumber,
                 uint8_t  i2cSlaveAddress,
                 uint8_t* dataToReadBuffer,
                 uint16_t dataToReadBufferSize,
+                bool_t   sendWriteStop,
                 uint8_t* reciveDataBuffer,
-                uint16_t reciveDataBufferSize ){
+                uint16_t reciveDataBufferSize,
+                bool_t   sendReadStop ){
+
+//TODO: ver i2cData.options si se puede poner la condicion opcional de stop
 
    I2CM_XFER_T i2cData;
 
@@ -113,7 +117,10 @@ bool_t i2cRead( uint8_t  i2cNumber,
 bool_t i2cWrite( uint8_t  i2cNumber,
                  uint8_t  i2cSlaveAddress,
                  uint8_t* transmitDataBuffer,
-                 uint16_t transmitDataBufferSize ){
+                 uint16_t transmitDataBufferSize,
+                 bool_t   sendWriteStop ){
+
+   //TODO: ver i2cData.options si se puede poner la condicion opcional de stop
 
    I2CM_XFER_T i2cData;
 
@@ -145,74 +152,13 @@ bool_t i2cRead( uint8_t i2cNumber,
                 uint8_t record,
                 uint8_t * buf,
                 uint16_t len ){
-
-   I2CM_XFER_T i2cData;
-
-   if( i2cNumber != I2C0 ){
-      return FALSE;
-   }
-
-   i2cData.slaveAddr = addr;
-   i2cData.options = 0;
-   i2cData.status = 0;
-   i2cData.txBuff = &record;
-   i2cData.txSz = 1;
-   i2cData.rxBuff = buf;
-   i2cData.rxSz = len;
-
-   if( Chip_I2CM_XferBlocking( LPC_I2C0, &i2cData ) == 0 ) {
-      return FALSE;
-   }
-
-   return TRUE;
 }
-
-
 
 bool_t i2cWrite( uint8_t i2cNumber, 
                  uint8_t addr, 
                  uint8_t record, 
                  uint8_t * buf, 
                  uint16_t len ){
-
-   I2CM_XFER_T i2cData;
-   uint8_t txBuff[I2C_MAX_TX_BUFF];
-   uint8_t i;
-
-   if( i2cNumber != I2C0 ){
-      return FALSE;
-   }
-
-   // First, the record to be write must be sent
-   txBuff[0] = record;
-
-   // If length of data to be sent is greater than (I2C_MAX_TX_BUFF-1),
-   // modify the length to be sent. Remember that the first byte of
-   // the txBuff is reserved for the "record id"
-
-   if( (I2C_MAX_TX_BUFF-1) < len ){
-      len = I2C_MAX_TX_BUFF - 1;
-   }
-
-   for( i=0; i<len; i++ ){
-      txBuff[i+1] = buf[i];
-   }
-
-   // Prepare the i2cData register
-   i2cData.slaveAddr = addr;
-   i2cData.options = 0;
-   i2cData.status = 0;
-   i2cData.txBuff = &txBuff;
-   i2cData.txSz = len + 1;
-   i2cData.rxBuff = NULL;
-   i2cData.rxSz = 0;
-
-   // Send the i2c data
-   if( Chip_I2CM_XferBlocking( LPC_I2C0, &i2cData ) == 0 ){
-      return FALSE;
-   }
-
-   return TRUE;
 }
 
 */

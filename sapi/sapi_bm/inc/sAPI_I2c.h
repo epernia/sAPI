@@ -69,29 +69,18 @@ bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );
 
 bool_t i2cRead( uint8_t  i2cNumber,
                 uint8_t  i2cSlaveAddress,
-                uint8_t* dataToRead,
-				uint16_t dataToReadSize,
-                uint8_t* recivedData,
-				uint16_t recivedDataSize );
+                uint8_t* dataToReadBuffer,
+                uint16_t dataToReadBufferSize,
+                bool_t   sendWriteStop,
+                uint8_t* reciveDataBuffer,
+                uint16_t reciveDataBufferSize,
+                bool_t   sendReadStop );
 
 bool_t i2cWrite( uint8_t  i2cNumber,
                  uint8_t  i2cSlaveAddress,
                  uint8_t* transmitDataBuffer,
-                 uint16_t transmitDataBufferSize );
-
-/*
-bool_t i2cRead( uint8_t i2cNumber,
-                 uint8_t addr, 
-                 uint8_t record, 
-                 uint8_t * buf, 
-                 uint16_t len );
-
-bool_t i2cWrite( uint8_t i2cNumber,
-                 uint8_t addr, 
-                 uint8_t record, 
-                 uint8_t * buf, 
-                 uint16_t len );
-*/
+                 uint16_t transmitDataBufferSize,
+                 bool_t   sendWriteStop );
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_I2C_H_ */
