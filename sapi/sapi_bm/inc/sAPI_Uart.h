@@ -39,6 +39,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sAPI_PeripheralMap.h"
+#include "sAPI_Delay.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -50,13 +51,33 @@ extern "C" {
 
 /*==================[typedef]================================================*/
 
+typedef enum{
+   UART_RECEIVE_STRING_CONFIG,
+   UART_RECEIVE_STRING_RECEIVING,
+   UART_RECEIVE_STRING_RECEIVED_OK,
+   UART_RECEIVE_STRING_TIMEOUT
+} waitForReceiveStringOrTimeoutState_t;
+
+typedef struct{
+   waitForReceiveStringOrTimeoutState_t state;
+   uint8_t* string;
+   uint16_t stringSize;
+   uint16_t stringIndex;
+   tick_t timeout;
+   delay_t delay;
+} waitForReceiveStringOrTimeout_t;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
+waitForReceiveStringOrTimeoutState_t
+   waitForReceiveStringOrTimeout( uint8_t uart,
+      waitForReceiveStringOrTimeout_t* instance );
+
 void uartConfig( uint8_t uart, uint32_t baudRate );
 
-uint8_t uartReadByte( uint8_t uart );
+bool_t uartReadByte( uint8_t uart, uint8_t* receivedByte );
 void uartWriteByte( uint8_t uart, uint8_t byte );
 
 void uartWriteString( uint8_t uart, uint8_t * str );

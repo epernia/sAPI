@@ -39,7 +39,7 @@
 #include "sAPI_DataTypes.h"
 #include "sAPI_PeripheralMap.h"
 
-#include "sAPI_DigitalIO.h"
+#include "sAPI_Gpio.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -49,7 +49,7 @@
 
 /*==================[internal data definition]===============================*/
 
-const pinConfigDigitalLpc4337_t digitalPinsConfig[] = {
+const pinConfigGpioLpc4337_t gpioPinsConfig[] = {
 
 	/*{ {PinNamePortN ,PinNamePinN}, PinFUNC, {GpioPortN, GpioPinN} }*/
 
@@ -195,20 +195,20 @@ const pinConfigDigitalLpc4337_t digitalPinsConfig[] = {
 
 /*==================[internal functions definition]==========================*/
 
-static void digitalObtainPinConfig( int8_t pin, int8_t config,
+static void gpioObtainPinConfig( int8_t pin, int8_t config,
                       int8_t *pinNamePort, int8_t *pinNamePin, int8_t *func,
                       int8_t *gpioPort, int8_t *gpioPin ){
 
-   *pinNamePort = digitalPinsConfig[pin].pinName.port;
-   *pinNamePin  = digitalPinsConfig[pin].pinName.pin;
-   *func        = digitalPinsConfig[pin].func;
-   *gpioPort    = digitalPinsConfig[pin].gpio.port;
-   *gpioPin     = digitalPinsConfig[pin].gpio.pin;
+   *pinNamePort = gpioPinsConfig[pin].pinName.port;
+   *pinNamePin  = gpioPinsConfig[pin].pinName.pin;
+   *func        = gpioPinsConfig[pin].func;
+   *gpioPort    = gpioPinsConfig[pin].gpio.port;
+   *gpioPin     = gpioPinsConfig[pin].gpio.pin;
 }
 
 /*==================[external functions definition]==========================*/
 
-bool_t digitalConfig( int8_t pin, int8_t config ){
+bool_t gpioConfig( int8_t pin, int8_t config ){
 
    bool_t ret_val     = 1;
 
@@ -220,12 +220,12 @@ bool_t digitalConfig( int8_t pin, int8_t config ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   digitalObtainPinConfig( pin, config, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( pin, config, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
    switch(config){
 
-      case ENABLE_DIGITAL_IO:
+      case GPIO_ENABLE:
 		   /* Initializes GPIO */
 		   Chip_GPIO_Init(LPC_GPIO_PORT);
 	   break;
@@ -290,7 +290,7 @@ bool_t digitalConfig( int8_t pin, int8_t config ){
 }
 
 
-bool_t digitalWrite( int8_t pin, bool_t value ){
+bool_t gpioWrite( int8_t pin, bool_t value ){
 
    bool_t ret_val     = 1;
 
@@ -302,7 +302,7 @@ bool_t digitalWrite( int8_t pin, bool_t value ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   digitalObtainPinConfig( pin, OUTPUT, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( pin, OUTPUT, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
    Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, value);
@@ -311,7 +311,7 @@ bool_t digitalWrite( int8_t pin, bool_t value ){
 }
 
 
-bool_t digitalRead( int8_t pin ){
+bool_t gpioRead( int8_t pin ){
 
    bool_t ret_val     = OFF;
 
@@ -323,7 +323,7 @@ bool_t digitalRead( int8_t pin ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   digitalObtainPinConfig( pin, INPUT, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( pin, INPUT, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
    ret_val = (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );

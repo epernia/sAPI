@@ -33,8 +33,8 @@
 
 /* Date: 2015-09-23 */
 
-#ifndef _SAPI_DIGITALIO_H_
-#define _SAPI_DIGITALIO_H_
+#ifndef _SAPI_GPIO_H_
+#define _SAPI_GPIO_H_
 
 /*==================[inclusions]=============================================*/
 
@@ -62,8 +62,8 @@ extern "C" {
 typedef enum{
    INPUT, OUTPUT,
    INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER,
-   ENABLE_DIGITAL_IO
-} digitalIOConfig_t;
+   GPIO_ENABLE
+} gpioConfig_t;
 
 
 /* ----- Begin Pin Config Structs NXP LPC4337 ----- */
@@ -77,7 +77,7 @@ typedef struct{
     pinConfigLpc4337_t pinName;
                 int8_t func;
    gpioConfigLpc4337_t gpio;
-} pinConfigDigitalLpc4337_t;
+} pinConfigGpioLpc4337_t;
 
 /* ------ End Pin Config Structs NXP LPC4337 ------ */
 
@@ -85,9 +85,9 @@ typedef struct{
 
 /*==================[external functions declaration]=========================*/
 
-bool_t digitalConfig( int8_t, int8_t );
-bool_t digitalRead( int8_t );
-bool_t digitalWrite( int8_t, bool_t );
+bool_t gpioConfig( int8_t, int8_t );
+bool_t gpioRead( int8_t );
+bool_t gpioWrite( int8_t, bool_t );
 
 /*==================[cplusplus]==============================================*/
 
@@ -96,4 +96,4 @@ bool_t digitalWrite( int8_t, bool_t );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DIGITALIO_H_ */
+#endif /* #ifndef _SAPI_GPIO_H_ */

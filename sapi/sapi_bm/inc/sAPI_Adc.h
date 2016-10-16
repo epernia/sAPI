@@ -1,7 +1,8 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,52 +32,41 @@
  *
  */
 
-#ifndef _SAPI_TEMPLATE_H_
-#define _SAPI_TEMPLATE_H_
-/** \brief Bare Metal example header file
- **
- ** This is a mini example of the CIAA Firmware
- **
- **/
+/* Date: 2016-02-20 */
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
- ** @{ */
-/** \addtogroup Examples CIAA Firmware Examples
- ** @{ */
-/** \addtogroup Baremetal Bare Metal example header file
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
+#ifndef SAPI_ADC_H_
+#define SAPI_ADC_H_
 
 /*==================[inclusions]=============================================*/
 
-/*==================[macros]=================================================*/
+/*==================[cplusplus]==============================================*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
 
+typedef enum{
+   ADC_ENABLE, ADC_DISABLE
+} adcConfig_t;
+
 /*==================[external data declaration]==============================*/
 
-/*==================[ISR external functions definition]======================*/
+/*==================[external functions declaration]=========================*/
+
+void adcConfig( uint8_t config );
+
+uint16_t adcRead( uint8_t analogInput );
 
 
+/*==================[cplusplus]==============================================*/
 
-/*==================[external functions definition]==========================*/
+#ifdef __cplusplus
+}
+#endif
 
-
-
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_TEMPLATE_H_ */
+#endif /* #ifndef SAPI_ADC_H_ */

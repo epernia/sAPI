@@ -46,8 +46,9 @@
 
 /* Internal Peripherals */
 #include "sAPI_PeripheralMap.h"
-#include "sAPI_DigitalIO.h"
-#include "sAPI_AnalogIO.h"
+#include "sAPI_Gpio.h"
+#include "sAPI_Adc.h"
+#include "sAPI_Dac.h"
 #include "sAPI_Uart.h"
 #include "sAPI_Timer.h"
 #include "sAPI_Pwm.h"

@@ -1,7 +1,8 @@
-/* Copyright 2016, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+ * This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,52 +32,40 @@
  *
  */
 
-/** @brief Brief for this file.
- **
- **/
+/* Date: 2016-02-20 */
 
-/** \addtogroup groupName Group Name
- ** @{ */
-
-/*
- * Initials     Name
- * ---------------------------
- * ENP          Eric Pernia
- *
- *  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 2016-05-02   v0.0.1   ENP   First version
- */
+#ifndef SAPI_DAC_H_
+#define SAPI_DAC_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "chip.h"
-#include "sAPI_DataTypes.h"
+/*==================[cplusplus]==============================================*/
 
-#include "sAPI_Servo.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==================[macros and definitions]=================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+typedef enum{
+   DAC_ENABLE, DAC_DISABLE
+} dacConfig_t;
 
-/*==================[internal data definition]===============================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[external data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[internal functions definition]==========================*/
+void dacConfig( uint8_t config );
 
-/*==================[external functions definition]==========================*/
+void dacWrite( uint8_t analogOutput, uint16_t value );
 
+/*==================[cplusplus]==============================================*/
 
+#ifdef __cplusplus
+}
+#endif
 
-/*==================[ISR external functions definition]======================*/
-
-
-
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _SAPI_DAC_H_ */

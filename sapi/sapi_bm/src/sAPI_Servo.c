@@ -53,7 +53,7 @@ DISABLE_SERVO_OUTPUT
 #include "sAPI_DataTypes.h"
 #include "sAPI_PeripheralMap.h"
 
-#include "sAPI_DigitalIO.h"
+#include "sAPI_Gpio.h"
 #include "sAPI_Timer.h"
 
 #include "sAPI_Servo.h"
@@ -112,23 +112,23 @@ static bool_t servoDetach( uint8_t servoNumber );
 
 /*==================[internal data definition]===============================*/
 
-/* Enter a servo number, get a digitalIO number
- * Since this module works with servo numbers, but uses digital pins to generate
+/* Enter a servo number, get a Gpio number
+ * Since this module works with servo numbers, but uses gpio pins to generate
  * the signal, its necessary to connect servo number with the DIOMap_t (sAPI_PeripheralMap.h).
- * This way the user sets "servos", while using digital outputs internally so the digitalWrite
+ * This way the user sets "servos", while using gpio outputs internally so the gpioWrite()
  * function can be easily used*/
 static const uint8_t servoMap[SERVO_TOTALNUMBER] =
 {
    /* Servo name | DIOMap name | Name in the board*/
-   /* SERVO0 */ DIO0,  /* T_FIL1 */
-   /* SERVO1 */ DIO2,  /* T_COL0 */
-   /* SERVO2 */ DIO3,  /* T_FIL2 */
-   /* SERVO3 */ DIO4,  /* T_FIL3 */
-   /* SERVO4 */ DIO11, /* GPIO8  */
-   /* SERVO5 */ DIO16, /* LCD1   */
-   /* SERVO6 */ DIO17, /* LCD2   */
-   /* SERVO7 */ DIO18, /* LCD3   */
-   /* SERVO8 */ DIO31  /* GPIO2  */
+   /* SERVO0 */ IO0,  /* T_FIL1 */
+   /* SERVO1 */ IO2,  /* T_COL0 */
+   /* SERVO2 */ IO3,  /* T_FIL2 */
+   /* SERVO3 */ IO4,  /* T_FIL3 */
+   /* SERVO4 */ IO11, /* GPIO8  */
+   /* SERVO5 */ IO16, /* LCD1   */
+   /* SERVO6 */ IO17, /* LCD2   */
+   /* SERVO7 */ IO18, /* LCD3   */
+   /* SERVO8 */ IO31  /* GPIO2  */
 };
 
 /*when the user adds a servo with servoAttach the list updates with the servo number*/
@@ -175,7 +175,7 @@ static void timer1CompareMatch0func(void)
    {
       if(AttachedServoList[servoListPosition].servo != EMPTY_POSITION)
       {
-         digitalWrite(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
+         gpioWrite(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
          Timer_SetCompareMatch( 	AttachedServoList[servoListPosition].associatedTimer,
                                     AttachedServoList[servoListPosition].associatedCompareMatch,
                                     Timer_microsecondsToTicks(valueToMicroseconds(AttachedServoList[servoListPosition].value)));
@@ -185,17 +185,17 @@ static void timer1CompareMatch0func(void)
 
 static void timer1CompareMatch1func(void)
 {
-   digitalWrite(servoMap[AttachedServoList[0].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[0].servo],FALSE);
 }
 
 static void timer1CompareMatch2func(void)
 {
-   digitalWrite(servoMap[AttachedServoList[1].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[1].servo],FALSE);
 }
 
 static void timer1CompareMatch3func(void)
 {
-   digitalWrite(servoMap[AttachedServoList[2].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[2].servo],FALSE);
 }
 
 static void timer2CompareMatch0func(void)
@@ -206,7 +206,7 @@ static void timer2CompareMatch0func(void)
    {
       if(AttachedServoList[servoListPosition].servo != EMPTY_POSITION)
       {
-         digitalWrite(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
+         v(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
          Timer_SetCompareMatch( AttachedServoList[servoListPosition].associatedTimer,
                                  AttachedServoList[servoListPosition].associatedCompareMatch,
                                  Timer_microsecondsToTicks(valueToMicroseconds(AttachedServoList[servoListPosition].value)));
@@ -215,15 +215,15 @@ static void timer2CompareMatch0func(void)
 }
 
 static void timer2CompareMatch1func(void){
-   digitalWrite(servoMap[AttachedServoList[3].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[3].servo],FALSE);
 }
 
 static void timer2CompareMatch2func(void){
-   digitalWrite(servoMap[AttachedServoList[4].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[4].servo],FALSE);
 }
 
 static void timer2CompareMatch3func(void){
-   digitalWrite(servoMap[AttachedServoList[5].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[5].servo],FALSE);
 }
 
 static void timer3CompareMatch0func(void){
@@ -234,7 +234,7 @@ static void timer3CompareMatch0func(void){
    {
       if(AttachedServoList[servoListPosition].servo != EMPTY_POSITION)
       {
-         digitalWrite(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
+         gpioWrite(servoMap[AttachedServoList[servoListPosition].servo],TRUE);
          Timer_SetCompareMatch( AttachedServoList[servoListPosition].associatedTimer,
                                  AttachedServoList[servoListPosition].associatedCompareMatch,
                                  Timer_microsecondsToTicks(valueToMicroseconds(AttachedServoList[servoListPosition].value)));
@@ -243,15 +243,15 @@ static void timer3CompareMatch0func(void){
 }
 
 static void timer3CompareMatch1func(void){
-   digitalWrite(servoMap[AttachedServoList[6].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[6].servo],FALSE);
 }
 
 static void timer3CompareMatch2func(void){
-   digitalWrite(servoMap[AttachedServoList[7].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[7].servo],FALSE);
 }
 
 static void timer3CompareMatch3func(void){
-   digitalWrite(servoMap[AttachedServoList[8].servo],FALSE);
+   gpioWrite(servoMap[AttachedServoList[8].servo],FALSE);
 }
 
 
@@ -288,7 +288,7 @@ static bool_t servoAttach( uint8_t servoNumber)
    uint8_t position = 0;
 
    /* Pin must b config as Output */
-   digitalConfig( servoNumber, OUTPUT );
+   gpioConfig( servoNumber, OUTPUT );
 
    position = servoIsAttached(servoNumber);
    if(position==0)

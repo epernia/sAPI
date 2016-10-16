@@ -34,42 +34,71 @@
 
 /* Date: 2016-02-20 */
 
-#ifndef SAPI_ANALOGIO_H_
-#define SAPI_ANALOGIO_H_
-
 /*==================[inclusions]=============================================*/
+#include "chip.h"
 
-/*==================[cplusplus]==============================================*/
+#include "sAPI_DataTypes.h"
+#include "sAPI_PeripheralMap.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "sAPI_Dac.h"
 
 /*==================[macros and definitions]=================================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal data declaration]==============================*/
 
-typedef enum{
-   ENABLE_ANALOG_INPUTS,  DISABLE_ANALOG_INPUTS,
-   ENABLE_ANALOG_OUTPUTS, DISABLE_ANALOG_OUTPUTS
-} analogConfig_t;
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[external data definition]===============================*/
 
-void analogConfig( uint8_t config );
+/*==================[internal functions definition]==========================*/
 
-uint16_t analogRead( uint8_t analogInput );
+/*==================[external functions definition]==========================*/
 
-void analogWrite( uint8_t analogOutput, uint16_t value );
+/*
+ * @brief:  enable/disable the ADC and DAC peripheral
+ * @param:  DAC_ENABLE, DAC_DISABLE
+ * @return: none
+*/
+void dacConfig( uint8_t config ){
 
+   switch(config){
 
-/*==================[cplusplus]==============================================*/
+      case DAC_ENABLE:
+         /* Initialize the DAC peripheral */
+         Chip_DAC_Init(LPC_DAC);
 
-#ifdef __cplusplus
+         /* Enables the DMA operation and controls DMA timer */
+         Chip_DAC_ConfigDAConverterControl(LPC_DAC, DAC_DMA_ENA);
+                                                 /* DCAR DMA access */
+         /* Update value to DAC buffer*/
+         Chip_DAC_UpdateValue(LPC_DAC, 0);
+      break;
+
+      case DAC_DISABLE:
+         /* Disable DAC peripheral */
+         Chip_DAC_DeInit( LPC_DAC );
+      break;
+   }
+
 }
-#endif
+
+
+/*
+ * @brief   Write a value in the DAC.
+ * @param   analogOutput: AO0 ... AOn
+ * @param   value: analog value to be writen in the DAC, from 0 to 1023
+ * @return  none
+ */
+void dacWrite( uint8_t analogOutput, uint16_t value ){
+
+   if( analogOutput == AO ){
+      if( value > 1023 ){
+         value = 1023;
+      }
+      Chip_DAC_UpdateValue( LPC_DAC, value );
+   }
+}
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_ANALOGIO_H_ */

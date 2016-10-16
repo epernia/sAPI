@@ -40,7 +40,7 @@
 #include "sAPI_DataTypes.h"
 #include "sAPI_PeripheralMap.h"
 
-#include "sAPI_AnalogIO.h"
+#include "sAPI_Adc.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -58,14 +58,14 @@
 
 /*
  * @brief:  enable/disable the ADC and DAC peripheral
- * @param:  ENEABLE_AI, DISABLE_AI, ENEABLE_AO, DISABLE_AO
+ * @param:  ADC_ENABLE, ADC_DISABLE
  * @return: none
 */
-void analogConfig( uint8_t config ){
+void adcConfig( uint8_t config ){
 
    switch(config){
 
-      case ENABLE_ANALOG_INPUTS: {
+      case ADC_ENABLE: {
 
          /* Config ADC0 sample mode */
          /*
@@ -101,25 +101,9 @@ void analogConfig( uint8_t config ){
       }
       break;
 
-      case DISABLE_ANALOG_INPUTS:
+      case ADC_DISABLE:
          /* Disable ADC peripheral */
          Chip_ADC_DeInit( LPC_ADC0 );
-      break;
-
-      case ENABLE_ANALOG_OUTPUTS:
-         /* Initialize the DAC peripheral */
-         Chip_DAC_Init(LPC_DAC);
-
-         /* Enables the DMA operation and controls DMA timer */
-         Chip_DAC_ConfigDAConverterControl(LPC_DAC, DAC_DMA_ENA);
-                                                 /* DCAR DMA access */
-         /* Update value to DAC buffer*/
-         Chip_DAC_UpdateValue(LPC_DAC, 0);
-      break;
-
-      case DISABLE_ANALOG_OUTPUTS:
-         /* Disable DAC peripheral */
-         Chip_DAC_DeInit( LPC_DAC );
       break;
    }
 
@@ -131,7 +115,7 @@ void analogConfig( uint8_t config ){
  * @param   AI0 ... AIn
  * @return  analog value
  */
-uint16_t analogRead( uint8_t analogInput ){
+uint16_t adcRead( uint8_t analogInput ){
 
    uint8_t lpcAdcChannel = 66 - analogInput;
    uint16_t analogValue = 0;
@@ -145,22 +129,6 @@ uint16_t analogRead( uint8_t analogInput ){
    Chip_ADC_EnableChannel( LPC_ADC0, lpcAdcChannel, DISABLE );
 
    return analogValue;
-}
-
-/*
- * @brief   Write a value in the DAC.
- * @param   analogOutput: AO0 ... AOn
- * @param   value: analog value to be writen in the DAC, from 0 to 1023
- * @return  none
- */
-void analogWrite( uint8_t analogOutput, uint16_t value ){
-
-   if( analogOutput == AO ){
-      if( value > 1023 ){
-         value = 1023;
-      }
-      Chip_DAC_UpdateValue( LPC_DAC, value );
-   }
 }
 
 /*==================[end of file]============================================*/

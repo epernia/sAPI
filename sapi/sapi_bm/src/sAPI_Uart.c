@@ -50,9 +50,80 @@
 
 /*==================[typedef]================================================*/
 
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal functions definition]==========================*/
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+
+
+//
+waitForReceiveStringOrTimeoutState_t
+   waitForReceiveStringOrTimeout( uint8_t uart,
+      waitForReceiveStringOrTimeout_t* instance ){
+
+   uint8_t receiveByte;
+
+   switch( instance->state ){
+
+      case UART_RECEIVE_STRING_CONFIG:
+
+         delayConfig( &(instance->delay), instance->timeout );
+
+         instance->stringIndex = 0;
+
+         instance->state = UART_RECEIVE_STRING_RECEIVING;
+
+      break;
+
+      case UART_RECEIVE_STRING_RECEIVING:
+
+         if( uartReadByte( uart, &receiveByte ) ){
+
+            // DEBUG
+            uartWriteByte( UART_USB, receiveByte );
+
+            if( (instance->string)[(instance->stringIndex)] == receiveByte ){
+
+               (instance->stringIndex)++;
+
+               if( (instance->stringIndex) == (instance->stringSize - 1) ){
+                  instance->state = UART_RECEIVE_STRING_RECEIVED_OK;
+               }
+
+            }
+
+         }
+
+         if( delayRead( &(instance->delay) ) ){
+            instance->state = UART_RECEIVE_STRING_TIMEOUT;
+         }
+
+      break;
+
+      case UART_RECEIVE_STRING_RECEIVED_OK:
+         instance->state = UART_RECEIVE_STRING_CONFIG;
+      break;
+
+      case UART_RECEIVE_STRING_TIMEOUT:
+         instance->state = UART_RECEIVE_STRING_CONFIG;
+      break;
+
+      default:
+         instance->state = UART_RECEIVE_STRING_CONFIG;
+      break;
+   }
+
+   return instance->state;
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+
+
 
 void uartConfig( uint8_t uart, uint32_t baudRate ){
    switch(uart){
@@ -86,26 +157,31 @@ void uartConfig( uint8_t uart, uint32_t baudRate ){
    }
 }
 
-uint8_t uartReadByte( uint8_t uart ){
+//uint8_t uartReadByte( uint8_t uart ){
+bool_t uartReadByte( uint8_t uart, uint8_t* receivedByte ){
 
-   uint8_t receivedByte = 0;
+   bool_t retVal = TRUE;
 
    switch(uart){
    case UART_USB:
-      if (Chip_UART_ReadLineStatus(UART_USB_LPC) & UART_LSR_RDR) {
-         receivedByte = Chip_UART_ReadByte(UART_USB_LPC);
+      if ( Chip_UART_ReadLineStatus(UART_USB_LPC) & UART_LSR_RDR ) {
+         *receivedByte = Chip_UART_ReadByte(UART_USB_LPC);
+      } else{
+         retVal = FALSE;
       }
    break;
    case UART_232:
-      if (Chip_UART_ReadLineStatus(UART_232_LPC) & UART_LSR_RDR) {
-         receivedByte = Chip_UART_ReadByte(UART_232_LPC);
+      if ( Chip_UART_ReadLineStatus(UART_232_LPC) & UART_LSR_RDR ) {
+         *receivedByte = Chip_UART_ReadByte(UART_232_LPC);
+      } else{
+         retVal = FALSE;
       }
    break;
    case UART_485:
    break;
    }
 
-   return receivedByte;
+   return retVal;
 }
 
 void uartWriteByte( uint8_t uart, uint8_t byte ){
