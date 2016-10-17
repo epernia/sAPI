@@ -19,8 +19,9 @@ certain peripheral.
 - Board.
 - Tick.
 - Delay.
-- Digital I/O.
-- Analog I/O.
+- GPIO.
+- ADC.
+- DAC.
 - UART.
 - I2C.
 - RTC.

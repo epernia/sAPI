@@ -19,21 +19,22 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 
 - Tipos de datos.
 - Mapa de periféricos.
-- Vector de ISRs.
-- Plataforma.
-- Tick.
-- Retardo.
-- E/S Digital.
-- E/S Analógica.
-- UART.
-- I2C.
-- RTC.
-- PWM.
+- Vector de excepciones/interrupciones (ISRs).
+- Inicialización general de la plataforma (Board).
+- Manejo de base de tiempos del sistema (Tick).
+- Retardo bloqueante y no bloqueante.
+- Entrada/Salida de propósito general (GPIO).
+- Conversor analágico-digital (ADC).
+- Conversor digital-analágico (DAC).
+- Transmisor/Receptor asincrónico universal (UART).
+- Bus serie entre circuitos integrados (I2C).
+- Reloj de tiempo real (RTC).
+- Modulación por ancho de pulso (PWM).
 
 **Periféricos externos**
 
 - Servo angular (0 a 180°).
-- Sensor magnetómetro (compass) HMC5883L.
+- Sensor magnetómetro (compass) Honeywell HMC5883L.
 
 Cada módulo incluye un ejemplo.
 

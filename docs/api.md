@@ -54,15 +54,15 @@ siempre TRUE, esta se utiliza para evitar errores de NULL POINTER.
 
 Contiene el mapa de periféricos.
 
-**DigitalIO Map**
+**Gpio Map**
 
 EDU-CIAA-NXP:
 
-``DIO0,  DIO1,  DIO2,  DIO3,  DIO4,  DIO5,  DIO6,  DIO7,
- DIO8,  DIO9,  DIO10, DIO11, DIO12, DIO13, DIO14, DIO15,
- DIO16, DIO17, DIO18, DIO19, DIO20, DIO21, DIO22, DIO23,
- DIO24, DIO25, DIO26, DIO27, DIO28, DIO29, DIO30, DIO31,
- DIO32, DIO33, DIO34, DIO35,
+``IO0,  IO1,  IO2,  IO3,  IO4,  IO5,  IO6,  IO7,
+ IO8,  IO9,  IO10, IO11, IO12, IO13, IO14, IO15,
+ IO16, IO17, IO18, IO19, IO20, IO21, IO22, IO23,
+ IO24, IO25, IO26, IO27, IO28, IO29, IO30, IO31,
+ IO32, IO33, IO34, IO35,
  TEC1,  TEC2,  TEC3,  TEC4,
  LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB``
 
@@ -72,11 +72,15 @@ CIAA-NXP:
  DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
 ``
 
-**AnalogIO Map**
+**Adc Map**
 
-EDU-CIAA-NXP: ``AI0, AI1, AI2, AO``
+EDU-CIAA-NXP: ``AI0, AI1, AI2``
 
-CIAA-NXP: ``AI0, AI1, AI2, AI3, AO``
+CIAA-NXP: ``AI0, AI1, AI2, AI3``
+
+**Dac Map**
+
+``AO``
 
 **Uart Map**
 
@@ -231,71 +235,86 @@ Con ``delayWrite( &myDelay, 1000 );`` se puede cambiar la duración de un delay
 en tiempo de ejecución.
 
 
-### sAPI_DigitalIO
+### sAPI_GPIO
 
-Manejo de Entradas y Salidas digitales.
+Manejo de Entradas y Salidas (booleanas) de propósito general.
 
 **Configuración inicial y modo de una entrada o salida**
 
-``bool_t digitalConfig( int8_t pin, int8_t config);``
+``bool_t gpioConfig( int8_t pin, int8_t config);``
 
-- Parámetro: ``int8_t pin`` pin a configurar (ver Digital IO Map).
+- Parámetro: ``int8_t pin`` pin a configurar (ver Gpio Map).
 - Parámetro: ``int8_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
 
-- ``ENABLE_DIGITAL_IO`` Habilita las entradas y salidas digitales.
+- ``GPIO_ENABLE`` Habilita las entradas y salidas de porpósito general.
 - ``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER`` Pin configurado como
-entrada digital en sus distintas variantes.
-- ``OUTPUT`` Pin configurado como salida digital.
+entrada en sus distintas variantes.
+- ``OUTPUT`` Pin configurado como salida.
 
-**Lectura de Entrada digital**
+**Lectura de Entrada**
 
-``bool_t digitalRead( int8_t pin );``
+``bool_t gpioRead( int8_t pin );``
 
-- Parámetro: ``int8_t pin`` pin a leer (ver Digital IO Map).
-- Retorna: ``bool_t`` valor de la entrada digital.
+- Parámetro: ``int8_t pin`` pin a leer (ver Gpio Map).
+- Retorna: ``bool_t`` valor de la entrada.
 
 
-**Escritura de Salida Digital**
+**Escritura de Salida**
 
-``bool_t digitalWrite( int8_t pin, bool_t value );``
+``bool_t gpioWrite( int8_t pin, bool_t value );``
 
-- Parámetro: ``int8_t pin`` pin a escribir (ver Digital IO Map).
+- Parámetro: ``int8_t pin`` pin a escribir (ver Gpio IO Map).
 - Parámetro: ``bool_t value`` valor a escribir en el pin.
 - Retorna: ``bool_t`` FALSE en caso de errores.
 
-### sAPI_AnalogIO
+### sAPI_Adc
 
-Manejo de Entradas y Salidas analógicas.
+Manejo de conversor analógico-digital.
 
-**Configuración inicial de entradas o salidas analógicas**
+**Configuración inicial de conversor analógico-digital**
 
-``void analogConfig( uint8_t config );``
+``void adcConfig( uint8_t config );``
 
 - Parámetro: ``uint8_t config`` configuración.
 - Retorna: ``void``.
 
 Posibles configuraciones:
 
-- ``ENEABLE_ANALOG_INPUTS`` Habilita las entradas analógicas.
-- ``DISABLE_ANALOG_INPUTS`` Deshabilita las entradas analógicas.
-- ``ENEABLE_ANALOG_OUTPUTS`` Habilita las salidas analógicas.
-- ``DISABLE_ANALOG_OUTPUTS`` Deshabilita las salidas analógicas.
+- ``ADC_ENABLE`` Habilita el periférico ADC.
+- ``ADC_DISABLE`` Deshabilita el periférico ADC.
 
 **Lectura de Entrada analógica**
 
-``uint16_t analogRead( uint8_t analogInput );``
+``uint16_t adcRead( uint8_t analogInput );``
 
-- Parámetro: ``uint8_t analogInput`` pin a leer (ver Analog IO Map).
+- Parámetro: ``uint8_t analogInput`` pin a leer (ver Adc Map).
 - Retorna: ``uint16_t`` el valor actual de la entrada analógica.
+
+
+### sAPI_Dac
+
+Manejo de conversor digital-analógico.
+
+**Configuración inicial de conversor digital-analógico**
+
+``void dacConfig( uint8_t config );``
+
+- Parámetro: ``uint8_t config`` configuración.
+- Retorna: ``void``.
+
+Posibles configuraciones:
+
+- ``DAC_ENABLE`` Habilita el periférico DAC.
+- ``DAC_DISABLE`` Deshabilita el periférico DAC.
 
 **Escritura de Salida analógica**
 
-``void analogWrite( uint8_t , uint16_t value );``
+``void dacWrite( uint8_t , uint16_t value );``
 
-- Parámetro: ``uint8_t analogOutput`` pin a escribir (ver Analog IO Map).
+- Parámetro: ``uint8_t analogOutput`` pin a escribir (ver Dac Map).
 - Parámetro: ``uint16_t value`` valor del pin a escribir.
 - Retorna: ``void``.
 
@@ -316,10 +335,11 @@ Posibles configuraciones de baudRate: ``9600, 57600, 115200, etc.``
 
 **Recibir Byte**
 
-``uint8_t uartReadByte( uint8_t uart );``
+``bool_t uartReadByte( uint8_t uart, uint8_t* byte );``
 
 - Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
-- Retorna: ``uint8_t`` 0 si no hay dato recibido o el Byte recibido.
+- Parámetro: ``uint8_t* byte`` Dirección de memoria a donde se escribirá el dato recibido en caso de que haya un dato para recibir.
+- Retorna: ``bool_t`` TRUE si recibió un dato, FALSE en caso contrario.
 
 **Enviar Byte**
 
@@ -570,11 +590,12 @@ La estructura del tipo ``HMC5883L_config_t`` contiene:
 
 **src** (.c):
 
-- sAPI_AnalogIO.c
+- sAPI_Adc.c
 - sAPI_Board.c
+- sAPI_Dac.c
 - sAPI_DataTypes.c
 - sAPI_Delay.c
-- sAPI_DigitalIO.c
+- sAPI_Gpio.c
 - sAPI_Hmc5883l.c
 - sAPI_I2c.c
 - sAPI_IsrVector.c
@@ -589,11 +610,12 @@ La estructura del tipo ``HMC5883L_config_t`` contiene:
 
 **inc** (.h):
 
-- sAPI_AnalogIO.h
+- sAPI_Adc.h
 - sAPI_Board.h
+- sAPI_Dac.h
 - sAPI_DataTypes.h
 - sAPI_Delay.h
-- sAPI_DigitalIO.h
+- sAPI_Gpio.h
 - sAPI_Hmc5883l.h
 - sAPI_I2c.h
 - sAPI_IsrVector.h
