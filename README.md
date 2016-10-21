@@ -9,7 +9,7 @@ certain peripheral.
 
 ## Documentation
 
-**Note:** Always use the [released versions](../../releases) because these are tested all examples and the API documentation is consistent.
+**NOTE: Always use the [released versions](../../releases) because these are tested all examples and the API documentation is consistent. The master branch may contain inconsistencies because this library is currently under development.**
 
 ### Included modules
 
