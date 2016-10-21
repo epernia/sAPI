@@ -9,6 +9,8 @@ certain peripheral.
 
 ## Documentation
 
+**Note:** Always use the [released versions](sAPI/releases) because these are tested all examples and the API documentation is consistent.
+
 ### Included modules
 
 **Internal Peripherals**
