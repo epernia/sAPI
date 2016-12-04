@@ -2,27 +2,24 @@
 
 ## Módulos
 
-### sAPI_DataTypes
+### sAPI DataTypes
 
 Define las siguientes constantes:
 
 Estados lógicos
 
-``#define FALSE 0``
-
-``#define TRUE !FALSE``
+- ``FALSE = 0``
+- ``TRUE  = !FALSE``
 
 Estados funcionales
 
-``#define ON 1``
-
-``#define OFF 0``
+- ``ON  = 1``
+- ``OFF = 0``
 
 Estados eléctricos
 
-``#define HIGH 1``
-
-``#define LOW 0``
+- ``HIGH = 1``
+- ``LOW  = 0``
 
 Además define los tipos de datos:
 
@@ -50,37 +47,56 @@ siempre TRUE, esta se utiliza para evitar errores de NULL POINTER.
 - Retorna: ``bool_t``Retorna siempre TRUE.
 
 
-### sAPI_PeripheralMap
+### sAPI Peripheral Map
 
 Contiene el mapa de periféricos.
 
-**Gpio Map**
+**GPIO Map**
 
 EDU-CIAA-NXP:
 
-``IO0,  IO1,  IO2,  IO3,  IO4,  IO5,  IO6,  IO7,
- IO8,  IO9,  IO10, IO11, IO12, IO13, IO14, IO15,
- IO16, IO17, IO18, IO19, IO20, IO21, IO22, IO23,
- IO24, IO25, IO26, IO27, IO28, IO29, IO30, IO31,
- IO32, IO33, IO34, IO35,
- TEC1,  TEC2,  TEC3,  TEC4,
- LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB``
+- P1 header
+
+	``T_FIL0, T_FIL1, T_FIL2, T_FIL3, 
+	 T_COL0,  T_COL1, T_COL2, 
+	 CAN_TD, CAN_RD, 
+	 RS232_TXD, RS232_RXD``
+
+
+- P2 header
+
+	``GPIO0, GPIO1, GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8
+	 LCD1, LCD2, LCD3, LCD4, LCDEN, LCDRS,
+	 SPI_MISO, SPI_MOSI,
+	 ENET_TXD0, ENET_TXD1, ENET_TXEN, ENET_RXD0, ENET_RXD1, ENET_MDIO, ENET_CRS_DV, ENET_MDC,``
+
+
+- Switches
+
+	``TEC1,  TEC2,  TEC3,  TEC4``
+
+
+- Leds
+
+	``LED1,  LED2,  LED3,  LEDR,  LEDG,  LEDB``
+
 
 CIAA-NXP:
 
 ``DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,
- DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
-``
+ DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7``
 
-**Adc Map**
+**ADC Map**
 
-EDU-CIAA-NXP: ``AI0, AI1, AI2``
+EDU-CIAA-NXP: ``CH1, CH2, CH3``
 
 CIAA-NXP: ``AI0, AI1, AI2, AI3``
 
-**Dac Map**
+**DAC Map**
 
-``AO``
+EDU-CIAA-NXP: ``DAC``
+
+CIAA-NXP: ``AO``
 
 **Uart Map**
 
@@ -99,11 +115,11 @@ CIAA-NXP: ``AI0, AI1, AI2, AI3``
 ``I2C0``
 
 
-### sAPI_IsrVector
+### sAPI Isr Vector
 
 Contiene la tabla de vectores de interrupción.
 
-### sAPI_Board
+### sAPI Board
 
 Contiene la función de configuración para inicialización de la plataforma de
 hardware:
@@ -113,7 +129,7 @@ hardware:
 - Parámetro: ``void``
 - Retorna: ``void``
 
-### sAPI_Tick
+### sAPI Tick
 
 **Configuración de interrupción periódica**
 
@@ -158,7 +174,7 @@ En la implementación para la CIAA utiliza internaente el peiférico temporizado
 Systick para configurar una interrupción periódica.
 
 
-### sAPI_Delay
+### sAPI Delay
 
 Para utilizar los retardos (con excepción del retardo inexacto) se debe
 configurar el Tick ya que utiliza estas interrupciones como base de tiempo.
@@ -167,7 +183,7 @@ Todos los tiempos de parámetros están en milisegundos.
 
 Define la constante ``#define INACCURATE_TO_MS 20400`` y contiene las funciones:
 
-**Retardo inexacto bloqueante** ``void delayInaccurate(tick_t delay_ms);``
+**Retardo inexacto bloqueante** ``void delayInaccurate( tick_t delay_ms );``
 
 - Parámetros: ``tick_t delay_ms`` tiempo de duración del retardo en ms.
 - Retorna: ``void``
@@ -175,7 +191,7 @@ Define la constante ``#define INACCURATE_TO_MS 20400`` y contiene las funciones:
 Utiliza un bloque for bloqueante que tiene una constante calculada "a ojo"
 (INACCURATE_TO_MS) para perder muchos ciclos de reloj y lograr hacer un retado.
 
-**Retardo bloqueante** ``void delay (tick_t time);``
+**Retardo bloqueante** ``void delay ( tick_t time );``
 
 - Parámetros: ``tick_t time``
 - Retorna: ``void``
@@ -195,20 +211,20 @@ Define el tipo de datos estructurado ``delay_t``
 
 Contiene las funciones:
 
-``void delayConfig( delay_t * delay, tick_t duration );``
+``void delayConfig( delay_t* delay, tick_t duration );``
 
 - Parámetro: ``delay_t * delay`` dirección de memoria de una variable del tipo delay_t.
 - Parámetro: ``tick_t duration`` tiempo de duración del retardo en ms.
 - Retorna: ``void``
 
-``bool_t delayRead( delay_t * delay );``
+``bool_t delayRead( delay_t* delay );``
 
-- Parámetro: ``delay_t * delay`` dirección de memoria de una variable del tipo delay_t.
+- Parámetro: ``delay_t* delay`` dirección de memoria de una variable del tipo delay_t.
 - Retorna: ``bool_t`` TRUE cuando el delay se cumplió, FALSE en caso contrario.
 
-``void delayWrite( delay_t * delay, tick_t duration );``
+``void delayWrite( delay_t* delay, tick_t duration );``
 
-- Parámetro: ``delay_t * delay`` dirección de memoria de una variable del tipo delay_t.
+- Parámetro: ``delay_t* delay`` dirección de memoria de una variable del tipo delay_t.
 - Parámetro: ``tick_t duration`` tiempo de duración del retardo en ms.
 - Retorna: ``void``
 
@@ -235,50 +251,49 @@ Con ``delayWrite( &myDelay, 1000 );`` se puede cambiar la duración de un delay
 en tiempo de ejecución.
 
 
-### sAPI_GPIO
+### sAPI GPIO
 
 Manejo de Entradas y Salidas (booleanas) de propósito general.
 
 **Configuración inicial y modo de una entrada o salida**
 
-``bool_t gpioConfig( int8_t pin, int8_t config);``
+``bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config );``
 
-- Parámetro: ``int8_t pin`` pin a configurar (ver Gpio Map).
-- Parámetro: ``int8_t config`` configuración.
+- Parámetro: ``gpioMap_t pin`` pin a configurar (ver GPIO Map).
+- Parámetro: ``gpioConfig_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
 
 - ``GPIO_ENABLE`` Habilita las entradas y salidas de porpósito general.
-- ``INPUT, INPUT_PULLUP, INPUT_PULLDOWN, INPUT_REPEATER`` Pin configurado como
-entrada en sus distintas variantes.
-- ``OUTPUT`` Pin configurado como salida.
+- ``GPIO_INPUT, GPIO_INPUT_PULLUP, GPIO_INPUT_PULLDOWN, GPIO_INPUT_PULLUP_PULLDOWN`` Pin configurado como entrada en sus distintas variantes.
+- ``GPIO_OUTPUT`` Pin configurado como salida.
 
 **Lectura de Entrada**
 
-``bool_t gpioRead( int8_t pin );``
+``bool_t gpioRead( gpioMap_t pin );``
 
-- Parámetro: ``int8_t pin`` pin a leer (ver Gpio Map).
+- Parámetro: ``gpioMap_t pin`` pin a leer (ver GPIO Map).
 - Retorna: ``bool_t`` valor de la entrada.
 
 
 **Escritura de Salida**
 
-``bool_t gpioWrite( int8_t pin, bool_t value );``
+``bool_t gpioWrite( gpioMap_t pin, bool_t value );``
 
-- Parámetro: ``int8_t pin`` pin a escribir (ver Gpio IO Map).
+- Parámetro: ``gpioMap_t pin`` pin a escribir (ver GPIO Map).
 - Parámetro: ``bool_t value`` valor a escribir en el pin.
 - Retorna: ``bool_t`` FALSE en caso de errores.
 
-### sAPI_Adc
+### sAPI ADC
 
 Manejo de conversor analógico-digital.
 
 **Configuración inicial de conversor analógico-digital**
 
-``void adcConfig( uint8_t config );``
+``void adcConfig( adcConfig_t config );``
 
-- Parámetro: ``uint8_t config`` configuración.
+- Parámetro: ``adcConfig_t config`` configuración.
 - Retorna: ``void``.
 
 Posibles configuraciones:
@@ -288,21 +303,21 @@ Posibles configuraciones:
 
 **Lectura de Entrada analógica**
 
-``uint16_t adcRead( uint8_t analogInput );``
+``uint16_t adcRead( adcMap_t analogInput );``
 
-- Parámetro: ``uint8_t analogInput`` pin a leer (ver Adc Map).
+- Parámetro: ``adcMap_t analogInput`` pin a leer (ver ADC Map).
 - Retorna: ``uint16_t`` el valor actual de la entrada analógica.
 
 
-### sAPI_Dac
+### sAPI DAC
 
 Manejo de conversor digital-analógico.
 
 **Configuración inicial de conversor digital-analógico**
 
-``void dacConfig( uint8_t config );``
+``void dacConfig( dacConfig_t config );``
 
-- Parámetro: ``uint8_t config`` configuración.
+- Parámetro: ``dacConfig_t config`` configuración.
 - Retorna: ``void``.
 
 Posibles configuraciones:
@@ -312,22 +327,22 @@ Posibles configuraciones:
 
 **Escritura de Salida analógica**
 
-``void dacWrite( uint8_t , uint16_t value );``
+``void dacWrite( dacMap_t analogOutput, uint16_t value );``
 
-- Parámetro: ``uint8_t analogOutput`` pin a escribir (ver Dac Map).
+- Parámetro: ``dacMap_t analogOutput`` pin a escribir (ver DAC Map).
 - Parámetro: ``uint16_t value`` valor del pin a escribir.
 - Retorna: ``void``.
 
 
-### sAPI_Uart
+### sAPI UART
 
 Manejo del periférico de comunicación UART (puerto serie asincrónico).
 
 **Configuración**
 
-``void uartConfig( uint8_t uart, uint32_t baudRate );``
+``void uartConfig( uartMap_t uart, uint32_t baudRate )``
 
-- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uartMap_t uart`` UART a configurar (ver UART MAP).
 - Parámetro: ``uint32_t baudRate`` tasa de  bits.
 - Retorna: ``void``.
 
@@ -335,30 +350,30 @@ Posibles configuraciones de baudRate: ``9600, 57600, 115200, etc.``
 
 **Recibir Byte**
 
-``bool_t uartReadByte( uint8_t uart, uint8_t* byte );``
+``bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte );``
 
-- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uartMap_t uart`` UART a configurar (ver UART Map).
 - Parámetro: ``uint8_t* byte`` Dirección de memoria a donde se escribirá el dato recibido en caso de que haya un dato para recibir.
 - Retorna: ``bool_t`` TRUE si recibió un dato, FALSE en caso contrario.
 
 **Enviar Byte**
 
-``void uartWriteByte( uint8_t uart, uint8_t byte );``
+``void uartWriteByte( uartMap_t uart, uint8_t byte );``
 
-- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
+- Parámetro: ``uartMap_t uart`` UART a configurar (ver UART Map).
 - Parámetro: ``uint8_t byte`` Byte a enviar.
 - Retorna: ``void``.
 
 **Enviar String**
 
-``void uartWriteString( uint8_t uart, uint8_t * str );``
+``void uartWriteString( uartMap_t uart, char* str );``
 
-- Parámetro: ``uint8_t uart`` UART a configurar (ver Uart Map).
-- Parámetro: ``uint8_t * str`` String a enviar, puede ser un literal, por ejemplo "hola", o un vector de uint8_t terminado en 0 o '\0' (caracter NULL).
+- Parámetro: ``uartMap_t uart`` UART a configurar (ver UART Map).
+- Parámetro: ``char* str`` String a enviar, puede ser un literal, por ejemplo "hola", o un vector de uint8_t terminado en 0 o '\0' (caracter NULL).
 - Retorna: ``void``.
 
 
-### sAPI_I2c
+### sAPI I2C
 
 Manejo del periférico bus comunicación I2C (Inter Integrated Circuits).
 
@@ -366,7 +381,7 @@ Manejo del periférico bus comunicación I2C (Inter Integrated Circuits).
 
 ``bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );``
 
-- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a configurar (ver I2C Map). Por ahora funciona únicamente el I2C0.
+- Parámetro: ``uint8_t i2cNumber`` I2C a configurar (ver I2C Map).
 - Parámetro: ``uint32_t clockRateHz`` configuración de velocidad del bus I2C.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
