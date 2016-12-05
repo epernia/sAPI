@@ -39,6 +39,9 @@
 
 /*==================[inclusions]=============================================*/
 
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
@@ -52,7 +55,7 @@ extern "C" {
 typedef enum{
    PWM_ENABLE, PWM_DISABLE,
    PWM_ENABLE_OUTPUT, PWM_DISABLE_OUTPUT
-} PwmConfig_t;
+} pwmConfig_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -64,14 +67,14 @@ typedef enum{
  * @param  uint8_t config
  * @return bool_t true (1) if config it is ok
  */
-bool_t pwmConfig( uint8_t pwmNumber, uint8_t config);
+bool_t pwmConfig( pwmMap_t pwmNumber, pwmConfig_t config);
 
 /*
  * @brief:   Tells if the pwm is currently active, and its position
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:   position (1 ~ PWM_TOTALNUMBER), 0 if the element was not found.
  */
-uint8_t pwmIsAttached( uint8_t pwmNumber );
+uint8_t pwmIsAttached( pwmMap_t pwmNumber );
 
 /*
  * @brief:   read the value of the pwm in the pin
@@ -79,7 +82,7 @@ uint8_t pwmIsAttached( uint8_t pwmNumber );
  * @return:   value of the pwm in the pin (0 ~ 255).
  *   If an error ocurred, return = EMPTY_POSITION = 255
  */
-uint8_t pwmRead( uint8_t pwmNumber );
+uint8_t pwmRead( pwmMap_t pwmNumber );
 
 /*
  * @brief:   change the value of the pwm at the selected pin
@@ -87,7 +90,7 @@ uint8_t pwmRead( uint8_t pwmNumber );
  * @param:   value:   8bit value, from 0 to 255
  * @return:   True if the value was successfully changed, False if not.
  */
-bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );
+bool_t pwmWrite( pwmMap_t pwmNumber, uint8_t percent );
 
 /*==================[cplusplus]==============================================*/
 

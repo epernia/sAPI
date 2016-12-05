@@ -39,6 +39,9 @@
 
 /*==================[inclusions]=============================================*/
 
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
@@ -57,7 +60,7 @@ typedef struct {
    uint8_t  hour;	 /* 0 to 23   */
    uint8_t  min;	 /* 0 to 59   */
    uint8_t  sec;	 /* 0 to 59   */
-} RTC_t;
+} rtc_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -65,24 +68,24 @@ typedef struct {
 
 /*
  * @Brief: Configure RTC peripheral.
- * @param  RTC_t rtc: RTC structure
+ * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcConfig( RTC_t * rtc );
+bool_t rtcConfig( rtc_t * rtc );
 
 /*
  * @Brief: Get time from RTC peripheral.
- * @param  RTC_t rtc: RTC structure
+ * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcRead( RTC_t * rtc );
+bool_t rtcRead( rtc_t * rtc );
 
 /*
  * @Brief: Set time on RTC peripheral.
  * @param  RTC_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcWrite( RTC_t * rtc );
+bool_t rtcWrite( rtc_t * rtc );
 
 /*==================[cplusplus]==============================================*/
 

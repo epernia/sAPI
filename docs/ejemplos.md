@@ -4,25 +4,25 @@
 
 ### Periféricos internos
 
-**ej01_sapi_bm_switches_leds**
+**ej01_sapi_switches_leds**
 
 Ejemplo de utilización de GPIO. Este ejemplo enciende un led con cada tecla
 de la EDU-CIAA-NXP.
 
-**ej02_sapi_bm_blinky**
+**ej02_sapi_blinky**
 
 Ejemplo de utilización de GPIO, Tick y Delay. Este ejemplo hace titilar un
 led (blink) de la EDU-CIAA-NXP utilizando un retardo bloqueante (función ``delay()``). Un retardo bloqueante no permite que se ejecuten otras tareas
 mientras se está ejecutando.
 
-**ej03_sapi_bm_blinky_switch**
+**ej03_sapi_blinky_switch**
 
 Ejemplo de utilización de GPIO, Tick y Delay. Este ejemplo hace titilar un
 led (blink) de la EDU-CIAA-NXP utilizando un retardo NO bloqueante (funciónes
 ``delayConfig()``, ``delayRead()``). Esto permite
 manejar otro led con la TEC4 al mismo tiempo que parpadea.
 
-**ej04_sapi_bm_sequences**
+**ej04_sapi_sequences**
 
 Ejemplo de utilización de GPIO, Tick y Delay. Con TEC1 y TEC 4 maneja la
 dirección de movimiento de los leds (secuencia de leds a izquierda o derecha),
@@ -30,20 +30,24 @@ mientras que con TEC2 y TEC4 cabia la velocidad de movimiento de lenta a rápida
 en la EDU-CIAA-NXP. Utiliza retardo no bloqueante (funciónes ``delayConfig()``,
 ``delayRead()``) y cambia su valor en ejecución (función ``delayWrite()``).
 
-**ej05_sapi_bm_tickHook**
+**ej05_sapi_7segment_keypad**
+
+Ejemplo de utilización de Display 7 segmentos y Teclado matricial.
+
+**ej06_sapi_tickHook**
 
 Ejemplo de utilización de GPIO y Tick. Este ejemplo utiliza una función
 que se ejecuta cada vez que ocurre un tick para cambiar el valor del LED azul
 de la EDU-CIAA-NXP. Confgura la tasa de ticks a 1 tick cada 50ms (velocidad más
 lenta soportada).
 
-**ej06_sapi_bm_uart_echo**
+**ej07_sapi_uart_echo**
 
 Ejemplo de utilización de UART. Al iniciar envía varios caracteres y Strings y
 luego realiza el eco de todo lo que recibe enviándolo nuevamente por la
 UART_USB.
 
-**ej07_sapi_bm_adc_dac**
+**ej08_sapi_adc_dac**
 
 Ejemplo de utilización de ADC y DAC. También utiliza GPIO, Tick, Delay y
 UART. Utiliza dos retardos NO bloqueantes para realizar dos tareas periódicas
@@ -51,29 +55,29 @@ sin interferencias. La primera lee el ADC CH1 (AI0), escribe el valor en el DAC
 (AO) y envía el dato por la UART_USB. La segunda hace titilar el LED1 10 veces
 rápidamente y después cambia el valor del retardo para que titile lentamente.
 
-**ej08_sapi_bm_rtc**
+**ej09_sapi_rtc**
 
 Ejemplo de utilización de RTC. Además utiliza Delay y UART. Establece la fecha
 y hora del reloj de tiempo real y la muestra por UART_USB.
 
-**ej09_sapi_bm_pwm**
+**ej10_sapi_pwm**
 
 Ejemplo de utilización de PWM. Con GPIO y Delay. Muestra 3 saidas PWM sobre
 los leds 1, 2 y 3.
 
-**ej10_sapi_bm_servo**
+**ej11_sapi_servo**
 
 Ejemplo de utilización de Servomotor angular (0 a 180°) y Delay. El servo
 utilizado es el SG90 y va conectado en 5V (cable rojo), GND (cable marrón) y
 señal al pin SERVO0 (T_F1 con cable naranja).
 
-**ej11_sapi_bm_hmc5883l**
+**ej12_sapi_hmc5883l**
 
 Ejemplo de utilización de sensor Magnetómetro (compass) HMC5883L, I2C, Delay y
 UART. Este sensor se conecta a la EDU-CIAA-NXP mediante I2C (I2C0) para leer los
 valores de campo magnético en (x,y,z) y los muestra por UART.
 
-**ej12_sapi_bm_SEOS**
+**ej13_sapi_SEOS**
 
 SEOS del ingés Simple Embedded Operating System. 
 Ejemplo de Planificador de tareas cooperativo disparado por tiempo 
@@ -84,7 +88,7 @@ tareas debe ser menor a 1 Tick (1ms en el ejemplo), si alguna se excede un
 poco de tiempo el sistema va a fallar, ya que se perderá temporización.
 Las tareas deben ser NO bloqueantes.
 
-**ej13_sapi_bm_SEOS_bakgroundForeground**
+**ej14_sapi_SEOS_bakgroundForeground**
 
 SEOS del ingés Simple Embedded Operating System. 
 Ejemplo de Planificador de tareas cooperativo disparado por tiempo 
@@ -97,7 +101,7 @@ poco de tiempo el sistema puede recuperarse, es decir, no pierde
 temporización pero sin embargo se atrasa un poco en la ejecución.
 Las tareas deben ser NO bloqueantes.
 
-**ej14_sapi_bm_Pont_SCH**
+**ej15_sapi_Pont_SCH**
 
 Ejemplo de Sistema Operativo Cooperativo Simple de M. J. Pont. En este RTOS 
 todas las tareas pueden ser Real-Time si se planifican utilizando offsets 

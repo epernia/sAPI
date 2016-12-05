@@ -35,12 +35,9 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_tick.h"
-#include "sapi_timer.h"
 
 #include "chip.h"
-
 
 /*==================[macros and definitions]=================================*/
 

@@ -35,10 +35,8 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_delay.h"
 #include "sapi_tick.h"
-
 
 /*==================[macros and definitions]=================================*/
 

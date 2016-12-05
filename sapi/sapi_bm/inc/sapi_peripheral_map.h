@@ -152,6 +152,7 @@ typedef enum{
    I2C0 // TODO: Add support for I2C1
 } i2cMap_t;
 */
+typedef uint8_t i2cMap_t;
 
 /* ------- End EDU-CIAA-NXP Peripheral Map -------- */
 

@@ -33,32 +33,30 @@
 
 /* Date: 2015-09-23 */
 
+#ifndef _MAIN_H_
+#define _MAIN_H_
+
 /*==================[inclusions]=============================================*/
 
-#include "sapi_board.h"
+/*==================[cplusplus]==============================================*/
 
-#include "chip.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[external data definition]===============================*/
+/*==================[cplusplus]==============================================*/
 
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-
-/* Set up and initialize board hardware */
-void boardConfig(void) {
-
-   /* Read clock settings and update SystemCoreClock variable */
-   SystemCoreClockUpdate();
-
+#ifdef __cplusplus
 }
+#endif
 
 /*==================[end of file]============================================*/
+#endif /* #ifndef _MAIN_H_ */

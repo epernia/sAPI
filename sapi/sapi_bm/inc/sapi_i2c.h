@@ -48,6 +48,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -86,9 +87,9 @@ typedef enum{
 
 /*==================[external functions declaration]=========================*/
 
-bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+bool_t i2cConfig( i2cMap_t i2cNumber, uint32_t clockRateHz );
 
-bool_t i2cRead( uint8_t  i2cNumber,
+bool_t i2cRead( i2cMap_t  i2cNumber,
                 uint8_t  i2cSlaveAddress,
                 uint8_t* dataToReadBuffer,
                 uint16_t dataToReadBufferSize,
@@ -97,7 +98,7 @@ bool_t i2cRead( uint8_t  i2cNumber,
                 uint16_t receiveDataBufferSize,
                 bool_t   sendReadStop );
 
-bool_t i2cWrite( uint8_t  i2cNumber,
+bool_t i2cWrite( i2cMap_t  i2cNumber,
                  uint8_t  i2cSlaveAddress,
                  uint8_t* transmitDataBuffer,
                  uint16_t transmitDataBufferSize,

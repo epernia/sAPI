@@ -35,7 +35,6 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_sleep.h"
 
 /*==================[macros and definitions]=================================*/
@@ -60,7 +59,7 @@
 void sleepUntilNextInterrupt( void ){
 
    /* Instert an assembly instruction wfi (wait for interrupt) */
-   __asm volatile( "wfi" ); 
+   __asm volatile( "wfi" );
 
 }
 

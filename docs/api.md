@@ -2,7 +2,7 @@
 
 ## Módulos
 
-### sAPI DataTypes
+### DataTypes
 
 Define las siguientes constantes:
 
@@ -47,7 +47,7 @@ siempre TRUE, esta se utiliza para evitar errores de NULL POINTER.
 - Retorna: ``bool_t``Retorna siempre TRUE.
 
 
-### sAPI Peripheral Map
+### Peripheral Map
 
 Contiene el mapa de periféricos.
 
@@ -115,11 +115,11 @@ CIAA-NXP: ``AO``
 ``I2C0``
 
 
-### sAPI Isr Vector
+### ISR Vector
 
 Contiene la tabla de vectores de interrupción.
 
-### sAPI Board
+### Board
 
 Contiene la función de configuración para inicialización de la plataforma de
 hardware:
@@ -129,7 +129,7 @@ hardware:
 - Parámetro: ``void``
 - Retorna: ``void``
 
-### sAPI Tick
+### Tick
 
 **Configuración de interrupción periódica**
 
@@ -174,7 +174,7 @@ En la implementación para la CIAA utiliza internaente el peiférico temporizado
 Systick para configurar una interrupción periódica.
 
 
-### sAPI Delay
+### Delay
 
 Para utilizar los retardos (con excepción del retardo inexacto) se debe
 configurar el Tick ya que utiliza estas interrupciones como base de tiempo.
@@ -251,7 +251,7 @@ Con ``delayWrite( &myDelay, 1000 );`` se puede cambiar la duración de un delay
 en tiempo de ejecución.
 
 
-### sAPI GPIO
+### GPIO
 
 Manejo de Entradas y Salidas (booleanas) de propósito general.
 
@@ -285,7 +285,7 @@ Posibles configuraciones:
 - Parámetro: ``bool_t value`` valor a escribir en el pin.
 - Retorna: ``bool_t`` FALSE en caso de errores.
 
-### sAPI ADC
+### ADC
 
 Manejo de conversor analógico-digital.
 
@@ -309,7 +309,7 @@ Posibles configuraciones:
 - Retorna: ``uint16_t`` el valor actual de la entrada analógica.
 
 
-### sAPI DAC
+### DAC
 
 Manejo de conversor digital-analógico.
 
@@ -334,7 +334,7 @@ Posibles configuraciones:
 - Retorna: ``void``.
 
 
-### sAPI UART
+### UART
 
 Manejo del periférico de comunicación UART (puerto serie asincrónico).
 
@@ -373,15 +373,15 @@ Posibles configuraciones de baudRate: ``9600, 57600, 115200, etc.``
 - Retorna: ``void``.
 
 
-### sAPI I2C
+### I2C
 
 Manejo del periférico bus comunicación I2C (Inter Integrated Circuits).
 
 **Configuración**
 
-``bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz );``
+``bool_t i2cConfig( i2cMap_t i2cNumber, uint32_t clockRateHz );``
 
-- Parámetro: ``uint8_t i2cNumber`` I2C a configurar (ver I2C Map).
+- Parámetro: ``i2cMap_t i2cNumber`` I2C a configurar (ver I2C Map).
 - Parámetro: ``uint32_t clockRateHz`` configuración de velocidad del bus I2C.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
@@ -389,30 +389,41 @@ Posibles configuraciones de clockRateHz: 100000, etc.
 
 **Lectura**
 
-``bool_t i2cRead( uint8_t i2cNumber, uint8_t i2cSlaveAddress, uint8_t* dataToReadBuffer, uint16_t dataToReadBufferSize, bool_t sendWriteStop, uint8_t* reciveDataBuffer, uint16_t reciveDataBufferSize, bool_t sendReadStop );``
+``bool_t i2cRead( i2cMap_t  i2cNumber,
+                  uint8_t  i2cSlaveAddress,
+                  uint8_t* dataToReadBuffer,
+                  uint16_t dataToReadBufferSize,
+                  bool_t   sendWriteStop,
+                  uint8_t* receiveDataBuffer,
+                  uint16_t receiveDataBufferSize,
+                  bool_t   sendReadStop );``
 
-- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a leer (ver I2C Map). Actualmente funciona únicamente el I2C0.
+- Parámetro: ``i2cMap_t i2cNumber`` I2C a leer (ver I2C Map).
 - Parámetro: ``uint8_t i2cSlaveAddress`` Dirección del sensor conectado por I2C a leer.
-- Parámetro: ``uint8_t * dataToReadBuffer`` puntero al buffer con los bytes a escribir para indicar que se debe leer.
+- Parámetro: ``uint8_t* dataToReadBuffer`` puntero al buffer con los bytes a escribir para indicar que se debe leer.
 - Parámetro: ``uint16_t dataToReadBufferSize`` tamaño del buffer con los bytes a escribir.
-- Parámetro: ``bool_t   sendWriteStop`` setear en 1 para enviar stop al finalizar el comando de escritura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
-- Parámetro: ``uint8_t * reciveDataBuffer`` puntero al buffer donde se almacenarán los datos leídos.
-- Parámetro: ``uint16_t reciveDataBufferSize`` tamaño del buffer donde se almacenarán los datos leídos.
-- Parámetro: ``bool_t   sendReadStop`` setear en 1 para enviar stop al finalizar el comando de lectura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
+- Parámetro: ``bool_t sendWriteStop`` setear en 1 para enviar stop al finalizar el comando de escritura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
+- Parámetro: ``uint8_t* receiveDataBuffer`` puntero al buffer donde se almacenarán los datos leídos.
+- Parámetro: ``uint16_t receiveDataBufferSize`` tamaño del buffer donde se almacenarán los datos leídos.
+- Parámetro: ``bool_t sendReadStop`` setear en 1 para enviar stop al finalizar el comando de lectura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
 - Retorna: ``bool_t`` TRUE si se pudo leer correctamente.
 
 **Escritura**
 
-``bool_t i2cWrite( uint8_t  i2cNumber, uint8_t i2cSlaveAddress, uint8_t* transmitDataBuffer, uint16_t transmitDataBufferSize, bool_t sendWriteStop );``
+``bool_t i2cWrite( i2cMap_t  i2cNumber,
+                   uint8_t  i2cSlaveAddress,
+                   uint8_t* transmitDataBuffer,
+                   uint16_t transmitDataBufferSize,
+                   bool_t   sendWriteStop );``
 
-- Parámetro: ``uint8_t i2cNumber`` ID de periférico I2C a escribir (ver I2C Map). Actualmente funciona únicamente el I2C0.
+- Parámetro: ``i2cMap_t i2cNumber`` ID de periférico I2C a escribir (ver I2C Map). Actualmente funciona únicamente el I2C0.
 - Parámetro: ``uint8_t i2cSlaveAddress`` Dirección del sensor conectado por I2C a escribir.
-- Parámetro: ``uint8_t * transmitDataBuffer`` puntero al buffer donde se encuentran los datos a escribir.
+- Parámetro: ``uint8_t* transmitDataBuffer`` puntero al buffer donde se encuentran los datos a escribir.
 - Parámetro: ``uint16_t transmitDataBufferSize`` tamaño del buffer donde se encuentran los datos a escribir.
-- Parámetro: ``bool_t   sendWriteStop`` setear en 1 para enviar stop al finalizar el comando de escritura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
+- Parámetro: ``bool_t sendWriteStop`` setear en 1 para enviar stop al finalizar el comando de escritura, con 0 no se envía. Algunos periféricos pueden no necesitar el stop.
 - Retorna: ``bool_t`` TRUE si se pudo escribir correctamente.
 
-### sAPI_Sleep
+### Sleep
 
 Manejo de modos de bajo consumo del microcontrolador.
 
@@ -424,15 +435,15 @@ Manejo de modos de bajo consumo del microcontrolador.
 - Retorna: nada.
 
 
-### sAPI_Rtc
+### RTC
 
 Manejo del periférico RTC (reloj de tiempo real).
 
 **Configuración**
 
-``bool_t rtcConfig( RTC_t * rtc );``
+``bool_t rtcConfig( rtc_t * rtc );``
 
-- Parámetro: ``RTC_t * rtc`` Puntero a estructura de configuración del tipo RTC_t.
+- Parámetro: ``rtc_t * rtc`` Puntero a estructura de configuración del tipo RTC_t.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 La estructura del tipo ``RTC_t`` contiene los parámetros:
@@ -447,99 +458,223 @@ La estructura del tipo ``RTC_t`` contiene los parámetros:
 
 **Lectura de fecha y hora**
 
-``bool_t rtcRead( RTC_t * rtc );``
+``bool_t rtcRead( rtc_t * rtc );``
 
-- Parámetro: ``RTC_t * rtc`` Puntero a estructura del tipo RTC_t donde se guarda la fecha y hora.
+- Parámetro: ``rtc_t * rtc`` Puntero a estructura del tipo RTC_t donde se guarda la fecha y hora.
 - Retorna: ``bool_t`` TRUE.
 
 **Establecer la fecha y hora**
 
-``bool_t rtcWrite( RTC_t * rtc );``
+``bool_t rtcWrite( rtc_t * rtc );``
 
-- Parámetro: ``RTC_t * rtc`` Puntero a estructura del tipo RTC_t con la nueva fecha y hora a setear.
+- Parámetro: ``rtc_t * rtc`` Puntero a estructura del tipo RTC_t con la nueva fecha y hora a setear.
 - Retorna: ``bool_t`` TRUE.
 
 
-### sAPI_Pwm
+### PWM
 
 Manejo de salidas PWM (modulación por ancho de pulso). En la EDU-CIAA-NXP se
 utiliza internamente el periférico SCT para generar los PWM.
 
 **Configuración**
 
-``bool_t pwmConfig( uint8_t pwmNumber, uint8_t config);``
+``bool_t pwmConfig( pwmMap_t pwmNumber, pwmConfig_t config);``
 
-- Parámetro: ``uint8_t pwmNumber`` pin a configurar como salida PWM (ver PWM Map).
+- Parámetro: ``pwmMap_t pwmNumber`` pin a configurar como salida PWM (ver PWM Map).
 - Parámetro: ``uint8_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
 
-- ``ENABLE_PWM_TIMERS`` habilita el o los Timers en modo PWM.
-- ``DISABLE_PWM_TIMERS`` deshabilita el o los Timers en modo PWM.
-- ``ENABLE_PWM_OUTPUT`` habilita la salida PWM particular.
-- ``DISABLE_PWM_OUTPUT`` deshabilita la salida PWM particular.
+- ``PWM_ENABLE`` habilita el o los Timers en modo PWM.
+- ``PWM_DISABLES`` deshabilita el o los Timers en modo PWM.
+- ``PWM_ENABLE_OUTPUT`` habilita la salida PWM particular.
+- ``PWM_DISABLE_OUTPUT`` deshabilita la salida PWM particular.
 
 **Lectura del ciclo de trabajo (duty cycle) de la salida PWM**
 
-``uint8_t pwmRead( uint8_t pwmNumber );``
+``uint8_t pwmRead( pwmMap_t pwmNumber );``
 
-- Parámetro: ``uint8_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
+- Parámetro: ``pwmMap_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
 - Retorna: ``uint8_t`` el ciclo de trabajo de la salida PWM.
 
  **Establecer el ciclo de trabajo de la salida PWM**
 
-``bool_t pwmWrite( uint8_t pwmNumber, uint8_t percent );``
+``bool_t pwmWrite( pwmMap_t pwmNumber, uint8_t percent );``
 
-- Parámetro: ``uint8_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
+- Parámetro: ``pwmMap_t pwmNumber`` salida PWM a leer el ciclo de trabajo.
 - Parámetro: ``uint8_t percent`` valor de ciclo de trabajo a setear en la salida PWM.
 - Retorna: ``bool_t`` TRUE.
 
 
-### sAPI_Servo
+### Servo
 
 Manejo de salidas para Servomortores angulares (usan modulación por ancho de pulso). En la EDU-CIAA-NXP se utilizan internamente los periféricos TIMER para
 generar estas salidas.
 
 **Configuración**
 
-``bool_t servoConfig( uint8_t servoNumber, uint8_t config );``
+``bool_t servoConfig( servoMap_t servoNumber, servoConfig_t config );``
 
-- Parámetro: ``uint8_t servoNumber`` pin a configurar como salida Servo (ver Servo Map).
-- Parámetro: ``uint8_t config`` configuración.
+- Parámetro: ``servoMap_t servoNumber`` pin a configurar como salida Servo (ver Servo Map).
+- Parámetro: ``servoConfig_t config`` configuración.
 - Retorna: ``bool_t`` TRUE si la configuración es correcta.
 
 Posibles configuraciones:
 
-- ``ENABLE_SERVO_TIMERS`` habilita el o los Timers en modo PWM para Servo.
-- ``DISABLE_SERVO_TIMERS`` deshabilita el o los Timers en modo PWM para Servo.
-- ``ENABLE_SERVO_OUTPUT`` habilita la salida PWM particular.
-- ``DISABLE_SERVO_OUTPUT`` deshabilita la salida PWM particular.
+- ``SERVO_ENABLE`` habilita el o los Timers en modo PWM para Servo.
+- ``SERVO_DISABLE`` deshabilita el o los Timers en modo PWM para Servo.
+- ``SERVO_ENABLE_OUTPUT`` habilita la salida PWM particular.
+- ``SERVO_DISABLE_OUTPUT`` deshabilita la salida PWM particular.
 
 **Lectura del valor angular actual de la salida Servo**
 
-``uint8_t servoRead( uint8_t servoNumber);``
+``uint16_t servoRead( servoMap_t servoNumber);``
 
-- Parámetro: ``uint8_t servoNumber`` pin como salida Servo a leer.
-- Retorna: ``bool_t`` el valor angular actual de la salida Servo (de 0 a 180°).
+- Parámetro: ``servoMap_t servoNumber`` pin como salida Servo a leer.
+- Retorna: ``uint16_t`` el valor angular actual de la salida Servo (de 0 a 180°).
 
 **Establecer el valor angular de la salida Servo**
 
-``bool_t servoWrite( uint8_t servoNumber, uint8_t angle );``
+``bool_t servoWrite( servoMap_t servoNumber, uint16_t angle );``
 
-- Parámetro: ``uint8_t servoNumber`` pin como salida Servo a escribir.
-- Parámetro: ``uint8_t angle`` valor angular a establecer en la salida Servo (de 0 a 180°).
+- Parámetro: ``servoMap_t servoNumber`` pin como salida Servo a escribir.
+- Parámetro: ``uint16_t angle`` valor angular a establecer en la salida Servo (de 0 a 180°).
 - Retorna: ``bool_t`` TRUE.
 
 
-### sAPI_Hmc5883l
+### Display 7 segmentos
+
+**Configuración**
+
+Configurar los pines conectados al display 7 segmentos como salida:
+
+``void display7SegmentPinConfig( gpioMap_t* display7SegmentPins );``
+
+- Parámetro: ``gpioMap_t* display7SegmentPins`` puntero a un vector con los 8 pines conectados al display 7 segmentos, deben estar en el orden *a* a *h*.
+- Retorna: nada.
+
+![Imagen "7-segment-display.png" no encontrada](assets/img/7-segment-display.png "Display 7 segmentos")
+
+Ejemplo:
+
+``uint8_t display7Segment[8] = {
+    GPIO5, // Segment 'a'
+    GPIO7, // Segment 'b'
+    GPIO6, // Segment 'c'
+    GPIO1, // Segment 'd'
+    GPIO2, // Segment 'e'
+    GPIO4, // Segment 'f'
+    GPIO3, // Segment 'g'
+    GPIO8  // Segment 'h' or 'dp'
+ };``
+
+
+Testear en que orden están conectados los pines a los segmentos *a* a *h*:
+
+``void display7SegmentTestPins( gpioMap_t* display7SegmentPins, gpioMap_t pin );``
+
+- Parámetro: ``gpioMap_t* display7SegmentPins`` puntero a un vector con los 8 pines conectados al display 7 segmentos, deben estar en el orden *a* a *h*.
+- Parámetro: ``gpioMap_t pin`` un pin aparte que indica cuando escribe el segmento *a* para iniciar la secuencia de la *a* a *h*. Por ejemplo, LEDB.
+- Retorna: nada.
+
+Mediante esta función se puede completar la siguiente tabla que indica a qué pines se conecto el display 7 segmentos:
+
+| Segmento encendido     | Valor Binario | Valor Hexadecimal | Pin de salida |
+|:----------------------:|:-------------:|:-----------------:|:-------------:|
+| Segmento 'a' encendido | 0b00000001    |   0x20            | (a completar) |
+| Segmento 'b' encendido | 0b00000010    |   0x80            |               |
+| Segmento 'c' encendido | 0b00000100    |   0x40            |               |
+| Segmento 'd' encendido | 0b00001000    |   0x02            |               |
+| Segmento 'e' encendido | 0b00010000    |   0x04            |               |
+| Segmento 'f' encendido | 0b00100000    |   0x10            |               |
+| Segmento 'g' encendido | 0b01000000    |   0x08            |               |
+| Segmento 'h' encendido | 0b10000000    |   0x80            |               |
+
+
+**Escribir símbolo en display 7 segmentos**
+
+Escribe un símbolo en el display 7 segmentos.
+
+``void display7SegmentWrite( gpioMap_t* display7SegmentPins, uint8_t symbolIndex );``
+
+- Parámetro: ``gpioMap_t* display7SegmentPins`` puntero a un vector con los 8 pines conectados al display 7 segmentos, deben estar en el orden *a* a *h*.
+- Parámetro: ``uint8_t symbolIndex`` índice del valor a mostrar de la tabla de símbolos.
+- Retorna: nada.
+
+Tabla de símbolos:
+
+``0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+ a, b, c, d, e, f,
+ A, C, E, H, J, L, P, U
+ ., DISPLAY_OFF``
+
+
+### Teclado matricial
+
+**Configuración**
+
+``bool_t keypadConfig( keypad_t* keypad,
+                      gpioMap_t* keypadRowPins, uint8_t keypadRowSize,
+                      gpioMap_t* keypadColPins, uint8_t keypadColSize );``
+
+- Parámetro: ``keypad_t* keypad`` puntero a estructura del teclado matricial donde se almacenan todos los parámetros necesarios del mismo.
+- Parámetro: ``gpioMap_t* keypadRowPins`` puntero a vector que contiene la lista de pines conectados a las filas del teclado matricial.
+- Parámetro: ``uint8_t keypadRowSize`` cantidad de filas del teclado matricial.
+- Parámetro: ``gpioMap_t* keypadColPins`` puntero a vector que contiene la lista de pines conectados a las columnas del teclado matricial.
+- Parámetro: ``uint8_t keypadColSize`` cantidad de columnas del teclado matricial.
+- Retorna: ``bool_t`` TRUE si los parámetros de configuración son válidos.
+
+![Imagen "keypad.png" no encontrada](assets/img/keypad.png "Teclado matricial 4x4")
+
+Ejemplo:
+
+- Variable del teclado
+
+      ``keypad_t keypad;``
+
+
+- Filas a configuar como Salidas
+
+      ``uint8_t keypadRowPins1[4] = {
+          RS232_TXD, // Row 0
+          CAN_RD,    // Row 1
+          CAN_TD,    // Row 2
+          T_COL1     // Row 3
+       };``
+
+
+- Columnas a configurar como Entradas con pull-up (MODO = GPIO_INPUT_PULLUP)
+
+      ``uint8_t keypadColPins1[4] = {
+          T_FIL0,   // Column 0
+          T_FIL3,    // Column 1
+          T_FIL2,    // Column 2
+          T_COL0     // Column 3
+       };``
+
+
+- Función de configuración
+
+      ``keypadConfig( &keypad, keypadRowPins1, 4, keypadColPins1, 4 );``
+
+**Lectura de teclado matricial**
+
+``bool_t keypadRead( keypad_t* keypad, uint16_t* key );``
+
+- Parámetro: ``keypad_t* keypad`` puntero a estructura del teclado matricial.
+- Parámetro: ``uint16_t* key`` puntero a variable donde escribe la tecla leida del teclado matricial.
+- Retorna: ``bool_t`` TRUE si hay tecla leida o FALSE en caso contrario.
+
+
+### sAPI HMC5883L
 
 Manejo del sensor magnetómetro vectorial (x,y,z) HMC5883L de Honeywell.
 Este sensor se conecta mediante I2C.
 
 **Configuración**
 
-``bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t * config );``
+``bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t* config );``
 
 - Parámetro: ``HMC5883L_config_t *config`` puntero a estructura del tipo HMC5883L_config_t a donde se cargarán los valores por defecto de configuración.
 - Retorna: ``bool_t`` TRUE.
@@ -587,12 +722,16 @@ La estructura del tipo ``HMC5883L_config_t`` contiene:
     - HMC5883L_idle
     - HMC5883L_DEFAULT_mode = HMC5883L_single_measurement
 
+**Prueba de lectura del magnetómetro**
+
 ``bool_t hmc5883lIsAlive( void );``
 
 - Parámetro: ``void`` ninguno.
 - Retorna: ``bool_t`` TRUE si puede comunicarse con el sensor.
 
-``bool_t hmc5883lRead( int16_t * x, int16_t * y, int16_t * z );``
+**Lectura del valor del magnetómetro en (x,y,z)**
+
+``bool_t hmc5883lRead( int16_t* x, int16_t* y, int16_t* z );``
 
 - Parámetro: ``int16_t * x`` puntero entero de 16 bits con signo donde se guardará el valor leído del sensor HMC5883L en la componente x.
 - Parámetro: ``int16_t * y`` puntero entero de 16 bits con signo donde se guardará el valor leído del sensor HMC5883L en la componente y.
@@ -605,42 +744,48 @@ La estructura del tipo ``HMC5883L_config_t`` contiene:
 
 **src** (.c):
 
-- sAPI_Adc.c
-- sAPI_Board.c
-- sAPI_Dac.c
-- sAPI_DataTypes.c
-- sAPI_Delay.c
-- sAPI_Gpio.c
-- sAPI_Hmc5883l.c
-- sAPI_I2c.c
-- sAPI_IsrVector.c
-- sAPI_Pwm.c
-- sAPI_Rtc.c
-- sAPI_Sct.c
-- sAPI_Servo.c
-- sAPI_Spi.c
-- sAPI_Tick.c
-- sAPI_Timer.c
-- sAPI_Uart.c
+- sapi_7_segment_display.c
+- sapi_adc.c
+- sapi_board.c
+- sapi_dac.c
+- sapi_datatypes.c
+- sapi_delay.c
+- sapi_gpio.c
+- sapi_hmc5883l.c
+- sapi_i2c.c
+- sapi_isr_vector.c
+- sapi_keypad.c
+- sapi_pwm.c
+- sapi_rtc.c
+- sapi_sct.c
+- sapi_servo.c
+- sapi_sleep.c
+- sapi_spi.c
+- sapi_tick.c
+- sapi_timer.c
+- sapi_uart.c
 
 **inc** (.h):
 
-- sAPI_Adc.h
-- sAPI_Board.h
-- sAPI_Dac.h
-- sAPI_DataTypes.h
-- sAPI_Delay.h
-- sAPI_Gpio.h
-- sAPI_Hmc5883l.h
-- sAPI_I2c.h
-- sAPI_IsrVector.h
-- sAPI_PeripheralMap.h
-- sAPI_Pwm.h
-- sAPI_Rtc.h
-- sAPI_Sct.h
-- sAPI_Servo.h
-- sAPI_Spi.h
-- sAPI_Tick.h
-- sAPI_Timer.h
-- sAPI_Uart.h
-- sAPI.h
+- sapi_7_segment_display.h
+- sapi_adc.h
+- sapi_board.h
+- sapi_dac.h
+- sapi_datatypes.h
+- sapi_delay.h
+- sapi_gpio.h
+- sapi_hmc5883l.h
+- sapi_i2c.h
+- sapi_isr_vector.h
+- sapi_keypad.h
+- sapi_peripheral_map.h
+- sapi_pwm.h
+- sapi_rtc.h
+- sapi_sct.h
+- sapi_servo.h
+- sapi_sleep.h
+- sapi_spi.h
+- sapi_tick.h
+- sapi_timer.h
+- sapi_uart.h
+- sapi.h

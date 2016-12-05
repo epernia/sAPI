@@ -43,8 +43,7 @@
 
 
 /*==================[inclusions]=============================================*/
-#include "sapi_datatypes.h"
-#include "sapi_peripheral_map.h"
+
 #include "sapi_sct.h"
 
 #include "chip.h"
@@ -52,8 +51,6 @@
    #include "scu_18xx_43xx.h" for Chip_SCU funtions
    #include "sct_pwm_18xx_43xx.h" for Chip_SCTPWM funtions
 */
-
-
 
 /*==================[macros and definitions]=================================*/
 

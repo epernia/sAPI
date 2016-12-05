@@ -22,21 +22,28 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 - Vector de excepciones/interrupciones (ISRs).
 - Inicialización general de la plataforma (Board).
 - Manejo de base de tiempos del sistema (Tick).
-- Retardo bloqueante y no bloqueante.
 - Entrada/Salida de propósito general (GPIO).
+- Transmisor/Receptor asincrónico universal (UART).
 - Conversor analágico-digital (ADC).
 - Conversor digital-analágico (DAC).
-- Transmisor/Receptor asincrónico universal (UART).
 - Bus serie entre circuitos integrados (I2C).
 - Reloj de tiempo real (RTC).
-- Modulación por ancho de pulso (PWM).
+- Modos bajo consumo (Sleep).
+
+**Retardos**
+
+- Retardo bloqueante y no bloqueante (Delay).
 
 **Periféricos externos**
 
+- Display 7 segmentos cátodo común (7-segment display).
+- Teclado matricial (Keypad).
+- Modulación por ancho de pulso (PWM).
 - Servo angular (0 a 180°).
 - Sensor magnetómetro (compass) Honeywell HMC5883L.
 
 Cada módulo incluye un ejemplo.
+
 
 ## Plataformas
 

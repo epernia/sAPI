@@ -58,9 +58,9 @@
 
 #if( I2C_SOFTWARE == 1 )
 
-   static bool_t i2cSoftwareConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+   static bool_t i2cSoftwareConfig( i2cMap_t i2cNumber, uint32_t clockRateHz );
 
-   static bool_t i2cSoftwareRead( uint8_t  i2cNumber,
+   static bool_t i2cSoftwareRead( i2cMap_t  i2cNumber,
                                   uint8_t  i2cSlaveAddress,
                                   uint8_t* dataToReadBuffer,
                                   uint16_t dataToReadBufferSize,
@@ -69,21 +69,21 @@
                                   uint16_t receiveDataBufferSize,
                                   bool_t   sendReadStop );
 
-   static bool_t i2cSoftwareWrite( uint8_t  i2cNumber,
+   static bool_t i2cSoftwareWrite( i2cMap_t  i2cNumber,
                                    uint8_t  i2cSlaveAddress,
                                    uint8_t* transmitDataBuffer,
                                    uint16_t transmitDataBufferSize,
                                    bool_t   sendWriteStop );
 
-   static void i2cSoftwarePinConfig( uint8_t pin, uint8_t mode );
-   static void i2cSoftwarePinWrite( uint8_t pin, bool_t value );
-   static bool_t i2cSoftwarePinRead( uint8_t pin );
+   static void i2cSoftwarePinConfig( gpioMap_t pin, uint8_t mode );
+   static void i2cSoftwarePinWrite( gpioMap_t pin, bool_t value );
+   static bool_t i2cSoftwarePinRead( gpioMap_t pin );
 
 #else
 
-   static bool_t i2cHardwareConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+   static bool_t i2cHardwareConfig( i2cMap_t i2cNumber, uint32_t clockRateHz );
 
-   static bool_t i2cHardwareRead( uint8_t  i2cNumber,
+   static bool_t i2cHardwareRead( i2cMap_t  i2cNumber,
                                   uint8_t  i2cSlaveAddress,
                                   uint8_t* dataToReadBuffer,
                                   uint16_t dataToReadBufferSize,
@@ -92,7 +92,7 @@
                                   uint16_t receiveDataBufferSize,
                                   bool_t   sendReadStop );
 
-   static bool_t i2cHardwareWrite( uint8_t  i2cNumber,
+   static bool_t i2cHardwareWrite( i2cMap_t  i2cNumber,
                                    uint8_t  i2cSlaveAddress,
                                    uint8_t* transmitDataBuffer,
                                    uint16_t transmitDataBufferSize,
@@ -108,7 +108,7 @@
 
 #if( I2C_SOFTWARE == 1 )
 
-   static bool_t i2cSoftwareConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+   static bool_t i2cSoftwareConfig( i2cMap_t i2cNumber, uint32_t clockRateHz ){
 
       bool_t retVal = TRUE;
 
@@ -118,7 +118,7 @@
       return retVal;
    }
 
-   static bool_t i2cSoftwareRead( uint8_t  i2cNumber,
+   static bool_t i2cSoftwareRead( i2cMap_t  i2cNumber,
                                   uint8_t  i2cSlaveAddress,
                                   uint8_t* dataToReadBuffer,
                                   uint16_t dataToReadBufferSize,
@@ -163,7 +163,7 @@
       return retVal;
    }
 
-   static bool_t i2cSoftwareWrite( uint8_t  i2cNumber,
+   static bool_t i2cSoftwareWrite( i2cMap_t  i2cNumber,
                                    uint8_t  i2cSlaveAddress,
                                    uint8_t* transmitDataBuffer,
                                    uint16_t transmitDataBufferSize,
@@ -253,7 +253,7 @@
    }
 #else
 
-   static bool_t i2cHardwareConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+   static bool_t i2cHardwareConfig( i2cMap_t i2cNumber, uint32_t clockRateHz ){
 
       // Configuracion de las lineas de SDA y SCL de la placa
       Chip_SCU_I2C0PinConfig( I2C0_STANDARD_FAST_MODE );
@@ -269,7 +269,7 @@
       return TRUE;
    }
 
-   static bool_t i2cHardwareRead( uint8_t  i2cNumber,
+   static bool_t i2cHardwareRead( i2cMap_t  i2cNumber,
                                   uint8_t  i2cSlaveAddress,
                                   uint8_t* dataToReadBuffer,
                                   uint16_t dataToReadBufferSize,
@@ -297,7 +297,7 @@
       return TRUE;
    }
 
-   static bool_t i2cHardwareWrite( uint8_t  i2cNumber,
+   static bool_t i2cHardwareWrite( i2cMap_t  i2cNumber,
                                    uint8_t  i2cSlaveAddress,
                                    uint8_t* transmitDataBuffer,
                                    uint16_t transmitDataBufferSize,
@@ -348,7 +348,7 @@
 
 /*==================[external functions definition]==========================*/
 
-bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+bool_t i2cConfig( i2cMap_t i2cNumber, uint32_t clockRateHz ){
 
    bool_t retVal = FALSE;
 
@@ -366,7 +366,7 @@ bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
 }
 
 
-bool_t i2cRead( uint8_t  i2cNumber,
+bool_t i2cRead( i2cMap_t  i2cNumber,
                 uint8_t  i2cSlaveAddress,
                 uint8_t* dataToReadBuffer,
                 uint16_t dataToReadBufferSize,
@@ -405,7 +405,7 @@ bool_t i2cRead( uint8_t  i2cNumber,
 }
 
 
-bool_t i2cWrite( uint8_t  i2cNumber,
+bool_t i2cWrite( i2cMap_t  i2cNumber,
                  uint8_t  i2cSlaveAddress,
                  uint8_t* transmitDataBuffer,
                  uint16_t transmitDataBufferSize,

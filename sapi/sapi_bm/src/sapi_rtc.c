@@ -36,7 +36,6 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_rtc.h"
 
 #include "chip.h"
@@ -57,13 +56,13 @@
 
 /*
  * @Brief: Configure RTC peripheral.
- * @param  RTC_t rtc: RTC structure
+ * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcConfig( RTC_t * rtc ){
-   
+bool_t rtcConfig( rtc_t * rtc ){
+
    bool_t ret_val = 1;
-   
+
    static bool_t init;
    RTC_TIME_T rtcTime;
 
@@ -71,7 +70,7 @@ bool_t rtcConfig( RTC_t * rtc ){
       /* Already initialized */
       ret_val = 0;
    } else {
-      
+
       /* RTC Block section ------------------------- */
       Chip_RTC_Init(LPC_RTC);
 
@@ -88,10 +87,10 @@ bool_t rtcConfig( RTC_t * rtc ){
       */
       rtcWrite( rtc );
 
-      /* Enable rtc (starts increase the tick counter 
+      /* Enable rtc (starts increase the tick counter
          and second counter register) */
       Chip_RTC_Enable(LPC_RTC, ENABLE);
-      
+
       init = 1;
    }
 
@@ -100,11 +99,11 @@ bool_t rtcConfig( RTC_t * rtc ){
 
 /*
  * @Brief: Get time from RTC peripheral.
- * @param  RTC_t rtc: RTC structure
+ * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcRead( RTC_t * rtc ){
-   
+bool_t rtcRead( rtc_t * rtc ){
+
    bool_t ret_val = 1;
 
    RTC_TIME_T rtcTime;
@@ -124,11 +123,11 @@ bool_t rtcRead( RTC_t * rtc ){
 
 /*
  * @Brief: Set time on RTC peripheral.
- * @param  RTC_t rtc: RTC structure
+ * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcWrite( RTC_t * rtc ){
-   
+bool_t rtcWrite( rtc_t * rtc ){
+
    bool_t ret_val = 1;
 
    RTC_TIME_T rtcTime;

@@ -32,14 +32,14 @@
  */
 
 /*
- * Date: 2016-04-26
+ * Date: 2016-07-28
  */
 
 /*==================[inclusions]=============================================*/
 
-#include "main.h"         /* <= own header */
+#include "main.h"                     /* <= own header */
 
-#include "sapi.h"         /* <= sAPI header */
+#include "sapi.h"                     /* <= sAPI header */
 
 /*==================[macros and definitions]=================================*/
 
@@ -55,22 +55,6 @@
 
 /*==================[external functions definition]==========================*/
 
-/* FUNCION que se ejecuta cada vezque ocurre un Tick. */
-bool_t myTickHook(void *ptr){
-
-   static bool_t ledState = OFF;
-
-   if( ledState ){
-      ledState = OFF;
-   }
-   else{
-      ledState = ON;
-   }
-   gpioWrite( LED3, ledState );
-
-   return 1;
-}
-
 
 /* FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE RESET. */
 int main(void){
@@ -80,24 +64,19 @@ int main(void){
    /* Inicializar la placa */
    boardConfig();
 
-   /* Inicializar el conteo de Ticks con resolucion de 50ms (se ejecuta
-      periódicamente una interrupcón cada 50ms que incrementa un contador de
-      Ticks obteniendose una base de tiempos). Se agrega además un "tick hook"
-      nombrado myTickHook. El tick hook es simplemente una función que se
-      ejecutará períodicamente con cada interrupción de Tick, este nombre se
-      refiere a una función "enganchada" a una interrupción */
-   tickConfig( 50, myTickHook );
+   /* Inicializar el conteo de Ticks con resolucion de 1ms, sin tickHook */
+   tickConfig( 1, 0 );
 
    /* Inicializar GPIOs */
    gpioConfig( 0, GPIO_ENABLE );
 
-   /* Configuración de pines de entrada para Teclas de la CIAA-NXP */
+   /* Configuracion de pines de entrada para Teclas de la CIAA-NXP */
    gpioConfig( TEC1, GPIO_INPUT );
    gpioConfig( TEC2, GPIO_INPUT );
    gpioConfig( TEC3, GPIO_INPUT );
    gpioConfig( TEC4, GPIO_INPUT );
 
-   /* Configuración de pines de salida para Leds de la CIAA-NXP */
+   /* Configuracion de pines de salida para Leds de la CIAA-NXP */
    gpioConfig( LEDR, GPIO_OUTPUT );
    gpioConfig( LEDG, GPIO_OUTPUT );
    gpioConfig( LEDB, GPIO_OUTPUT );
@@ -105,8 +84,90 @@ int main(void){
    gpioConfig( LED2, GPIO_OUTPUT );
    gpioConfig( LED3, GPIO_OUTPUT );
 
+
+   /* Configuracion de pines para el display 7 segmentos */
+   /*
+   --------------------------+------------+-----------+----------------
+    Segmento encendido       | Valor BIN  | Valor HEX | GPIO resultado
+   --------------------------+------------+-----------+----------------
+    Enciende el segmento 'a' | 0b00000001 |   0x20    | GPIO5
+    Enciende el segmento 'b' | 0b00000010 |   0x80    | GPIO7
+    Enciende el segmento 'c' | 0b00000100 |   0x40    | GPIO6
+    Enciende el segmento 'd' | 0b00001000 |   0x02    | GPIO1
+    Enciende el segmento 'e' | 0b00010000 |   0x04    | GPIO2
+    Enciende el segmento 'f' | 0b00100000 |   0x10    | GPIO4
+    Enciende el segmento 'g' | 0b01000000 |   0x08    | GPIO3
+    Enciende el segmento 'h' | 0b10000000 |   0x80    | GPIO8
+   --------------------------+------------+-----------+----------------
+                a
+              -----
+          f /     / b
+           /  g  /
+           -----
+       e /     / c
+        /  d  /
+        -----    O h = dp (decimal pint).
+
+   */
+   uint8_t display7Segment[8] = {
+      GPIO5, // Segment 'a'
+      GPIO7, // Segment 'b'
+      GPIO6, // Segment 'c'
+      GPIO1, // Segment 'd'
+      GPIO2, // Segment 'e'
+      GPIO4, // Segment 'f'
+      GPIO3, // Segment 'g'
+      GPIO8  // Segment 'h' or 'dp'
+   };
+
+   display7SegmentPinConfig( display7Segment );
+
+
+   /* Configuracion de pines para el Teclado Matricial*/
+
+   // Teclado
+   keypad_t keypad;
+
+   // Filas --> Salidas
+   uint8_t keypadRowPins1[4] = {
+      RS232_TXD, // Row 0
+      CAN_RD,    // Row 1
+      CAN_TD,    // Row 2
+      T_COL1     // Row 3
+   };
+
+   // Columnas --> Entradas con pull-up (MODO = GPIO_INPUT_PULLUP)
+   uint8_t keypadColPins1[4] = {
+      T_FIL0,    // Column 0
+      T_FIL3,    // Column 1
+      T_FIL2,    // Column 2
+      T_COL0     // Column 3
+   };
+
+   keypadConfig( &keypad, keypadRowPins1, 4, keypadColPins1, 4 );
+
+
+   // Vector de conversion entre indice de tecla presionada y el índice del
+   // display 7 segmentos
+   uint16_t keypadToDesplayKeys[16] = {
+                                           1,    2,    3, 0x0a,
+                                           4,    5,    6, 0x0b,
+                                           7,    8,    9, 0x0c,
+                                        0x0e,    0, 0x0f, 0x0d
+                                      };
+
+   // Variable para guardar la tecla leida
+   uint16_t tecla = 0;
+
    /* ------------- REPETIR POR SIEMPRE ------------- */
    while(1) {
+
+      if( keypadRead( &keypad, &tecla ) ){
+         display7SegmentWrite( display7Segment,
+                               keypadToDesplayKeys[ (uint8_t)tecla ] );
+      } else{
+         display7SegmentWrite( display7Segment, DISPLAY_OFF );
+      }
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado

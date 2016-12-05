@@ -37,8 +37,6 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_dac.h"
-#include "sapi_datatypes.h"
-#include "sapi_peripheral_map.h"
 
 #include "chip.h"
 

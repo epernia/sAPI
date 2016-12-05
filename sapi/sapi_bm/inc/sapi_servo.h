@@ -52,7 +52,7 @@ extern "C" {
 typedef enum{
    SERVO_ENABLE, SERVO_DISABLE,
    SERVO_ENABLE_OUTPUT, SERVO_DISABLE_OUTPUT
-} ServoConfig_t;
+} servoConfig_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -66,7 +66,7 @@ typedef enum{
  * @IMPORTANT:   this function uses Timer 1, 2 and 3 to generate the servo signals, so
  *   they won't be available to use.
  */
-bool_t servoConfig( uint8_t servoNumber, uint8_t config );
+bool_t servoConfig( servoMap_t servoNumber, servoConfig_t config );
 
 /*
  * @brief:   Tells if the servo is currently active, and its position
@@ -74,7 +74,7 @@ bool_t servoConfig( uint8_t servoNumber, uint8_t config );
  * @param:   value:   value of the servo, from 0 to 180
  * @return:   position (1 ~ SERVO_TOTALNUMBER), 0 if the element was not found.
  */
-uint8_t servoIsAttached( uint8_t servoNumber);
+uint8_t servoIsAttached( servoMap_t servoNumber);
 
 /*
  * @brief: read the value of the servo
@@ -82,7 +82,7 @@ uint8_t servoIsAttached( uint8_t servoNumber);
  * @return: value of the servo (0 ~ 180).
  *   If an error ocurred, return = EMPTY_POSITION = 255
  */
-uint8_t servoRead( uint8_t servoNumber);
+uint16_t servoRead( servoMap_t servoNumber);
 
 /*
  * @brief: change the value of the servo
@@ -90,7 +90,7 @@ uint8_t servoRead( uint8_t servoNumber);
  * @param:   value:   value of the servo, from 0 to 180
  * @return: True if the value was successfully changed, False if not.
  */
-bool_t servoWrite( uint8_t servoNumber, uint8_t angle );
+bool_t servoWrite( servoMap_t servoNumber, uint16_t angle );
 
 /*==================[cplusplus]==============================================*/
 

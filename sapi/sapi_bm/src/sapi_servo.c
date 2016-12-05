@@ -34,39 +34,21 @@
 
 /* Date: 2016-02-10 */
 
-
-/*
-
-ENABLE_SERVO_TIMERS
-DISABLE_SERVO_TIMERS
-ENABLE_SERVO_OUTPUT
-DISABLE_SERVO_OUTPUT
-
-*/
-
-
 /*TODO: make a graphic and explanation of the timer ramp and compare match values
  to make everything clear */
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_gpio.h"
-#include "sapi_peripheral_map.h"
 #include "sapi_servo.h"
 #include "sapi_timer.h"
-
 
 /*==================[macros and definitions]=================================*/
 
 #define EMPTY_POSITION   255
-
 #define SERVO_TOTALNUMBER   9
-
 #define SERVO_COMPLETECYCLE_PERIOD   20000  /*value in uSec */
-
 #define SERVO_MAXUPTIME_PERIOD   2000  /*value in uSec */
-
 #define SERVO_MINUPTIME_PERIOD   500 /*value in uSec */
 
 /*==================[internal data declaration]==============================*/
@@ -106,8 +88,8 @@ static void timer3CompareMatch2func(void);
 static void timer3CompareMatch3func(void);
 
 static void servoInitTimers( void );
-static bool_t servoAttach( uint8_t servoNumber );
-static bool_t servoDetach( uint8_t servoNumber );
+static bool_t servoAttach( servoMap_t servoNumber );
+static bool_t servoDetach( servoMap_t servoNumber );
 
 /*==================[internal data definition]===============================*/
 
@@ -281,13 +263,13 @@ static void servoInitTimers(void){
  * @param   servoNumber:   ID of the servo, from 0 to 8
  * @return: True if servo was successfully attached, False if not.
  */
-static bool_t servoAttach( uint8_t servoNumber)
+static bool_t servoAttach( servoMap_t servoNumber)
 {
    bool_t success = FALSE;
    uint8_t position = 0;
 
    /* Pin must b config as Output */
-   gpioConfig( servoNumber, GPIO_OUTPUT );
+   gpioConfig( (gpioMap_t)servoNumber, GPIO_OUTPUT );
 
    position = servoIsAttached(servoNumber);
    if(position==0)
@@ -314,7 +296,7 @@ static bool_t servoAttach( uint8_t servoNumber)
  * @param   servoNumber:   ID of the servo, from 0 to 8
  * @return: True if servo was successfully detached, False if not.
  */
-static bool_t servoDetach( uint8_t servoNumber )
+static bool_t servoDetach( servoMap_t servoNumber )
 {
    bool_t success = FALSE;
    uint8_t position = 0;
@@ -342,7 +324,7 @@ static bool_t servoDetach( uint8_t servoNumber )
  * @IMPORTANT:   this function uses Timer 1, 2 and 3 to generate the servo signals, so
  *   they won't be available to use.
  */
-bool_t servoConfig( uint8_t servoNumber, uint8_t config ){
+bool_t servoConfig( servoMap_t servoNumber, servoConfig_t config ){
 
    bool_t ret_val = 1;
 
@@ -378,20 +360,17 @@ bool_t servoConfig( uint8_t servoNumber, uint8_t config ){
  * @param:   value:   value of the servo, from 0 to 180
  * @return:   position (1 ~ SERVO_TOTALNUMBER), 0 if the element was not found.
  */
-uint8_t servoIsAttached( uint8_t servoNumber )
-{
+uint8_t servoIsAttached( servoMap_t servoNumber ){
+
    uint8_t position = 0, positionInList = 0;
-   while ( (position < SERVO_TOTALNUMBER) && (servoNumber != AttachedServoList[position].servo) )
-   {
+   while ( (position < SERVO_TOTALNUMBER) &&
+           (servoNumber != AttachedServoList[position].servo) ){
       position++;
    }
 
-   if (position < SERVO_TOTALNUMBER)
-   {
+   if (position < SERVO_TOTALNUMBER){
       positionInList = position + 1;
-   }
-   else
-   {
+   } else{
       positionInList = 0;
    }
 
@@ -404,7 +383,7 @@ uint8_t servoIsAttached( uint8_t servoNumber )
  * @return: value of the servo (0 ~ 180).
  *   If an error ocurred, return = EMPTY_POSITION = 255
  */
-uint8_t servoRead( uint8_t servoNumber ){
+uint16_t servoRead( servoMap_t servoNumber){
 
    uint8_t position = 0, value = 0;
    position = servoIsAttached(servoNumber);
@@ -424,7 +403,7 @@ uint8_t servoRead( uint8_t servoNumber ){
  * @param:   value:   value of the servo, from 0 to 180
  * @return: True if the value was successfully changed, False if not.
  */
-bool_t servoWrite( uint8_t servoNumber, uint8_t angle ){
+bool_t servoWrite( servoMap_t servoNumber, uint16_t angle ){
 
    bool_t success = FALSE;
    uint8_t position = 0;

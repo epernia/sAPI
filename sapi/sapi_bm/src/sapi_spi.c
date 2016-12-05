@@ -53,7 +53,6 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_spi.h"
 
 #include "chip.h"

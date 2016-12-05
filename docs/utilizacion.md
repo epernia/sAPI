@@ -20,7 +20,7 @@ por:
 
 Para usarla en el programa incluir
 
-``#include "sAPI.h"``
+``#include "sapi.h"``
 
 en el archivo .c donde se requiera.
 

@@ -39,6 +39,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_delay.h"
+#include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
 
 /*==================[cplusplus]==============================================*/

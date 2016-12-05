@@ -35,12 +35,9 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
 #include "sapi_gpio.h"
-#include "sapi_peripheral_map.h"
 
 #include "chip.h"
-
 
 /*==================[macros and definitions]=================================*/
 

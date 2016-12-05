@@ -35,8 +35,6 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_datatypes.h"
-#include "sapi_peripheral_map.h"
 #include "sapi_uart.h"
 
 #include "chip.h"

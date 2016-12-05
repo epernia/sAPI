@@ -91,7 +91,7 @@ char* itoa(int value, char* result, int base) {
 
 
 /* Enviar fecha y hora en formato "DD/MM/YYYY, HH:MM:SS" */
-void showDateAndTime( RTC_t * rtc ){
+void showDateAndTime( rtc_t * rtc ){
    /* Conversion de entero a ascii con base decimal */
    itoa( (int) (rtc->mday), (char*)uartBuff, 10 ); /* 10 significa decimal */
    /* Envio el dia */
@@ -181,7 +181,7 @@ int main(void){
    uartConfig( UART_USB, 115200 );
 
    /* Estructura RTC */
-   RTC_t rtc;
+   rtc_t rtc;
 
    rtc.year = 2016;
    rtc.month = 7;

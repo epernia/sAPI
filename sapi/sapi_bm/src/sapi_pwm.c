@@ -38,12 +38,9 @@
  * All functions relative to the microcontroller */
 
 /*==================[inclusions]=============================================*/
-#include "sapi_datatypes.h"
-#include "sapi_peripheral_map.h"
+
 #include "sapi_pwm.h"
 #include "sapi_sct.h"
-
-
 
 /*==================[macros and definitions]=================================*/
 
@@ -72,14 +69,14 @@ static void pwmInitTimers(void);
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:   True if pwm was successfully attached, False if not.
  */
-static bool_t pwmAttach( uint8_t pwmNumber );
+static bool_t pwmAttach( pwmMap_t pwmNumber );
 
 /*
  * @brief:   removes pwm (attached to pwmNumber) from the list
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:    True if pwm was successfully detached, False if not.
  */
-static bool_t pwmDetach( uint8_t pwmNumber );
+static bool_t pwmDetach( pwmMap_t pwmNumber );
 
 /*==================[internal data definition]===============================*/
 
@@ -135,7 +132,7 @@ static void pwmInitTimers(void){
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:   True if pwm was successfully attached, False if not.
  */
-static bool_t pwmAttach( uint8_t pwmNumber){
+static bool_t pwmAttach( pwmMap_t pwmNumber){
 
    bool_t success = FALSE;
    uint8_t position = 0;
@@ -157,7 +154,7 @@ static bool_t pwmAttach( uint8_t pwmNumber){
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:    True if pwm was successfully detached, False if not.
  */
-static bool_t pwmDetach( uint8_t pwmNumber ){
+static bool_t pwmDetach( pwmMap_t pwmNumber ){
 
    bool_t success = FALSE;
    uint8_t position = 0;
@@ -179,7 +176,7 @@ static bool_t pwmDetach( uint8_t pwmNumber ){
  * @param:   value:   8bit value, from 0 to 255
  * @return:   True if the value was successfully changed, False if not.
  */
-bool_t pwmWrite( uint8_t pwmNumber, uint8_t value ){
+bool_t pwmWrite( pwmMap_t pwmNumber, uint8_t value ){
 
    bool_t success = FALSE;
    uint8_t position = 0;
@@ -200,7 +197,7 @@ bool_t pwmWrite( uint8_t pwmNumber, uint8_t value ){
  * @return:   value of the pwm in the pin (0 ~ 255).
  *   If an error ocurred, return = EMPTY_POSITION = 255
  */
-uint8_t pwmRead( uint8_t pwmNumber ){
+uint8_t pwmRead( pwmMap_t pwmNumber ){
 
    uint8_t position = 0, value = 0;
    position = pwmIsAttached(pwmNumber);
@@ -221,7 +218,7 @@ uint8_t pwmRead( uint8_t pwmNumber ){
  * @param  uint8_t config
  * @return bool_t true (1) if config it is ok
  */
-bool_t pwmConfig( uint8_t pwmNumber, uint8_t config){
+bool_t pwmConfig( pwmMap_t pwmNumber, pwmConfig_t config){
 
    bool_t ret_val = 1;
 
@@ -256,7 +253,7 @@ bool_t pwmConfig( uint8_t pwmNumber, uint8_t config){
  * @param:   pwmNumber:   ID of the pwm, from 0 to 10
  * @return:   position (1 ~ PWM_TOTALNUMBER), 0 if the element was not found.
  */
-uint8_t pwmIsAttached( uint8_t pwmNumber )
+uint8_t pwmIsAttached( pwmMap_t pwmNumber )
 {
    uint8_t position = 0, positionInList = 0;
    while ( (position < PWM_TOTALNUMBER) &&

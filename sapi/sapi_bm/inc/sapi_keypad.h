@@ -1,4 +1,4 @@
-/* Copyright 2015-2016, Eric Pernia.
+/* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -31,34 +31,37 @@
  *
  */
 
-/* Date: 2015-09-23 */
+#ifndef _SAPI_KEYPAD_H_
+#define _SAPI_KEYPAD_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_board.h"
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
-#include "chip.h"
+/*==================[macros]=================================================*/
 
-/*==================[macros and definitions]=================================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal data declaration]==============================*/
+typedef struct{
+   gpioMap_t* keypadRowPins;
+   uint8_t keypadRowSize;
+   gpioMap_t* keypadColPins;
+   uint8_t keypadColSize;
+} keypad_t;
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[external data definition]===============================*/
+/* Configure keypad pins */
+bool_t keypadConfig( keypad_t* keypad,
+                     gpioMap_t* keypadRowPins, uint8_t keypadRowSize,
+                     gpioMap_t* keypadColPins, uint8_t keypadColSize );
 
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-
-/* Set up and initialize board hardware */
-void boardConfig(void) {
-
-   /* Read clock settings and update SystemCoreClock variable */
-   SystemCoreClockUpdate();
-
-}
+/* Return TRUE if any key is pressed or FALSE (0) in other cases.
+ * If exist key pressed write pressed key on key variable */
+bool_t keypadRead( keypad_t* keypad, uint16_t* key );
 
 /*==================[end of file]============================================*/
+#endif /* #ifndef _SAPI_KEYPAD_H_ */
