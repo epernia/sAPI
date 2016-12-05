@@ -29,6 +29,7 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 - Bus serie entre circuitos integrados (I2C).
 - Reloj de tiempo real (RTC).
 - Modos bajo consumo (Sleep).
+- Modulación por ancho de pulso (PWM).
 
 **Retardos**
 
@@ -38,7 +39,6 @@ no expertas en la arquitectura del LPC4337 facilitando el uso de esta plataforma
 
 - Display 7 segmentos cátodo común (7-segment display).
 - Teclado matricial (Keypad).
-- Modulación por ancho de pulso (PWM).
 - Servo angular (0 a 180°).
 - Sensor magnetómetro (compass) Honeywell HMC5883L.
 

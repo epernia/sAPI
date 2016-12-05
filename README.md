@@ -20,17 +20,23 @@ certain peripheral.
 - ISR Vector.
 - Board.
 - Tick.
-- Delay.
 - GPIO.
+- UART.
 - ADC.
 - DAC.
-- UART.
 - I2C.
 - RTC.
+- Sleep.
 - PWM.
+
+**Delays**
+
+- Delay.
 
 **External Peripherals**
 
+- 7-segment display.
+- Keypad.
 - Angular Servo (0 to 180°).
 - Magnetometer (compass) sensor HMC5883L.
 
