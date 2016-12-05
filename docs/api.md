@@ -580,6 +580,7 @@ Testear en que orden están conectados los pines a los segmentos *a* a *h*:
 
 Mediante esta función se puede completar la siguiente tabla que indica a qué pines se conecto el display 7 segmentos:
 
+|:----------------------:|:-------------:|:-----------------:|:-------------:|
 | Segmento encendido     | Valor Binario | Valor Hexadecimal | Pin de salida |
 |:----------------------:|:-------------:|:-----------------:|:-------------:|
 | Segmento 'a' encendido | 0b00000001    |   0x20            | (a completar) |
@@ -590,7 +591,7 @@ Mediante esta función se puede completar la siguiente tabla que indica a qué p
 | Segmento 'f' encendido | 0b00100000    |   0x10            |               |
 | Segmento 'g' encendido | 0b01000000    |   0x08            |               |
 | Segmento 'h' encendido | 0b10000000    |   0x80            |               |
-
+|:----------------------:|:-------------:|:-----------------:|:-------------:|
 
 **Escribir símbolo en display 7 segmentos**
 
