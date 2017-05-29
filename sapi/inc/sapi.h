@@ -43,6 +43,7 @@
 
 //#include "sapi_isr_vector.h"
 
+// Peripheral Drivers
 #include "sapi_board.h"
 #include "sapi_tick.h"
 #include "sapi_gpio.h"
@@ -53,17 +54,20 @@
 #include "sapi_rtc.h"
 #include "sapi_sleep.h"
 
-#include "sapi_circularBuffer.h"
+// High Level drivers
+#include "sapi_print.h"             // Use UART module
+#include "sapi_debugPrint.h"        // Use Print module
+#include "sapi_consolePrint.h"      // Use Print module
 
 #include "sapi_delay.h"             // Use Tick module
+#include "sapi_circularBuffer.h"
+#include "sapi_pwm.h"               // Use SCT and GPIO modules
 
+// External Peripheral Drivers
 #include "sapi_7_segment_display.h" // Use GPIO and Delay modules
 #include "sapi_keypad.h"            // Use GPIO and Delay modules
-#include "sapi_pwm.h"               // Use SCT and GPIO modules
 #include "sapi_servo.h"             // Use Timer and GPIO modules
 #include "sapi_hmc5883l.h"          // Use I2C module
-
-/* External Peripherals */
 
 /*==================[cplusplus]==============================================*/
 

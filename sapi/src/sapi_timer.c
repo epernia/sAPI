@@ -1,4 +1,5 @@
 /* Copyright 2016, Ian Olivieri
+ * Copyright 2017, Eric Pernia
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -106,6 +107,29 @@ static void doNothing(void){
 }
 
 /*==================[external functions definition]==========================*/
+
+
+
+// NEW TIMER --------------------------------------------------------------------------------------------
+
+volatile sAPI_FuncPtr_t timer0CompareHookFunction = sAPI_NullFuncPtr;
+volatile sAPI_FuncPtr_t timer1MatchHookFunction = sAPI_NullFuncPtr;
+   
+
+void timerSetInputCaptureEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook ){
+   if( eventHook ){
+      timer0CompareHookFunction = eventHook;
+   }
+}
+
+void timerSetMatchEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook ){
+   if( eventHook ){
+      timer1MatchHookFunction = eventHook;
+   }   
+}
+
+
+// NEW TIMER --------------------------------------------------------------------------------------------
 
 /*
  * @Brief   Initialize Timer peripheral
@@ -227,7 +251,9 @@ void Timer_SetCompareMatch( uint8_t timerNumber,
  *   at the chosen frequencies
  */
 void TIMER0_IRQHandler(void){
-
+   
+   // Match
+   
    uint8_t compareMatchNumber = 0;
 
    for( compareMatchNumber = TIMERCOMPAREMATCH0;
@@ -239,24 +265,53 @@ void TIMER0_IRQHandler(void){
          Chip_TIMER_ClearMatch(LPC_TIMER0, compareMatchNumber);
       }
    }
+      
+   // Compare
+      
+	if( Chip_TIMER_CapturePending( LPC_TIMER0, 2 ) ){
+      Chip_TIMER_ClearCapture( LPC_TIMER0, 2 );
+      
+      // Execute Timer0 Compare Hook function
+      (* timer0CompareHookFunction )( 0 );
+	}
+   
 }
 
-void TIMER1_IRQHandler( void ){
 
+
+// NEW TIMER --------------------------------------------------------------------------------------------
+
+void TIMER1_IRQHandler( void ){
+   
+   // Match
+
+/*
    uint8_t compareMatchNumber = 0;
 
    for( compareMatchNumber = TIMERCOMPAREMATCH0;
         compareMatchNumber <= TIMERCOMPAREMATCH3;
         compareMatchNumber++ ){
       if( Chip_TIMER_MatchPending(LPC_TIMER1, compareMatchNumber) ){
-         /*Run the functions saved in the timer dynamic data structure*/
+         // Run the functions saved in the timer dynamic data structure
          (*timer_dd[TIMER1].timerCompareMatchFunctionPointer[compareMatchNumber])();
          Chip_TIMER_ClearMatch(LPC_TIMER1, compareMatchNumber);
       }
    }
+*/   
+
+	if( Chip_TIMER_MatchPending( LPC_TIMER1, 1 ) ){
+		Chip_TIMER_ClearMatch( LPC_TIMER1, 1 );
+
+      // Execute Timer1 Match Hook function
+      (* timer1MatchHookFunction )( 0 );
+	}
+   
 }
 
 void TIMER2_IRQHandler( void ){
+   
+   // Match
+   
    uint8_t compareMatchNumber = 0;
 
    for( compareMatchNumber = TIMERCOMPAREMATCH0;
@@ -272,6 +327,8 @@ void TIMER2_IRQHandler( void ){
 
 /*fixme __attribute__ ((section(".after_vectors")))*/
 void TIMER3_IRQHandler( void ){
+   
+   // Match
 
    uint8_t compareMatchNumber = 0;
 
@@ -285,5 +342,8 @@ void TIMER3_IRQHandler( void ){
       }
    }
 }
+
+
+// NEW TIMER --------------------------------------------------------------------------------------------
 
 /*==================[end of file]============================================*/

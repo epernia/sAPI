@@ -48,32 +48,79 @@
 
 /*==================[external functions definition]==========================*/
 
+/*
+void PLC_IL_ST(void* newValue, PLC_WORD lenght, PLC_EnumModifiers modifier)
+{
+   extern PLC_SymbolicRegister CR;
 
-void circularBufferConfig( circularBuffer_t* buffer, uint8_t* bufferMemory,
-      uint8_t bufferMemorySize, callBackFuncPtr_t emptyBufferCallback,
-		callBackFuncPtr_t fullBufferCalback ){
+   // MEMORY COPY
+   uint8_t *source;
+   uint8_t *destination;
+   uint16_t i = 0;
 
-   buffer->memoryAddress       = bufferMemory;
-   buffer->size                = bufferMemorySize;
-   buffer->readIndex           = 0;
-   buffer->writeIndex          = 0;
-   buffer->status = CIRCULAR_BUFFER_EMPTY;
+   destination = newValue;
+   source = &(CR.VALUE);
+
+   for( i = 0; i < lenght; i++ )
+   {
+      if (modifier == N)
+      {
+         *destination = ~(*source);
+      }
+      else
+      {
+         *destination = *source;
+      }
+      destination++;
+      source++;
+   }
+}
+*/
+
+void circularBuffer_Config(
+   circularBuffer_t* buffer,    // buffer structure
+   uint8_t* bufferMemory,       // buffer array of memory
+   uint32_t amountOfElements,   // amount of elements in buffer
+   uint32_t elementSize         // each element size in bytes
+                         ){
+
+   buffer->memoryAddress    = bufferMemory;
+   buffer->amountOfElements = amountOfElements + 1;
+   buffer->elementSize      = elementSize;
+   buffer->readIndex        = 0;
+   buffer->writeIndex       = 0;
+   buffer->status           = CIRCULAR_BUFFER_EMPTY;
+}
+
+
+void circularBufferSetEmptyBufferCallback(
+   circularBuffer_t* buffer,              // buffer structure
+   callBackFuncPtr_t emptyBufferCallback  // pointer to emptyBuffer function
+                                         ){
 
    // Empty buffer callback
-   if( emptyBufferCallback ){
+   if( emptyBufferCallback != 0 ){
       buffer->emptyBufferCallback = emptyBufferCallback;
    }
+}
 
+
+void circularBufferSetFullBufferCallback(
+   circularBuffer_t* buffer,              // buffer structure
+   callBackFuncPtr_t fullBufferCalback    // pointer to fullBuffer function
+                                        ){
    // Full buffer callback
-   if( fullBufferCalback ){
+   if( fullBufferCalback != 0 ){
       buffer->fullBufferCalback = fullBufferCalback;
    }
-
 }
 
 
 circularBufferStatus_t circularBufferRead( circularBuffer_t* buffer,
                                            uint8_t *dataByte ){
+
+   uint8_t i = 0;
+
 	// Is Empty?
 	if ( (buffer->readIndex) == (buffer->writeIndex) ){
 
@@ -89,8 +136,13 @@ circularBufferStatus_t circularBufferRead( circularBuffer_t* buffer,
 
 	   buffer->status = CIRCULAR_BUFFER_NORMAL;
 
-	   *dataByte = (buffer->memoryAddress)[ buffer->readIndex ];
-	   buffer->readIndex = (buffer->readIndex + 1) % buffer->size;
+	   // TODO:
+	   for( i=0; i<(buffer->elementSize); i++ ){
+	      dataByte[i] = (buffer->memoryAddress)[ buffer->readIndex + i ];
+      }
+
+	   // Increment readIndex (circular)
+      buffer->readIndex = (buffer->readIndex + buffer->elementSize) % (buffer->amountOfElements * buffer->elementSize);
 
 	}
 
@@ -101,8 +153,10 @@ circularBufferStatus_t circularBufferRead( circularBuffer_t* buffer,
 circularBufferStatus_t circularBufferWrite( circularBuffer_t* buffer,
                                             uint8_t *dataByte ){
 
+   uint8_t i = 0;
+
 	// Is Full?
-	if( ((buffer->writeIndex + 1) % (buffer->size) ) == (buffer->readIndex) ){
+	if( ((buffer->writeIndex + buffer->elementSize) % (buffer->amountOfElements * buffer->elementSize) ) == (buffer->readIndex) ){
 
 	   // Error, full buffer
 	   buffer->status = CIRCULAR_BUFFER_FULL;
@@ -116,8 +170,13 @@ circularBufferStatus_t circularBufferWrite( circularBuffer_t* buffer,
 
 		buffer->status = CIRCULAR_BUFFER_NORMAL;
 
-		(buffer->memoryAddress)[ buffer->writeIndex ] = *dataByte;
-		buffer->writeIndex = (buffer->writeIndex + 1) % buffer->size;
+      // TODO:
+      for( i=0; i<(buffer->elementSize); i++ ){
+         (buffer->memoryAddress)[ buffer->writeIndex + i ] = dataByte[i];
+      }
+
+      // Increment writeIndex (circular)
+		buffer->writeIndex = (buffer->writeIndex + buffer->elementSize) % (buffer->amountOfElements * buffer->elementSize);
 	}
 
 	return buffer->status;

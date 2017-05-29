@@ -127,6 +127,38 @@ typedef enum{
    TIMERCOMPAREMATCH0, TIMERCOMPAREMATCH1, TIMERCOMPAREMATCH2, TIMERCOMPAREMATCH3
 } timerCompareMatch_t;
 
+/*
+ENET_CRS_DV --> P1.16, FUNC4 --> T0_MAT0
+ENET_RXD0   --> P1.15, FUNC4 --> T0_MAT1
+ENET_TXD0   --> P1.18, FUNC4 --> T0_MAT3
+
+ENET_MDIO --> P1.17, FUNC4 --> T0_CAP0
+ENET_TXD1 --> P1.20, FUNC4 --> T0_CAP2
+
+
+GPIO3 --> P6.7,  FUNC5 --> T2_MAT0
+GPIO4 --> P6.8,  FUNC5 --> T2_MAT1
+GPIO5 --> P6.9,  FUNC5 --> T2_MAT2
+GPIO7 --> P6.11, FUNC5 --> T2_MAT3
+
+GPIO0         --> P6.1,  FUNC5 --> T2_CAP0
+RS485_TXD     --> P6.2,  FUNC5 --> T2_CAP1
+USB_PPWR      --> P6.3,  FUNC5 --> T2_CAP2 (NO SIRVE)
+USB_PWR_FAULT --> P6.6,  FUNC5 --> T2_CAP3 (NO SIRVE)
+
+
+RS232_TXD --> P2.3,  FUNC6 --> T3_MAT0
+RS232_RXD --> P2.4,  FUNC6 --> T3_MAT1
+JP5       --> P2.7,  FUNC6 --> T3_MAT3 (NO SIRVE)
+
+LEDR  --> P2.0,  FUNC6 --> T3_CAP0
+LEDG  --> P2.1,  FUNC6 --> T3_CAP1
+LEDB  --> P2.2,  FUNC6 --> T3_CAP2
+
+
+Tengo diponibles Timers 0, 2 y 3.
+*/
+
 /*Defined for sapi_sct.h*/
 // NOTE: CTOUT11 has no SCT mode associated, so it can't be used!
 // NOTE: if pwm is enable (pwmConfig used) there will be no sct channels available

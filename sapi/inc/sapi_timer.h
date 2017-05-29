@@ -52,6 +52,124 @@ extern "C" {
 /*==================[typedef]================================================*/
 typedef void (*voidFunctionPointer_t)(void);
 
+
+// NEW TIMER --------------------------------------------------------------------------------------------
+
+typedef enum{
+   TIMER_TICKER,
+   TIMER_OVERFLOW,
+   TIMER_MATCH,
+   TIMER_MATCH_OUTPUT,
+   TIMER_PWM,
+   TIMER_INPUT_CAPTURE
+} timerMode_t;
+
+
+
+typedef enum{
+   TIMER_CAPTURE_IN_RISING_EDGE,
+   TIMER_CAPTURE_IN_FALLING_EDGE,
+   TIMER_CAPTURE_IN_BOTH_EDGES
+} timerInputCaptureMode_t;
+
+
+typedef enum{
+   TIMER_SET_OUTPUT_ON_MATCH,      // (Set high on match)
+   TIMER_CLEAR_OUTPUT_ON_MATCH,    // (Set low on match)
+   TIMER_TOGGLESET_OUTPUT_ON_MATCH // (Toggle on match)
+} timerMatchOutputMode_t;
+
+
+
+
+
+typedef enum{
+   TIMER0_MATCH_PIN0,
+   TIMER0_MATCH_PIN1,
+   TIMER0_MATCH_PIN2,
+   TIMER0_MATCH_PIN3
+} timer0MatchPins_t;
+
+typedef enum{
+   TIMER1_MATCH_PIN0,
+   TIMER1_MATCH_PIN1,
+   TIMER1_MATCH_PIN2,
+   TIMER1_MATCH_PIN3
+} timer1MatchPins_t;
+
+typedef enum{
+   TIMER2_MATCH_PIN0,
+   TIMER2_MATCH_PIN1,
+   TIMER2_MATCH_PIN2,
+   TIMER2_MATCH_PIN3
+} timer2MatchPins_t;
+
+typedef enum{
+   TIMER3_MATCH_PIN0,
+   TIMER3_MATCH_PIN1,
+   TIMER3_MATCH_PIN2,
+   TIMER3_MATCH_PIN3
+} timer3MatchPins_t;
+
+
+
+typedef enum{
+   TIMER0_CAPTURE_PIN0,
+   TIMER0_CAPTURE_PIN1,
+   TIMER0_CAPTURE_PIN2,
+   TIMER0_CAPTURE_PIN3
+} timer0CapturePins_t;
+
+typedef enum{
+   TIMER1_CAPTURE_PIN0,
+   TIMER1_CAPTURE_PIN1,
+   TIMER1_CAPTURE_PIN2,
+   TIMER1_CAPTURE_PIN3
+} timer1CapturePins_t;
+
+typedef enum{
+   TIMER2_CAPTURE_PIN0,
+   TIMER2_CAPTURE_PIN1,
+   TIMER2_CAPTURE_PIN2,
+   TIMER2_CAPTURE_PIN3
+} timer2CapturePins_t;
+
+typedef enum{
+   TIMER3_CAPTURE_PIN0,
+   TIMER3_CAPTURE_PIN1,
+   TIMER3_CAPTURE_PIN2,
+   TIMER3_CAPTURE_PIN3
+} timer3CapturePins_t;
+
+
+
+typedef enum{
+   CLOCK_SOURCE_INTERNAL_MCU_CLK,
+   CLOCK_SOURCE_EXTERNAL_CLK
+} clockSource_t;
+
+typedef enum{
+   PRESCALER_1,
+   PRESCALER_8,
+   PRESCALER_16,
+   PRESCALER_32,
+   PRESCALER_64,
+   PRESCALER_128,
+   PRESCALER_256,
+   PRESCALER_512,
+   PRESCALER_1024
+} prescaler_t;
+
+
+
+void timerConfig( timerMap_t timer, timerMode_t mode, clockSource_t clkSource, prescaler_t prescaler );
+
+void timerSetInputCaptureEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook );
+
+void timerSetMatchEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook );
+
+// NEW TIMER --------------------------------------------------------------------------------------------
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/

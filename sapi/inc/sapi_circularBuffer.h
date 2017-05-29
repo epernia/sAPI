@@ -47,6 +47,13 @@ extern "C" {
 
 #define CIRCULAR_BUFFER_SET_SIZE(val)   ((val)+1)
 
+#define circularBufferNew( buffName, elementSize, amountOfElements );   circularBuffer_t buffName;\
+   uint8_t buffName##_BufferMemory[ ((amountOfElements) + 1) * (elementSize) ];
+
+#define circularBufferUse( buffName );   extern circularBuffer_t buffName;
+
+#define circularBufferConfig( buffName, elementSize, amountOfElements );   circularBuffer_Config( &(buffName), buffName##_BufferMemory, amountOfElements, elementSize );
+
 /*==================[typedef]================================================*/
 
 typedef void (*callBackFuncPtr_t)(void);
@@ -60,31 +67,41 @@ typedef enum {
 
 typedef struct {
    uint8_t* memoryAddress;
-   uint8_t  size;
-   uint8_t  readIndex;
-   uint8_t  writeIndex;
+   uint32_t amountOfElements;
+   uint32_t elementSize;
+   uint32_t readIndex;
+   uint32_t writeIndex;
+   circularBufferStatus_t status;
    callBackFuncPtr_t emptyBufferCallback;
    callBackFuncPtr_t fullBufferCalback;
-   circularBufferStatus_t status;
 } circularBuffer_t;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
+void circularBuffer_Config(
+   circularBuffer_t* buffer,    // buffer structure
+   uint8_t* bufferMemory,       // buffer array of memory
+   uint32_t amountOfElements,   // amount of elements in buffer
+   uint32_t elementSize         // each element size in bytes
+                         );
 
-void circularBufferConfig( circularBuffer_t* buffer, uint8_t* bufferMemory,
-      uint8_t bufferMemorySize, callBackFuncPtr_t emptyBufferCallback,
-		callBackFuncPtr_t fullBufferCalback );
+void circularBufferSetEmptyBufferCallback(
+   circularBuffer_t* buffer,              // buffer structure
+   callBackFuncPtr_t emptyBufferCallback  // pointer to emptyBuffer function
+                                         );
 
+void circularBufferSetFullBufferCallback(
+   circularBuffer_t* buffer,              // buffer structure
+   callBackFuncPtr_t fullBufferCalback    // pointer to fullBuffer function
+                                        );
 
 circularBufferStatus_t circularBufferRead( circularBuffer_t* buffer,
-                                           uint8_t* dataByte );
-
+                                           uint8_t *dataByte );
 
 circularBufferStatus_t circularBufferWrite( circularBuffer_t* buffer,
-                                            uint8_t* dataByte );
-
+                                            uint8_t *dataByte );
 
 /*==================[cplusplus]==============================================*/
 
@@ -92,7 +109,7 @@ circularBufferStatus_t circularBufferWrite( circularBuffer_t* buffer,
 
 /*==================[example]==============================================*/
 
-// Before while(1)
+// Before main
 /*
 // EL BUFFER ES DE ITEMS DE A 1 BYTE
 
@@ -103,6 +120,8 @@ void emptyBuff( void ){
 void fullBuff( void ){
    uartWriteString( UART_DEBUG, "Buffer lleno.\r\n" );
 }
+
+// Before while(1)
 
 static uint8_t txData = '1';
 static uint8_t rxData;
