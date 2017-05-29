@@ -83,8 +83,8 @@ static const timerStaticData_t timer_sd[4] = {
    { LPC_TIMER3, RGU_TIMER3_RST, TIMER3_IRQn }
 };
 
-/*Timers dynamic data. Function pointers and Compare match frequencies, which can vary.
- * This is the default initialization*/
+/* Timers dynamic data. Function pointers and Compare match frequencies, which 
+   can vary. This is the default initialization*/
 static timerDinamicData_t timer_dd[4] = {
    {doNothing,errorOcurred,errorOcurred,errorOcurred},
    {doNothing,errorOcurred,errorOcurred,errorOcurred},
@@ -97,8 +97,8 @@ static timerDinamicData_t timer_dd[4] = {
 /*==================[internal functions definition]==========================*/
 
 /* Causes:
- * User forgot to initialize the functions for the compare match interrupt on Timer_init call
- */
+ * User forgot to initialize the functions for the compare match interrupt on 
+ * Timer_init call */
 static void errorOcurred(void){
    while(1);
 }
@@ -108,20 +108,70 @@ static void doNothing(void){
 
 /*==================[external functions definition]==========================*/
 
+// -------------- Capture Hook Functions --------------
+
+// Capture Hook Functions for Timer0
+volatile sAPI_FuncPtr_t timer0CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+// Capture Hook Functions for Timer1
+volatile sAPI_FuncPtr_t timer1CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+// Capture Hook Functions for Timer2
+volatile sAPI_FuncPtr_t timer2CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+// Capture Hook Functions for Timer3
+volatile sAPI_FuncPtr_t timer3CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
 
 
-// NEW TIMER --------------------------------------------------------------------------------------------
+// Match Hook Functions for Timer0
+volatile sAPI_FuncPtr_t timer0CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
 
-volatile sAPI_FuncPtr_t timer0CompareHookFunction = sAPI_NullFuncPtr;
-volatile sAPI_FuncPtr_t timer1MatchHookFunction = sAPI_NullFuncPtr;
-   
 
+// -------------- Match Hook Functions --------------
+
+// Match Hook Functions for Timer1
+volatile sAPI_FuncPtr_t timer1CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+// Match Hook Functions for Timer2
+volatile sAPI_FuncPtr_t timer2CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+// Match Hook Functions for Timer3
+volatile sAPI_FuncPtr_t timer3CaptureHookFunction[4] = { sAPI_NullFuncPtr, 
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr,  
+                                                         sAPI_NullFuncPtr };
+
+
+// Set Input Capture Event
 void timerSetInputCaptureEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook ){
    if( eventHook ){
       timer0CompareHookFunction = eventHook;
    }
 }
 
+
+// Set Input Match Event
 void timerSetMatchEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook ){
    if( eventHook ){
       timer1MatchHookFunction = eventHook;
@@ -135,7 +185,8 @@ void timerSetMatchEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook ){
  * @Brief   Initialize Timer peripheral
  * @param   timerNumber:   Timer number, 0 to 3
  * @param   ticks:   Number of ticks required to finish the cycle.
- * @param   voidFunctionPointer:   function to be executed at the end of the timer cycle
+ * @param   voidFunctionPointer:   function to be executed at the end of the 
+ *                                 timer cycle
  * @return   nothing
  * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
  */
@@ -158,7 +209,8 @@ void Timer_Init( uint8_t timerNumber, uint32_t ticks,
    /* Update the defalut function pointer name of the Compare match 0*/
    timer_dd[timerNumber].timerCompareMatchFunctionPointer[TIMERCOMPAREMATCH0] = voidFunctionPointer;
 
-   /* Initialize compare match with the specified ticks (number of counts needed to clear the match counter) */
+   /* Initialize compare match with the specified ticks (number of counts needed
+      to clear the match counter) */
    Chip_TIMER_MatchEnableInt(timer_sd[timerNumber].name, TIMERCOMPAREMATCH0);
    Chip_TIMER_SetMatch(timer_sd[timerNumber].name, TIMERCOMPAREMATCH0, ticks);
 
@@ -200,7 +252,8 @@ uint32_t Timer_microsecondsToTicks(uint32_t uS){
  * @param   timerNumber:   Timer number, 0 to 3
  * @param   compareMatchNumber:   Compare match number, 1 to 3
  * @param   ticks:   Number of ticks required to reach the compare match.
- * @param   voidFunctionPointer: function to be executed when the compare match is reached
+ * @param   voidFunctionPointer: function to be executed when the compare match 
+ *                               is reached
  * @return   None
  * @note   For the 'ticks' parameter, see function Timer_microsecondsToTicks
  */
@@ -246,104 +299,130 @@ void Timer_SetCompareMatch( uint8_t timerNumber,
 }
 
 /*==================[ISR external functions definition]======================*/
+
+bool_t timers_IRQHandler(  ){
+
+   bool_t retVal = FALSE;
+   uint8_t i = 0;
+
+   // Match
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Match i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER0, i );
+         retVal = TRUE;
+      }
+   }
+
+   // Compare
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_CapturePending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Compare i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearCapture( LPC_TIMER0, i );
+         retVal = TRUE;
+      }
+   }
+
+   return retVal;
+
+}
+
 /*
- * @Brief:   Executes the functions passed by parameter in the Timer_init,
- *   at the chosen frequencies
+ * @Brief: 
  */
 void TIMER0_IRQHandler(void){
-   
-   // Match
-   
-   uint8_t compareMatchNumber = 0;
 
-   for( compareMatchNumber = TIMERCOMPAREMATCH0;
-        compareMatchNumber <= TIMERCOMPAREMATCH3;
-        compareMatchNumber++ ){
-      if( Chip_TIMER_MatchPending(LPC_TIMER0, compareMatchNumber) ){
-         /*Run the functions saved in the timer dynamic data structure*/
-         (*timer_dd[TIMER0].timerCompareMatchFunctionPointer[compareMatchNumber])();
-         Chip_TIMER_ClearMatch(LPC_TIMER0, compareMatchNumber);
+   uint8_t i = 0;
+
+   // Match
+   /*
+   for( i=TIMERCOMPAREMATCH0; i<=TIMERCOMPAREMATCH3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER0, i ) ){
+         // Run the functions saved in the timer dynamic data structure
+         (*timer_dd[TIMER0].timerCompareMatchFunctionPointer[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER0, i );
       }
    }
-      
+   */
+
+   // Match
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Match i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER0, i );
+      }
+   }
+
    // Compare
-      
-	if( Chip_TIMER_CapturePending( LPC_TIMER0, 2 ) ){
-      Chip_TIMER_ClearCapture( LPC_TIMER0, 2 );
-      
-      // Execute Timer0 Compare Hook function
-      (* timer0CompareHookFunction )( 0 );
-	}
-   
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_CapturePending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Compare i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearCapture( LPC_TIMER0, i );
+      }
+   }
+
 }
 
-
-
-// NEW TIMER --------------------------------------------------------------------------------------------
 
 void TIMER1_IRQHandler( void ){
-   
+
+   uint8_t i = 0;
+
    // Match
-
-/*
-   uint8_t compareMatchNumber = 0;
-
-   for( compareMatchNumber = TIMERCOMPAREMATCH0;
-        compareMatchNumber <= TIMERCOMPAREMATCH3;
-        compareMatchNumber++ ){
-      if( Chip_TIMER_MatchPending(LPC_TIMER1, compareMatchNumber) ){
-         // Run the functions saved in the timer dynamic data structure
-         (*timer_dd[TIMER1].timerCompareMatchFunctionPointer[compareMatchNumber])();
-         Chip_TIMER_ClearMatch(LPC_TIMER1, compareMatchNumber);
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Match i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER0, i );
       }
    }
-*/   
 
-	if( Chip_TIMER_MatchPending( LPC_TIMER1, 1 ) ){
-		Chip_TIMER_ClearMatch( LPC_TIMER1, 1 );
+   // Compare
+   for( i=0; i<=3; i++ ){
+      if( Chip_TIMER_CapturePending( LPC_TIMER0, i ) ){
+         // Execute Timer0 Compare i Hook function
+         (*timer0CaptureHookFunction[i])();
+         Chip_TIMER_ClearCapture( LPC_TIMER0, i );
+      }
+   }
 
-      // Execute Timer1 Match Hook function
-      (* timer1MatchHookFunction )( 0 );
-	}
-   
 }
+
 
 void TIMER2_IRQHandler( void ){
    
-   // Match
+   uint8_t i = 0;
    
-   uint8_t compareMatchNumber = 0;
+   // Match
 
-   for( compareMatchNumber = TIMERCOMPAREMATCH0;
-        compareMatchNumber <= TIMERCOMPAREMATCH3;
-        compareMatchNumber++ ){
-      if( Chip_TIMER_MatchPending(LPC_TIMER2, compareMatchNumber) ){
-         /*Run the functions saved in the timer dynamic data structure*/
-         (*timer_dd[TIMER2].timerCompareMatchFunctionPointer[compareMatchNumber])();
-         Chip_TIMER_ClearMatch(LPC_TIMER2, compareMatchNumber);
+   for( i=TIMERCOMPAREMATCH0; i<=TIMERCOMPAREMATCH3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER2, i ) ){
+         // Run the functions saved in the timer dynamic data structure
+         (*timer_dd[TIMER2].timerCompareMatchFunctionPointer[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER2, i );
       }
    }
 }
 
-/*fixme __attribute__ ((section(".after_vectors")))*/
+
 void TIMER3_IRQHandler( void ){
    
+   uint8_t i = 0;
+   
    // Match
 
-   uint8_t compareMatchNumber = 0;
-
-   for( compareMatchNumber = TIMERCOMPAREMATCH0;
-        compareMatchNumber <= TIMERCOMPAREMATCH3;
-        compareMatchNumber++ ){
-      if (Chip_TIMER_MatchPending(LPC_TIMER3, compareMatchNumber)){
-         /*Run the functions saved in the timer dynamic data structure*/
-         (*timer_dd[TIMER3].timerCompareMatchFunctionPointer[compareMatchNumber])();
-         Chip_TIMER_ClearMatch(LPC_TIMER3, compareMatchNumber);
+   for( i=TIMERCOMPAREMATCH0; i<=TIMERCOMPAREMATCH3; i++ ){
+      if( Chip_TIMER_MatchPending( LPC_TIMER3, i ) ){
+         // Run the functions saved in the timer dynamic data structure
+         (*timer_dd[TIMER3].timerCompareMatchFunctionPointer[i])();
+         Chip_TIMER_ClearMatch( LPC_TIMER3, i );
       }
    }
 }
 
+// fixme __attribute__ ((section(".after_vectors")))
 
-// NEW TIMER --------------------------------------------------------------------------------------------
-
-/*==================[end of file]============================================*/

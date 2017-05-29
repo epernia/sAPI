@@ -50,10 +50,11 @@ extern "C" {
 /*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
+
 typedef void (*voidFunctionPointer_t)(void);
 
 
-// NEW TIMER --------------------------------------------------------------------------------------------
+// -------------- Timer mode --------------
 
 typedef enum{
    TIMER_TICKER,
@@ -65,6 +66,7 @@ typedef enum{
 } timerMode_t;
 
 
+// -------------- Timer Pin Compare mode --------------
 
 typedef enum{
    TIMER_CAPTURE_IN_RISING_EDGE,
@@ -73,6 +75,8 @@ typedef enum{
 } timerInputCaptureMode_t;
 
 
+// -------------- Timer Pin Match mode --------------
+
 typedef enum{
    TIMER_SET_OUTPUT_ON_MATCH,      // (Set high on match)
    TIMER_CLEAR_OUTPUT_ON_MATCH,    // (Set low on match)
@@ -80,8 +84,7 @@ typedef enum{
 } timerMatchOutputMode_t;
 
 
-
-
+// -------------- Timer Match Pins --------------
 
 typedef enum{
    TIMER0_MATCH_PIN0,
@@ -112,6 +115,7 @@ typedef enum{
 } timer3MatchPins_t;
 
 
+// -------------- Timer Capture Pins --------------
 
 typedef enum{
    TIMER0_CAPTURE_PIN0,
@@ -142,11 +146,15 @@ typedef enum{
 } timer3CapturePins_t;
 
 
+// -------------- Timer Clock Source --------------
 
 typedef enum{
    CLOCK_SOURCE_INTERNAL_MCU_CLK,
    CLOCK_SOURCE_EXTERNAL_CLK
 } clockSource_t;
+
+
+// -------------- Timer Prescaler --------------
 
 typedef enum{
    PRESCALER_1,
@@ -168,7 +176,6 @@ void timerSetInputCaptureEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook );
 
 void timerSetMatchEvent( timerMap_t timer, sAPI_FuncPtr_t eventHook );
 
-// NEW TIMER --------------------------------------------------------------------------------------------
 
 /*==================[external data declaration]==============================*/
 
