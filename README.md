@@ -42,10 +42,6 @@ certain peripheral.
 
 Every module includes an example.
 
-### Software layers
-
-![ "sapi-modulos-capas.png" image not found](docs/assets/img/sapi-modulos-capas.png "Modules an layers of sAPI library")
-
 ### Boards
 
 Now available for boards:
