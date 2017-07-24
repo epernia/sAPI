@@ -3,15 +3,9 @@
 This library implements a simple API that acts as a HAL (Hardware Abstraction
 Layer) for microcontrollers.
 
-It takes ideas from *Wiring library*, but use the concept of *peripheral* instead
-the concept of *pin*, making the API regardless of the number of pins that use
-certain peripheral.
-
-## Documentation
-
 **NOTE:** Always use the [released versions](../../releases) because these are tested all examples and the API documentation is consistent. The master branch may contain inconsistencies because this library is currently under development.
 
-### Included modules
+## Included modules
 
 **Internal Peripherals**
 
@@ -25,30 +19,34 @@ certain peripheral.
 - ADC.
 - DAC.
 - I2C.
+- SPI.
 - RTC.
+- SCT.
+- Timer.
 - Sleep.
-- PWM.
 
-**Delays**
+**High Level modules**
 
-- Delay.
+- Delay. Use Tick module.
+- PWM. Use SCT and GPIO modules.
+- Circular Buffer.
+- Convert.
+- Print. Use UART and Convert modules.
+- Debug Print. Use Print module.
+- Console Print. Use Print module.
 
-**External Peripherals**
+**External Peripherals using sAPI**
 
-- 7-segment display.
-- Keypad.
-- Angular Servo (0 to 180°).
-- Magnetometer (compass) sensor HMC5883L.
+- 7-segment display. Use GPIO and Delay modules.
+- Keypad. Use GPIO and Delay modules.
+- Angular Servo (0 to 180°). Use Timer and GPIO modules.
+- Magnetometer (compass) sensor HMC5883L. Use I2C module.
 
 Every module includes an example.
 
-### Software layers
+## Boards
 
-![ "sapi-modulos-capas.png" image not found](docs/assets/img/sapi-modulos-capas.png "Modules an layers of sAPI library")
-
-### Boards
-
-Now available for boards:
+Available for boards:
 
 - EDU-CIAA-NXP (NXP LPC4337 microcontroller). [Download documentation.](docs/assets/pdf/EDU-CIAA-NXP_sAPI_bm_A4_v1r0_ES.pdf)
 - CIAA-NXP (NXP LPC4337 microcontroller).

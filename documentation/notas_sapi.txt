@@ -1,0 +1,13 @@
+Ver GPIO si dividir en modulo pin y modulo gpio. La propiedades de potencia del pin y demas como parte del modulo gpio o aparte. 
+Tener definido GPIO pin y gpio PORT o solo por pin individual? 
+Ports reales o ports virtuales?
+
+Ver Interrupciones.
+
+Ver definicion.
+
+Power y clock como propiedades de cada periferico independiente.
+
+Propiedades del core.
+
+Ver placa EFM32

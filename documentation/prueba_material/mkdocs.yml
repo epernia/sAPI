@@ -1,0 +1,68 @@
+# Project information
+site_name: 'My Project'
+site_description: 'A short description of my project'
+site_author: 'John Doe'
+site_url: 'https://my-github-handle.github.io/my-project'
+
+# Pages
+pages:
+    - Home: index.md
+
+# Repository
+repo_name: 'GitHub'
+repo_url: 'https://github.com/my-github-handle/my-project'
+
+# Copyright
+copyright: 'Copyright &copy; 2016 John Doe'
+
+# Documentation and theme
+#theme: 'readthedocs'
+theme: 'material'
+#theme_dir: 'mkdocs-material/material'
+
+# Options
+extra:
+  logo: 'images/logo.svg'
+  palette:
+    primary: 'blue'
+    accent: 'indigo'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  social:
+    - type: 'github'
+      link: 'https://github.com/squidfunk'
+    - type: 'twitter'
+      link: 'https://twitter.com/squidfunk'
+    - type: 'linkedin'
+      link: 'https://de.linkedin.com/in/martin-donath-20a95039'
+
+# Google Analytics
+#google_analytics:
+#  - 'UA-XXXXXXXX-X'
+#  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite(guess_lang=false,linenums=true)
+  - footnotes
+  - meta
+  - toc(permalink=true)
+  - pymdownx.arithmatex
+  - pymdownx.betterem(smart_enable=all)
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist(custom_checkbox=true)
+  - pymdownx.tilde
+
+extra_javascript:
+  - 'javascripts/extra.js'
+  - 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'

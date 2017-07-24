@@ -1,0 +1,996 @@
+/* Copyright 2016, Eric Pernia
+ * All rights reserved.
+ *
+ * This file is part sAPI library for microcontrollers.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
+ *    software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/*
+ * Date: 2016-11-01 Eric Pernia - PIC18LF implementation
+ */
+
+/*==================[inclusions]=============================================*/
+
+#include "../mcc_generated_files/mcc.h"
+#include <xc.h>
+#include "sapi_uart.h"
+#include "sapi_i2c.h"
+
+/*==================[macros and definitions]=================================*/
+
+//#define I2C_RETRY_MAX  10  // define the retry count
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+/**
+ * C++ version 0.4 char* style "itoa":
+ * Written by Lukás Chmela
+ * Released under GPLv3.
+
+ */
+char* pepe_itoa(int value, char* result, int base) {
+   // check that the base if valid
+   if (base < 2 || base > 36) { *result = '\0'; return result; }
+
+   char* ptr = result, *ptr1 = result, tmp_char;
+   int tmp_value;
+
+   do {
+      tmp_value = value;
+      value /= base;
+      *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * base)];
+   } while ( value );
+
+   // Apply negative sign
+   if (tmp_value < 0) *ptr++ = '-';
+   *ptr-- = '\0';
+   while(ptr1 < ptr) {
+      tmp_char = *ptr;
+      *ptr--= *ptr1;
+      *ptr1++ = tmp_char;
+   }
+   return result;
+}
+
+static void i2cSoftwareHighSDA(void){
+   I2C_SOFTWARE_SDA_DIR = 1;		// bring SDA to high impedance
+}
+
+static void i2cSoftwareLowSDA(void){
+   I2C_SOFTWARE_SDA_IN = 0;
+   I2C_SOFTWARE_SDA_DIR = 0;		// output a logic zero
+}
+
+static void i2cSoftwareHighSCL(void){
+   I2C_SOFTWARE_SCL_DIR = 1;		// bring SCL to high impedance
+}
+
+static void i2cSoftwareLowSCL(void){
+   I2C_SOFTWARE_SCL_IN = 0;		
+   I2C_SOFTWARE_SCL_DIR = 0;
+}
+
+
+
+static bool_t i2cHardwareConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+
+static bool_t i2cHardwareRead( uint8_t  i2cNumber,
+                               uint8_t  i2cSlaveAddress,
+                               uint8_t* dataToReadBuffer,
+                               uint16_t dataToReadBufferSize,
+                               bool_t   sendWriteStop,
+                               uint8_t* receiveDataBuffer,
+                               uint16_t receiveDataBufferSize,
+                               bool_t   sendReadStop );
+
+static bool_t i2cHardwareWrite( uint8_t  i2cNumber,
+                                uint8_t  i2cSlaveAddress,
+                                uint8_t* transmitDataBuffer,
+                                uint16_t transmitDataBufferSize,
+                                bool_t   sendWriteStop );
+
+
+static bool_t i2cSoftwareConfig( uint8_t i2cNumber, uint32_t clockRateHz );
+
+static bool_t i2cSoftwareRead( uint8_t  i2cNumber,
+                               uint8_t  i2cSlaveAddress,
+                               uint8_t* dataToReadBuffer,
+                               uint16_t dataToReadBufferSize,
+                               bool_t   sendWriteStop,
+                               uint8_t* receiveDataBuffer,
+                               uint16_t receiveDataBufferSize,
+                               bool_t   sendReadStop );
+
+static bool_t i2cSoftwareWrite( uint8_t  i2cNumber,
+                                uint8_t  i2cSlaveAddress,
+                                uint8_t* transmitDataBuffer,
+                                uint16_t transmitDataBufferSize,
+                                bool_t   sendWriteStop );
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+
+static bool_t i2cHardwareConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+    
+   bool_t retVal = TRUE;
+
+//   I2C1_Initialize();   
+
+   return retVal;
+}
+
+static bool_t i2cHardwareRead( uint8_t  i2cNumber,
+                               uint8_t  i2cSlaveAddress,
+                               uint8_t* dataToReadBuffer,
+                               uint16_t dataToReadBufferSize,
+                               bool_t   sendWriteStop,
+                               uint8_t* receiveDataBuffer,
+                               uint16_t receiveDataBufferSize,
+                               bool_t   sendReadStop ){
+
+   bool_t retVal = TRUE;  
+/*
+   I2C1_MESSAGE_STATUS status;
+   uint16_t    timeOut;
+   uint16_t    counter;
+        
+        
+   retVal = i2cWrite( i2cNumber,
+                      i2cSlaveAddress,
+                      dataToReadBuffer,
+                      dataToReadBufferSize,
+                      sendWriteStop );
+
+
+   // wait for the message to be sent or status has changed.
+   while( status == I2C1_MESSAGE_PENDING );
+
+      // read
+   I2C1_MasterRead( receiveDataBuffer,
+                    receiveDataBufferSize,
+                    (uint8_t)i2cSlaveAddress,
+                    &status );
+
+    // wait for the message to be sent or status has changed.
+    while( status == I2C1_MESSAGE_PENDING );
+
+    if( status == I2C1_MESSAGE_COMPLETE ){
+       retVal &= TRUE;
+ //        break;
+    } else{
+       retVal = FALSE;
+    }
+*/
+   return retVal;
+}
+
+static bool_t i2cHardwareWrite( uint8_t  i2cNumber,
+                                uint8_t  i2cSlaveAddress,
+                                uint8_t* transmitDataBuffer,
+                                uint16_t transmitDataBufferSize,
+                                bool_t   sendWriteStop ){
+
+   bool_t retVal = TRUE;
+ /*  
+   I2C1_MESSAGE_STATUS status;
+   uint16_t            timeOut;
+
+   // Now it is possible that the slave device will be slow.
+   // As a work around on these slaves, the application can
+   // retry sending the transaction
+   timeOut = 0;
+   
+//   while( status != I2C1_MESSAGE_FAIL ){
+
+      // write
+      I2C1_MasterWrite( transmitDataBuffer,
+                        transmitDataBufferSize,
+                        (uint8_t)i2cSlaveAddress,
+                        &status );
+
+      // wait for the message to be sent or status has changed.
+      while( status == I2C1_MESSAGE_PENDING );
+
+      if( status == I2C1_MESSAGE_COMPLETE ){
+         retVal = TRUE;
+  //       break;
+      }
+*/
+   return retVal;
+}
+
+/*----------------------------------------------------------------------------*/
+
+static bool_t i2cSoftwareConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+
+   bool_t retVal = TRUE;
+// PINES CONFUGURADOS POR MCC
+   
+   // Se agrega
+   //ANSELA = 0x2C;
+   
+   I2C_SOFTWARE_SDA_DIR = OUTPUT;
+   I2C_SOFTWARE_SCL_DIR = OUTPUT;
+           
+   return retVal;
+}
+
+static bool_t i2cSoftwareRead( uint8_t  i2cNumber,
+                               uint8_t  i2cSlaveAddress,
+                               uint8_t* dataToReadBuffer,
+                               uint16_t dataToReadBufferSize,
+                               bool_t   sendWriteStop,
+                               uint8_t* receiveDataBuffer,
+                               uint16_t receiveDataBufferSize,
+                               bool_t   sendReadStop ){
+
+   bool_t retVal = TRUE;
+   uint16_t i = 0;
+
+   // Check Errors
+   if( (dataToReadBuffer == NULL)  || (dataToReadBufferSize < 0) ||
+       (receiveDataBuffer == NULL) ){
+      return FALSE;
+   }
+
+   // First Write
+
+   if( dataToReadBufferSize > 0 ){
+      retVal &= i2cSoftwareWrite( i2cNumber,
+                                  i2cSlaveAddress,
+                                  dataToReadBuffer,
+                                  dataToReadBufferSize,
+                                  sendWriteStop );
+   }
+
+   // Then Read
+
+   // Start condition
+   i2cSoftwareMasterWriteStart();
+   // 7 bit address + Read = 1
+   i2cSoftwareMasterWriteAddress( i2cSlaveAddress, I2C_SOFTWARE_READ );
+   // Write all data buffer
+   if( receiveDataBufferSize > 1 ){
+      // Must send ACK after i received byte (for each i minus last)
+      for( i=0; i<receiveDataBufferSize-1; i++ ){
+         receiveDataBuffer[i] = i2cSoftwareMasterReadByte( TRUE ); // TRUE send ACK, FALSE not
+      }      
+      // Must send NACK after last received byte
+      receiveDataBuffer[receiveDataBufferSize] = i2cSoftwareMasterReadByte( FALSE ); // TRUE send ACK, FALSE not
+   } else {
+      // Must send NACK after last received byte
+      receiveDataBuffer[0] = i2cSoftwareMasterReadByte( FALSE ); // TRUE send ACK, FALSE not   
+   }
+
+   // Send Stop condition
+   if( sendReadStop ){
+      i2cSoftwareMasterWriteStop();
+   }
+   return retVal;
+}
+
+static bool_t i2cSoftwareWrite( uint8_t  i2cNumber,
+                                uint8_t  i2cSlaveAddress,
+                                uint8_t* transmitDataBuffer,
+                                uint16_t transmitDataBufferSize,
+                                bool_t   sendWriteStop ){
+
+   bool_t retVal = TRUE;
+   uint16_t i = 0;
+
+   // Check Errors
+   if( (transmitDataBuffer == NULL) || (transmitDataBufferSize <= 0) ){
+      return FALSE;
+   }
+   // Start condition
+   i2cSoftwareMasterWriteStart();
+   // 7 bit address + Write = 0
+   i2cSoftwareMasterWriteAddress( i2cSlaveAddress, I2C_SOFTWARE_WRITE );
+   // Write all data buffer
+   for( i=0; i<transmitDataBufferSize; i++ ){
+      i2cSoftwareMasterWriteByte( transmitDataBuffer[i] );
+   }
+   // Send Stop condition
+   if(sendWriteStop){
+      i2cSoftwareMasterWriteStop();
+   }
+
+   return retVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+// Initialize I2C Module as Master
+/*
+static void I2C_Master_Init( const unsigned long i2cFreq ){
+  
+  // SSPEN = 1, I2C Master mode, clock = FOSC/(4 * (SSPADD + 1))
+  SSP1CON1 = 0b00101000;   // SSP Module as Master
+  SSP1CON2 = 0;
+  
+  // 0x28= 100Khz @ 4Mhz Fosc  //==31 with 20mhz
+  SSP1ADD = ( _XTAL_FREQ / (4*i2cFreq) ) - 1;
+  
+  SSP1STAT = 0;
+  //SSP1STAT |= 0x80; // Slew rate disabled
+  
+  // SDA and SCL as input pin
+  TRISC3 = 1;   
+  
+  // these pins can be configured either i/p or o/p
+  TRISC4 = 1;   
+
+//SDA = SCL = 1;
+//SCL_IN = SDA_IN = 0;
+
+}
+*/
+
+  /*
+    SSPSTAT - MSSSP Status Register
+    -------------------------------
+
+                    7     6     5     4     3     2     1     0
+    SSP1STAT =>  | SMP | CKE | D/A |  P  |  S  | R/W |  UA |  BF | 
+
+
+    Bit 0 BF:  This is the Buffer Full status bit. In the transmit mode this bit
+               will set when we write data to SSPBUF register and it is cleared
+               when the data is shifted out. In the receive mode this bit will 
+               set when the data or address is received in the SSPBUF register 
+               and it is cleared when we reads the SSPBUF register.
+    Bit 1 UA:  This is the Update Address bit and is used only in 10 bit address
+               mode. It indicates that user needs to update the address in the 
+               SSPADD register.
+    Bit 2 R/W: This is the Read/Write bit information. In the slave mode it 
+               indicates the status of R/W bit during the last address match. 
+               In the master mode, 1 indicates that transmit is in progress and 
+               vice versa.
+    Bit 3 S:   This bit indicates that a Start bit is detected last and it will 
+               automatically cleared during Reset.
+    Bit 4 P:   As above, this bit indicates that a Stop bit is detected last and
+               it will automatically cleared during Reset.
+    Bit 5 D/A: This is the data or address indicator bit and it is used only in 
+               slave mode. If it is set, the last byte received was data 
+               otherwise it will be address.
+    Bit 6 CKE: Setting this bit enables SMBus specific inputs. SMBus is an 
+               another bus similar to I2C, which are compatible each other.
+    Bit 7 SMP: Setting this bit disables slew rate control and vice versa.
+
+
+    SSPCON2 - MSSP Control Register 2
+    ---------------------------------      
+   
+                     7       6        5       4       3     2      1     0
+    SSP1CON2 =>  | GCEN | ACKSTAT | ACKDT | ACKEN | RCEN | PEN | RSEN | SEN | 
+    
+    Bit 0 SEN:     Start Condition or Stretch Enable bit. In master mode, 
+                   setting this bit initiate start condition on SCL & SDA pins 
+                   and it will be automatically cleared by the hardware. And in
+                   slave mode setting this bit enables clock stretching for both
+                   slave receive and slave transmit. If it is cleared in slave 
+                   mode, clock stretching is enabled only for slave transmit.
+    Bit 1 RSEN:    Repeated start condition enable bit. This bit has application
+                   only in master mode. Setting this bit will initiate repeated 
+                   start condition on both SCL & SDA pins and it will 
+                   automatically cleared in hardware.
+    Bit 2 PEN:     Stop condition enable bit. This bit has application only in 
+                   master mode. Setting this bit will initiate stop condition on
+                   both SCL & SDA pins and it will be automatically cleared in 
+                   hardware.
+    Bit 3 RCEN:    Receive enable bit. This bit also has application only in 
+                   master mode. Setting this bit enables receive mode for I2C.
+    Bit 4 ACKEN:   Acknowledge sequence enable bit. Setting this bit initiates 
+                   acknowledge sequence on SCL & SDA lines and it will send 
+                   ACKDT (see below) bit. This bit will be automatically cleared
+                   in hardware. It has application only in master receive mode.
+    Bit 5 ACKDT:   Acknowledge data bit. 1 means not acknowledge and 0 means 
+                   acknowledge. This value will be transmitted when we set the 
+                   ACKEN bit (above). This bit has application only in master 
+                   receive mode.
+    Bit 6 ACKSTAT: Acknowledge status bit. 1 indicates that acknowledge was not
+                   received from the slave and vice versa. This bit has 
+                   application in master transmit mode only.
+    Bit 7 GCEN:    General call enable bit. Setting this bit enables interrupt 
+                   when a general call address is received in the register 
+                   SSPSR.
+  */ 
+
+/*
+// For Waiting
+static void I2C_Master_Wait(){   
+   while( (SSP1STAT & 0x04) );//|| (SSP1CON2 & 0x1F) ); //Transmit is in progress
+}
+
+// Start Condition 
+static void I2C_Master_Start(){
+  I2C_Master_Wait();    
+  SEN1 = 1;             //Initiate start condition
+}
+
+// Repeated Start
+static void I2C_Master_RepeatedStart(){
+    I2C_Master_Wait();
+    RSEN1 = 1;          //Initiate repeated start condition
+}
+
+// Stop Condition
+static void I2C_Master_Stop(){
+    I2C_Master_Wait();
+    PEN1 = 1;           //Initiate stop condition
+}
+
+// Write Data
+static void I2C_Master_Write( unsigned d ){
+    I2C_Master_Wait();
+    SSP1BUF = d;         //Write data to SSPBUF
+    //__delay_us(40); 
+}
+
+// Read Data 
+static unsigned short I2C_Master_Read( unsigned short ack ){
+    unsigned short temp;
+    
+    I2C_Master_Wait();
+    RCEN1 = 1;
+    
+    I2C_Master_Wait();
+    temp = SSP1BUF;      //Read data from SSPBUF
+    
+    I2C_Master_Wait();
+    ACKDT1 = (ack)?0:1;    //Acknowledge bit
+    ACKEN1 = 1;          //Acknowledge sequence
+    return temp;
+}
+*/
+
+/*==================[external functions definition]==========================*/
+
+bool_t i2cConfig( uint8_t i2cNumber, uint32_t clockRateHz ){
+
+   bool_t retVal = FALSE;
+
+   if( i2cNumber != I2C0 ){
+      return FALSE;
+   }
+
+   #if( I2C_SOFTWARE == 1 )
+      retVal = i2cSoftwareConfig( i2cNumber, clockRateHz );
+   #else
+      retVal = i2cHardwareConfig( i2cNumber, clockRateHz );
+   #endif
+
+   return retVal;
+}
+
+
+bool_t i2cRead( uint8_t  i2cNumber,
+                uint8_t  i2cSlaveAddress,
+                uint8_t* dataToReadBuffer,
+                uint16_t dataToReadBufferSize,
+                bool_t   sendWriteStop,
+                uint8_t* receiveDataBuffer,
+                uint16_t receiveDataBufferSize,
+                bool_t   sendReadStop ){
+
+   bool_t retVal = FALSE;
+
+   if( i2cNumber != I2C0 ){
+      return FALSE;
+   }
+
+   #if( I2C_SOFTWARE == 1 )
+      retVal = i2cSoftwareRead( i2cNumber,
+                                i2cSlaveAddress,
+                                dataToReadBuffer,
+                                dataToReadBufferSize,
+                                sendWriteStop,
+                                receiveDataBuffer,
+                                receiveDataBufferSize,
+                                sendReadStop );
+   /*
+   char vect2[10];   
+   vect2[0]=0;
+   uartWriteString( UART_RN2903, "receiveDataBuffer: " );
+   uartWriteString( UART_RN2903, pepe_itoa(receiveDataBuffer[0], vect2, 16) );
+   uartWriteString( UART_RN2903, "\r\n" );   
+   */
+   #else
+      retVal = i2cHardwareRead( i2cNumber,
+                                i2cSlaveAddress,
+                                dataToReadBuffer,
+                                dataToReadBufferSize,
+                                sendWriteStop,
+                                receiveDataBuffer,
+                                receiveDataBufferSize,
+                                sendReadStop );
+   #endif
+
+   return retVal;
+}
+
+
+bool_t i2cWrite( uint8_t  i2cNumber,
+                 uint8_t  i2cSlaveAddress,
+                 uint8_t* transmitDataBuffer,
+                 uint16_t transmitDataBufferSize,
+                 bool_t   sendWriteStop ){
+
+   bool_t retVal = FALSE;
+
+   if( i2cNumber != I2C0 ){
+      return FALSE;
+   }
+
+   #if( I2C_SOFTWARE == 1 )
+      retVal = i2cSoftwareWrite( i2cNumber,
+                                 i2cSlaveAddress,
+                                 transmitDataBuffer,
+                                 transmitDataBufferSize,
+                                 sendWriteStop );
+   #else
+      retVal = i2cHardwareWrite( i2cNumber,
+                                 i2cSlaveAddress,
+                                 transmitDataBuffer,
+                                 transmitDataBufferSize,
+                                 sendWriteStop );
+   #endif
+
+   return retVal;
+}
+
+
+
+// Software Master I2C
+/*
+void i2cSoftwareDelay( tick_t duration ){
+   volatile tick_t i;
+
+   duration =  duration;
+   for( i=duration; i>0; i-- );
+}*/
+
+
+
+#if( I2C_SOFTWARE == 1 )
+
+// communication reset: DATA-line=1 and at least 9 SCK cycles followed by transstart
+//       _____________________________________________________         ________
+// DATA:                                                      |_______|
+//          _    _    _    _    _    _    _    _    _        ___     ___
+// SCK : __| |__| |__| |__| |__| |__| |__| |__| |__| |______|   |___|   |______
+//
+// TODO: ...
+
+
+// Generates a transmission start bit sequence
+//      ________
+// SCL:         |_
+//      _____
+// SDA:      |____
+//
+void i2cSoftwareMasterWriteStart( void ){
+
+   // Clock (SCL) pin HIGH
+   i2cSoftwareHighSCL();
+   
+   // Data (SDA) pin HIGH
+   i2cSoftwareHighSDA();
+   
+   // 1 clock time delay
+   i2cSoftwareDelay(10);
+
+   // Data (SDA) pin LOW
+   i2cSoftwareLowSDA();
+      
+   // 1/2 clock time delay
+   i2cSoftwareDelay(5);
+
+   // Clock (SCL) pin LOW
+   i2cSoftwareLowSCL();
+   
+   // 3/10 clock time delay
+   i2cSoftwareDelay(3);
+
+/*  
+   i2cSoftwareLowSCL();
+   i2cSoftwareHighSDA();
+   i2cSoftwareHighSCL();	
+   i2cSoftwareLowSDA();
+   i2cSoftwareLowSCL(); // bring SDA low while SCL is high 
+*/ 
+}
+
+// Generates a transmission stop bit sequence
+//        ________
+// SCL: _|
+//           _____
+// SDA: ____|
+
+void i2cSoftwareMasterWriteStop( void ){
+    
+   // Data (SDA) pin LOW
+   i2cSoftwareLowSDA();
+   
+   // Clock (SCL) pin LOW
+   i2cSoftwareLowSCL();
+   
+   // 1/5 clock time delay
+   i2cSoftwareDelay(2);
+
+   // Clock (SCL) pin HIGH
+   i2cSoftwareHighSCL();
+   
+   // 1/2 clock time delay
+   i2cSoftwareDelay(5);
+
+   // Data (SDA) pin HIGH
+   i2cSoftwareHighSDA();
+    
+   /*
+   i2cSoftwareLowSCL();
+   i2cSoftwareLowSDA();
+   i2cSoftwareHighSCL();
+   i2cSoftwareHighSDA(); // bring SDA high while SCL is high 
+   */
+} 
+
+
+/*
+void i2cSoftwareNack(void)
+{
+   i2cSoftwareHighSCL();
+   i2cSoftwareLowSCL();		// bring data high and clock
+}
+
+void i2cSoftwareAck(void)
+{
+   i2cSoftwareLowSDA();	
+   i2cSoftwareHighSCL();
+   i2cSoftwareLowSCL();
+   i2cSoftwareHighSDA();		// bring data low and clock
+}
+*/
+
+
+// Write data byte
+//          ___     ___     ___     ___     ___     ___     ___     ___     ___
+// SCL: ___| 1 |___| 2 |___| 3 |___| 4 |___| 5 |___| 6 |___| 7 |___| 8 |___| 9 |___
+//         _______ _______ _______ _______ _______ _______ _______ _______
+// SDA: __|   D7  |   D6  |   D5  |   D4  |   D3  |   D2  |   D1  |   D0  |__ACK?__
+//
+bool_t i2cSoftwareMasterWriteByte( uint8_t dataByte ){
+
+   uint8_t i;
+   static bool_t ackOrNack = 1;
+      
+   // Configure SDA pin as output
+   I2C_SOFTWARE_SDA_DIR = OUTPUT;
+
+   for( i=8; i>0; i-- ) {
+
+      // Clock (SCL) pin LOW
+      i2cSoftwareLowSCL();
+      // Data (SDA) pin with MSB bit value of dataByte
+      if( dataByte & 0x80 ){
+         i2cSoftwareHighSDA();
+      } else{
+         i2cSoftwareLowSDA();
+      }      
+      
+      // 1/5 clock time delay
+      i2cSoftwareDelay(2);
+
+      // Clock (SCL) pin HIGH
+      i2cSoftwareHighSCL();
+      // 1/2 clock time delay
+      i2cSoftwareDelay(5);
+
+      // Clock (SCL) pin LOW
+      i2cSoftwareLowSCL();
+      // 3/10 clock time delay
+      i2cSoftwareDelay(3);
+
+      // left shift dataByte
+      dataByte <<= 1;
+  }
+
+   // Maintain SCL LOW for 1/10 clock time delay
+//   i2cSoftwareDelay(1);
+   // Configure SDA pin as input   
+   I2C_SOFTWARE_SDA_DIR = INPUT;
+   // Maintain SCL LOW for 1/10 clock time delay more
+   i2cSoftwareDelay(1);
+
+   // Clock (SCL) pin HIGH
+   i2cSoftwareHighSCL();
+   // 1/10 clock time delay
+   i2cSoftwareDelay(1);
+   // Read Data (SDA) pin for possible ACK bit
+   ackOrNack = I2C_SOFTWARE_SDA_IN;
+   // 2/5 clock time delay
+   i2cSoftwareDelay(4);
+   // Clock (SCL) pin LOW
+   i2cSoftwareLowSCL();
+   /*
+   // Wait for the slave to set the i2c lines to high
+   I2C_SOFTWARE_SCL_DIR = INPUT;
+   while( !I2C_SOFTWARE_SCL_IN );
+   I2C_SOFTWARE_SCL_DIR = OUTPUT;
+   */
+   // 1/5 clock time delay
+   i2cSoftwareDelay(2);
+   // Configure SDA pin as output. This prevent that SCL master, the
+   // microcontroller, and SCL Slave, device, both OUTPUT at the same time.
+   // This Output-Output condition can damage devices.
+   I2C_SOFTWARE_SDA_DIR = OUTPUT;
+   // 1/10 clock time delay
+   i2cSoftwareDelay(100);
+   
+/*   
+   for( i=0; i<8; i++ ){
+      if( dataByte & 0x80 ){
+         i2cSoftwareHighSDA();
+      } else{
+         i2cSoftwareLowSDA();
+      }
+      i2cSoftwareHighSCL();
+      i2cSoftwareLowSCL();
+      dataByte = dataByte << 1;
+   }
+   i2cSoftwareHighSDA();
+*/
+  return ackOrNack;
+}
+
+// Read data byte
+//          ___     ___     ___     ___     ___     ___     ___     ___     ___
+// SCL: ___| 1 |___| 2 |___| 3 |___| 4 |___| 5 |___| 6 |___| 7 |___| 8 |___| 9 |___
+//         _______ _______ _______ _______ _______ _______ _______ _______
+// SDA: __|   D7  |   D6  |   D5  |   D4  |   D3  |   D2  |   D1  |   D0  |__ACK?__
+//
+uint8_t i2cSoftwareMasterReadByte( bool_t ack ){
+
+   uint8_t i, receivedData = 0;
+   bool_t receivedBit = 0;
+
+   // Configure SDA pin as input
+   I2C_SOFTWARE_SDA_DIR = INPUT;
+
+   for( i=8; i>0; i-- ) {
+
+      // Clock (SCL) pin LOW
+      i2cSoftwareLowSCL();
+      // 1/5 clock time delay
+      i2cSoftwareDelay(2);
+
+      //do{
+         // Clock (SCL) pin HIGH
+         i2cSoftwareHighSCL();
+      //}while( SCL_IN == 0 );    // wait for any SCL clock stretching
+      // 1/10 clock time delay
+      i2cSoftwareDelay(1);
+      // Read Data (SDA) pin
+      receivedBit = I2C_SOFTWARE_SDA_IN;
+      // 2/5 clock time delay
+      i2cSoftwareDelay(4);
+      // Shift left receivedData
+      receivedData <<= 1;
+           
+      if( receivedBit ){
+         receivedData |= 0x01;
+      }
+      // Clock (SCL) pin LOW
+      i2cSoftwareLowSCL();
+      // 3/10 clock time delay
+      i2cSoftwareDelay(3);
+   }
+
+   // Maintain SCL LOW for 1/10 clock time delay
+   i2cSoftwareDelay(1);
+   // Configure SDA pin as output
+   I2C_SOFTWARE_SDA_DIR = OUTPUT;
+
+   // send (N)ACK bit (ACK=LOW, NACK=HIGH)
+   if( ack ){
+      // Data (SDA) pin LOW
+      i2cSoftwareLowSDA();
+      //i2cSoftwarePinWrite( I2C_SOFTWARE_SDA_OUT, LOW );
+   }else{
+      // Data (SDA) pin HIGH
+      i2cSoftwareHighSDA();
+   }
+
+   // Maintain SCL LOW for 1/10 clock time delay more
+   i2cSoftwareDelay(1);
+
+   // Clock (SCL) pin HIGH
+      i2cSoftwareHighSCL();
+   // 1/2 clock time delay
+   i2cSoftwareDelay(5);
+
+   // Clock (SCL) pin LOW
+   i2cSoftwareLowSCL();
+   // 1/10 clock time delay
+   i2cSoftwareDelay(1);
+   // Data (SDA) pin LOW
+   i2cSoftwareLowSDA();
+   // 1/5 clock time delay
+   i2cSoftwareDelay(2);
+
+/*  
+   i2cSoftwareHighSDA();
+   
+   for( i=0; i<8; i++ ){
+      i2cSoftwareHighSCL();
+
+      if( I2C_SOFTWARE_SDA_IN ){
+         receivedData = (receivedData << 1) | 0x01; // msbit first
+      }else{
+         receivedData = receivedData << 1;
+      }
+      i2cSoftwareLowSCL();
+   }
+*/   
+   return receivedData;
+}
+/* That's almost it for simple I2C communications, but there is one more
+ * complication. When the master is reading from the slave, its the slave that
+ * places the data on the SDA line, but its the master that controls the clock.
+ * What if the slave is not ready to send the data! With devices such as
+ * EEPROMs this is not a problem, but when the slave device is actually a
+ * microprocessor with other things to do, it can be a problem. The
+ * microprocessor on the slave device will need to go to an interrupt routine,
+ * save its working registers, find out what address the master wants to read
+ * from, get the data and place it in its transmission register. This can take
+ * many uS to happen, meanwhile the master is blissfully sending out clock
+ * pulses on the SCL line that the slave cannot respond to. The I2C protocol
+ * provides a solution to this: the slave is allowed to hold the SCL line low!
+ * This is called clock stretching. When the slave gets the read command from
+ * the master it holds the clock line low. The microprocessor then gets the
+ * requested data, places it in the transmission register and releases the
+ * clock line allowing the pull-up resistor to finally pull it high. From the
+ * masters point of view, it will issue the first clock pulse of the read by
+ * making SCL high and then check to see if it really has gone high. If its
+ * still low then its the slave that holding it low and the master should wait
+ * until it goes high before continuing. Luckily the hardware I2C ports on
+ * most microprocessors will handle this automatically.
+ *
+ * Sometimes however, the master I2C is just a collection of subroutines and
+ * there are a few implementations out there that completely ignore clock
+ * stretching. They work with things like EEPROM's but not with microprocessor
+ * slaves that use clock stretching. The result is that erroneous data is read
+ * from the slave. Beware!
+ *
+ * http://www.robot-electronics.co.uk/i2c-tutorial
+ */
+
+
+// Write 7 bit address + R or W bit
+//              ___
+// SDA: _______|
+//          _______
+// SCL: ___|
+//
+bool_t i2cSoftwareMasterWriteAddress( uint8_t i2cSlaveAddress,
+                                      I2C_Software_rw_t readOrWrite ){
+
+   bool_t ackOrNack = FALSE;
+
+   if( readOrWrite == I2C_SOFTWARE_WRITE ){
+      // 7 bit address + Write = 0
+      i2cSlaveAddress <<= 1;
+      ackOrNack = i2cSoftwareMasterWriteByte( i2cSlaveAddress );
+      
+   } else if( readOrWrite == I2C_SOFTWARE_READ ){
+      // 7 bit address + Read = 1
+      i2cSlaveAddress <<= 1;
+      i2cSlaveAddress |= 0x01;
+      ackOrNack = i2cSoftwareMasterWriteByte( i2cSlaveAddress );
+      
+   }
+
+   return ackOrNack;
+}
+#endif
+
+
+#if( SOFTWARE_I2C_DEBUG == 1 )
+
+/* 
+ * Conexion: 
+ * 
+ * Se debe conectar un led al pin elegido como SCL con una R de 470ohm.
+ * Otro led al pin elegido como SDA con una R de 470ohm. 
+ * Una R de pull-up de 4K7 entre VDD=+3.3V y SDA.
+ * Un pulsador entre GND y SDA.
+ * 
+ * Funcionamiento:
+ * 
+ * Cada 10 segundos toglea el modo del pin SDA entre Input y Output.
+ * Mientras SDA es input escribe el valor del pulsador en el pin SCL. 
+ * Cada 500ms se toglea una variable llamada clockStatus.
+ * Mientras el pin SDA es Output se escribe en el led conectado a SDA 
+ * el valor de la variable clockStatus. 
+ */
+
+/*
+    #include "sapi_delay.h"
+    
+    // Test vars
+    bool_t clockStatus = FALSE;
+    delay_t clockDelay;
+    bool_t direction = FALSE;
+    delay_t delayDir;
+
+    void i2cSoftwareMasterPinTestConfig( void ){               
+       delayConfig( &clockDelay, 500 );
+       delayConfig( &delayDir, 10000 );
+    }
+
+    void i2cSoftwareMasterPinTest( void ){
+
+       if( delayRead( &delayDir ) ){           
+          if( direction ){
+             direction = FALSE;
+          } else{
+             direction = TRUE;
+          }
+          I2C_SOFTWARE_SDA_DIR = direction;
+       }
+
+       if( delayRead( &clockDelay ) ){           
+          if( clockStatus ){
+             clockStatus = FALSE;
+          } else{
+             clockStatus = TRUE;    
+          }
+          //I2C_SOFTWARE_SCL_OUT = clockStatus;
+       }
+
+       if( direction ){ // Input
+          //I2C_SOFTWARE_SCL_OUT = I2C_SOFTWARE_SDA_IN;
+          i2cSoftwarePinWrite( I2C_SOFTWARE_SCL_OUT, I2C_SOFTWARE_SDA_IN );
+       } else{          // Output
+          //I2C_SOFTWARE_SDA_OUT = clockStatus;
+          i2cSoftwarePinWrite( I2C_SOFTWARE_SDA_OUT, clockStatus );
+       }
+    }
+*/
+#endif
+
+/*==================[ISR external functions definition]======================*/
+
+/*==================[end of file]============================================*/
