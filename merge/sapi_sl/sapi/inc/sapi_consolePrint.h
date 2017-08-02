@@ -52,6 +52,7 @@ extern "C" {
    // Initialize
    #define CONSOLE_PRINT_ENABLE                       ;
    #define consolePrintConfigUart(uart,baudRate);     ;
+   #define consolePrintSetUart(uart);                 ;
 
    // Print String
    #define consolePrintString(string);                ;

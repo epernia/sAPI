@@ -80,6 +80,7 @@ void debugPrintlnHex( uint64_t number, uint8_t bitSize );
    // Initialize
    #define DEBUG_PRINT_ENABLE                       ;
    #define debugPrintConfigUart(uart,baudRate);     ;
+   #define debugPrintSetUart(uart);                 ;
 
    // Print String
    #define debugPrintString(string);                ;

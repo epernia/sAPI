@@ -103,12 +103,22 @@ typedef enum{
    PA0,  // Wakeup from EM4
    PA1,
    PA2,
+      PA8,
+      PA9,
+      PA10,
 
    PB7,
    PB8,
+      PB11,
+      PB13,
+      PB14,
 
    PC0,
+      PC1,
+      PC2,
+      PC3,
    PC4,
+      PC8,
    PC9,  // Wakeup from EM4 - BOARD_PUSH_BUTTON_PB0
    PC10, // BOARD_PUSH_BUTTON_PB1
    PC14,
@@ -127,6 +137,7 @@ typedef enum{
    PF0,  // DEBUG_SWCLK
    PF1,  // Wakeup from EM4 - SWDIO DEBUG
    PF2,  // Wakeup from EM4
+      PF3,
    PF4,  // BOARD_LED1
    PF5   // BOARD_LED2
 } gpioMap_t;

@@ -97,6 +97,14 @@ typedef uint64_t tick_t;
  */
 typedef bool_t (*sAPI_FuncPtr_t)(void *);
 
+/*
+ * Function Pointer definition
+ * --------------------------------------
+ * param:  void * - For passing arguments
+ * return: void - Nothing
+ */
+typedef void (*sAPI_FuncPtr_retV_pVptr_t)(void *);
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/

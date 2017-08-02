@@ -226,8 +226,8 @@ static void gpioObtainPinConfig( gpioMap_t pin,
 static void gpioObtainPin( gpioMap_t pin,
                            GPIO_Port_TypeDef* gpioPort,
                            unsigned int *gpioPin ){
-
    switch(pin){
+
       case PA0:
          *gpioPort = gpioPortA;
          *gpioPin = 0;
@@ -240,13 +240,63 @@ static void gpioObtainPin( gpioMap_t pin,
          *gpioPort = gpioPortA;
          *gpioPin = 2;
       break;
+      case PA8:
+         *gpioPort = gpioPortA;
+         *gpioPin = 8;
+      break;
+      case PA9:
+         *gpioPort = gpioPortA;
+         *gpioPin = 9;
+      break;
+      case PA10:
+         *gpioPort = gpioPortA;
+         *gpioPin = 10;
+      break;
+
+      case PB7:
+         *gpioPort = gpioPortA;
+         *gpioPin = 7;
+      break;
+      case PB8:
+         *gpioPort = gpioPortA;
+         *gpioPin = 8;
+      break;
+      case PB11:
+         *gpioPort = gpioPortA;
+         *gpioPin = 10;
+      break;
+      case PB13:
+         *gpioPort = gpioPortA;
+         *gpioPin = 13;
+      break;
+      case PB14:
+         *gpioPort = gpioPortA;
+         *gpioPin = 14;
+      break;
+
       case PC0:
          *gpioPort = gpioPortC;
          *gpioPin = 0;
       break;
+      case PC1:
+         *gpioPort = gpioPortC;
+         *gpioPin = 1;
+      break;
+      case PC2:
+         *gpioPort = gpioPortC;
+         *gpioPin = 2;
+      break;
+      case PC3:
+         *gpioPort = gpioPortC;
+         *gpioPin = 3;
+      break;
       case PC4:
          *gpioPort = gpioPortC;
          *gpioPin = 4;
+      break;
+      case PC8:
+         *gpioPort = gpioPortC;
+         *gpioPin = 8;
       break;
       case PC9:
          *gpioPort = gpioPortC;
@@ -256,6 +306,15 @@ static void gpioObtainPin( gpioMap_t pin,
          *gpioPort = gpioPortC;
          *gpioPin = 10;
       break;
+      case PC14:
+         *gpioPort = gpioPortC;
+         *gpioPin = 14;
+      break;
+      case PC15:
+         *gpioPort = gpioPortC;
+         *gpioPin = 15;
+      break;
+
       case PD4:
          *gpioPort = gpioPortD;
          *gpioPin = 4;
@@ -272,6 +331,7 @@ static void gpioObtainPin( gpioMap_t pin,
          *gpioPort = gpioPortD;
          *gpioPin = 7;
       break;
+
       case PE10:
          *gpioPort = gpioPortE;
          *gpioPin = 10;
@@ -288,13 +348,22 @@ static void gpioObtainPin( gpioMap_t pin,
          *gpioPort = gpioPortE;
          *gpioPin = 13;
       break;
-      case PF2:
+
+      case PF0:
          *gpioPort = gpioPortF;
-         *gpioPin = 2;
+         *gpioPin = 0;
       break;
       case PF1:
          *gpioPort = gpioPortF;
          *gpioPin = 1;
+      break;
+      case PF2:
+         *gpioPort = gpioPortF;
+         *gpioPin = 2;
+      break;
+      case PF3:
+         *gpioPort = gpioPortF;
+         *gpioPin = 3;
       break;
       case PF4:
          *gpioPort = gpioPortF;
@@ -420,6 +489,21 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_DISABLED;
             break;
+            case PA8:
+               /* Pin PA8 is configured to DISABLED */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_DISABLED;
+            break;
+            case PA9:
+               /* Pin PA9 is configured to DISABLED */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+                     | GPIO_P_MODEH_MODE9_DISABLED;
+            break;
+            case PA10:
+               /* Pin PA10 is configured to DISABLED */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+                     | GPIO_P_MODEH_MODE10_DISABLED;
+            break;
             case PB7:
                /* Pin PB7 is configured to DISABLED */
                GPIO->P[1].MODEL = (GPIO->P[1].MODEL & ~_GPIO_P_MODEL_MODE7_MASK)
@@ -430,15 +514,50 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
                      | GPIO_P_MODEH_MODE8_DISABLED;
             break;
+            case PB11:
+               /* Pin PB11 is configured to DISABLED*/
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+                     | GPIO_P_MODEH_MODE11_DISABLED;
+            break;
+            case PB13:
+               /* Pin PB13 is configured to DISABLED*/
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+                     | GPIO_P_MODEH_MODE13_DISABLED;
+            break;
+            case PB14:
+               /* Pin PB14 is configured to DISABLED*/
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+                     | GPIO_P_MODEH_MODE14_DISABLED;
+            break;
             case PC0:
                /* Pin PC0 is configured to DISABLED */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
                      | GPIO_P_MODEL_MODE0_DISABLED;
             break;
+            case PC1:
+               /* Pin PC1 is configured to DISABLED */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
+                     | GPIO_P_MODEL_MODE1_DISABLED;
+            break;
+            case PC2:
+               /* Pin PC2 is configured to DISABLED */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+                     | GPIO_P_MODEL_MODE2_DISABLED;
+            break;
+            case PC3:
+               /* Pin PC3 is configured to DISABLED */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_DISABLED;
+            break;
             case PC4:
                /* Pin PC4 is configured to DISABLED */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
                      | GPIO_P_MODEL_MODE4_DISABLED;
+            break;
+            case PC8:
+               /* Pin PC8 is configured to DISABLED */
+               GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_DISABLED;
             break;
             case PC9:
                /* Pin PC9 is configured to DISABLED */
@@ -510,6 +629,11 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_DISABLED;
             break;
+            case PF3:
+               /* Pin PF3 is configured to DISABLED */
+               GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_DISABLED;
+            break;
             case PF4:
                /* Pin PF4 is configured to DISABLED */
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
@@ -553,6 +677,21 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUT;
             break;
+            case PA8:
+               /* Pin PA8 is configured to Input enabled */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUT;
+            break;
+            case PA9:
+               /* Pin PA9 is configured to Input enabled */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+                     | GPIO_P_MODEH_MODE9_INPUT;
+            break;
+            case PA10:
+               /* Pin PA10 is configured to Input enabled */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+                     | GPIO_P_MODEH_MODE10_INPUT;
+            break;
             case PB7:
                /* Pin PB7 is configured to Input enabled */
                GPIO->P[1].MODEL = (GPIO->P[1].MODEL & ~_GPIO_P_MODEL_MODE7_MASK)
@@ -563,15 +702,50 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
                      | GPIO_P_MODEH_MODE8_INPUT;
             break;
+            case PB11:
+               /* Pin PB11 is configured to Input enabled */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+                     | GPIO_P_MODEH_MODE11_INPUT;
+            break;
+            case PB13:
+               /* Pin PB13 is configured to Input enabled */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+                     | GPIO_P_MODEH_MODE13_INPUT;
+            break;
+            case PB14:
+               /* Pin PB14 is configured to Input enabled */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+                     | GPIO_P_MODEH_MODE14_INPUT;
+            break;
             case PC0:
                /* Pin PC0 is configured to Input enabled */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
                      | GPIO_P_MODEL_MODE0_INPUT;
             break;
+            case PC1:
+               /* Pin PC1 is configured to Input enabled */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
+                     | GPIO_P_MODEL_MODE1_INPUT;
+            break;
+            case PC2:
+               /* Pin PC2 is configured to Input enabled */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+                     | GPIO_P_MODEL_MODE2_INPUT;
+            break;
+            case PC3:
+               /* Pin PC3 is configured to Input enabled */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUT;
+            break;
             case PC4:
                /* Pin PC4 is configured to Input enabled */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
                      | GPIO_P_MODEL_MODE4_INPUT;
+            break;
+            case PC8:
+               /* Pin PC8 is configured to Input enabled */
+               GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUT;
             break;
             case PC9:
                /* Pin PC9 is configured to Input enabled */
@@ -643,6 +817,11 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUT;
             break;
+            case PF3:
+               /* Pin PF3 is configured to Input enabled */
+               GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUT;
+            break;
             case PF4:
                /* Pin PF4 is configured to Input enabled */
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
@@ -690,6 +869,24 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUTPULL;
             break;
+            case PA8:
+               /* Pin PA8 is configured to Input enabled with pull-up */
+               GPIO->P[0].DOUT |= (1 << 8);
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUTPULL;
+            break;
+            case PA9:
+               /* Pin PA9 is configured to Input enabled with pull-up */
+               GPIO->P[0].DOUT |= (1 << 9);
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+                     | GPIO_P_MODEH_MODE9_INPUTPULL;
+            break;
+            case PA10:
+               /* Pin PA10 is configured to Input enabled with pull-up */
+               GPIO->P[0].DOUT |= (1 << 10);
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+                     | GPIO_P_MODEH_MODE10_INPUTPULL;
+            break;
             case PB7:
                /* Pin PB7 is configured to Input enabled with pull-up */
                GPIO->P[1].DOUT |= (1 << 7);
@@ -702,17 +899,59 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
                      | GPIO_P_MODEH_MODE8_INPUTPULL;
             break;
+            case PB11:
+               /* Pin PB11 is configured to Input enabled with pull-up */
+               GPIO->P[1].DOUT |= (1 << 11);
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+                     | GPIO_P_MODEH_MODE11_INPUTPULL;
+            break;
+            case PB13:
+               /* Pin PB13 is configured to Input enabled with pull-up */
+               GPIO->P[1].DOUT |= (1 << 13);
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+                     | GPIO_P_MODEH_MODE13_INPUTPULL;
+            break;
+            case PB14:
+               /* Pin PB14 is configured to Input enabled with pull-up */
+               GPIO->P[1].DOUT |= (1 << 14);
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+                     | GPIO_P_MODEH_MODE14_INPUTPULL;
+            break;
             case PC0:
                /* Pin PC0 is configured to Input enabled with pull-up */
                GPIO->P[2].DOUT |= (1 << 0);
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
                      | GPIO_P_MODEL_MODE0_INPUTPULL;
             break;
+            case PC1:
+               /* Pin PC1 is configured to Input enabled with pull-up */
+               GPIO->P[2].DOUT |= (1 << 1);
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
+                     | GPIO_P_MODEL_MODE1_INPUTPULL;
+            break;
+            case PC2:
+               /* Pin PC2 is configured to Input enabled with pull-up */
+               GPIO->P[2].DOUT |= (1 << 2);
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+                     | GPIO_P_MODEL_MODE2_INPUTPULL;
+            break;
+            case PC3:
+               /* Pin PC3 is configured to Input enabled with pull-up */
+               GPIO->P[2].DOUT |= (1 << 3);
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUTPULL;
+            break;
             case PC4:
                /* Pin PC4 is configured to Input enabled with pull-up */
                GPIO->P[2].DOUT |= (1 << 4);
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
                      | GPIO_P_MODEL_MODE4_INPUTPULL;
+            break;
+            case PC8:
+               /* Pin PC8 is configured to Input enabled with pull-up */
+               GPIO->P[2].DOUT |= (1 << 8);
+               GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUTPULL;
             break;
             case PC9:
                /* Pin PC9 is configured to Input enabled with pull-up */
@@ -798,6 +1037,12 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUTPULL;
             break;
+            case PF3:
+               /* Pin PF3 is configured to Input enabled with pull-up */
+               GPIO->P[5].DOUT |= (1 << 3);
+               GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUTPULL;
+            break;
             case PF4:
                /* Pin PF4 is configured to Input enabled with pull-up */
                GPIO->P[5].DOUT |= (1 << 4);
@@ -844,6 +1089,21 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUTPULL;
             break;
+            case PA8:
+               /* Pin PA8 is configured to Input enabled with pull-down */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUTPULL;
+            break;
+            case PA9:
+               /* Pin PA9 is configured to Input enabled with pull-down */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+                     | GPIO_P_MODEH_MODE9_INPUTPULL;
+            break;
+            case PA10:
+               /* Pin PA10 is configured to Input enabled with pull-down */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+                     | GPIO_P_MODEH_MODE10_INPUTPULL;
+            break;
             case PB7:
                /* Pin PB7 is configured to Input enabled with pull-down */
                GPIO->P[1].MODEL = (GPIO->P[1].MODEL & ~_GPIO_P_MODEL_MODE7_MASK)
@@ -854,15 +1114,50 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
                      | GPIO_P_MODEH_MODE8_INPUTPULL;
             break;
+            case PB11:
+               /* Pin PB11 is configured to Input enabled with pull-down */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+                     | GPIO_P_MODEH_MODE11_INPUTPULL;
+            break;
+            case PB13:
+               /* Pin PB13 is configured to Input enabled with pull-down */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+                     | GPIO_P_MODEH_MODE13_INPUTPULL;
+            break;
+            case PB14:
+               /* Pin PB14 is configured to Input enabled with pull-down */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+                     | GPIO_P_MODEH_MODE14_INPUTPULL;
+            break;
             case PC0:
                /* Pin PC0 is configured to Input enabled with pull-down */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
                      | GPIO_P_MODEL_MODE0_INPUTPULL;
             break;
+            case PC1:
+               /* Pin PC1 is configured to Input enabled with pull-down */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
+                     | GPIO_P_MODEL_MODE1_INPUTPULL;
+            break;
+            case PC2:
+               /* Pin PC2 is configured to Input enabled with pull-down */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+                     | GPIO_P_MODEL_MODE2_INPUTPULL;
+            break;
+            case PC3:
+               /* Pin PC3 is configured to Input enabled with pull-down */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUTPULL;
+            break;
             case PC4:
                /* Pin PC4 is configured to Input enabled with pull-down */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
                      | GPIO_P_MODEL_MODE4_INPUTPULL;
+            break;
+            case PC8:
+               /* Pin PC8 is configured to Input enabled with pull-down */
+               GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_INPUTPULL;
             break;
             case PC9:
                /* Pin PC9 is configured to Input enabled with pull-down */
@@ -935,6 +1230,11 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_INPUTPULL;
             break;
+            case PF3:
+               /* Pin PF3 is configured to Input enabled with pull-down */
+               GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_INPUTPULL;
+            break;
             case PF4:
                /* Pin PF4 is configured to Input enabled with pull-down */
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
@@ -949,17 +1249,6 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
             break;
          }
 
-      break;
-      case GPIO_INPUT_PULLUP_PULLDOWN:
-         /*
-         Chip_SCU_PinMux(
-            pinNamePort,
-            pinNamePin,
-            SCU_MODE_REPEATER | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
-            func
-         );
-         Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
-         */
       break;
 
       case GPIO_OUTPUT:
@@ -990,6 +1279,21 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[0].MODEL = (GPIO->P[0].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_PUSHPULL;
             break;
+            case PA8:
+               /* Pin PA8 is configured to Push-pull */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_PUSHPULL;
+            break;
+            case PA9:
+               /* Pin PA9 is configured to Push-pull */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE9_MASK)
+                     | GPIO_P_MODEH_MODE9_PUSHPULL;
+            break;
+            case PA10:
+               /* Pin PA10 is configured to Push-pull */
+               GPIO->P[0].MODEH = (GPIO->P[0].MODEH & ~_GPIO_P_MODEH_MODE10_MASK)
+                     | GPIO_P_MODEH_MODE10_PUSHPULL;
+            break;
             case PB7:
                /* Pin PB7 is configured to Push-pull */
                GPIO->P[1].MODEL = (GPIO->P[1].MODEL & ~_GPIO_P_MODEL_MODE7_MASK)
@@ -1000,15 +1304,50 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
                      | GPIO_P_MODEH_MODE8_PUSHPULL;
             break;
+            case PB11:
+               /* Pin PB11 is configured to Push-pull */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE11_MASK)
+                     | GPIO_P_MODEH_MODE11_PUSHPULL;
+            break;
+            case PB13:
+               /* Pin PB13 is configured to Push-pull */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE13_MASK)
+                     | GPIO_P_MODEH_MODE13_PUSHPULL;
+            break;
+            case PB14:
+               /* Pin PB14 is configured to Push-pull */
+               GPIO->P[1].MODEH = (GPIO->P[1].MODEH & ~_GPIO_P_MODEH_MODE14_MASK)
+                     | GPIO_P_MODEH_MODE14_PUSHPULL;
+            break;
             case PC0:
                /* Pin PC0 is configured to Push-pull */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE0_MASK)
                      | GPIO_P_MODEL_MODE0_PUSHPULL;
             break;
+            case PC1:
+               /* Pin PC1 is configured to Push-pull */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE1_MASK)
+                     | GPIO_P_MODEL_MODE1_PUSHPULL;
+            break;
+            case PC2:
+               /* Pin PC2 is configured to Push-pull */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
+                     | GPIO_P_MODEL_MODE2_PUSHPULL;
+            break;
+            case PC3:
+               /* Pin PC3 is configured to Push-pull */
+               GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_PUSHPULL;
+            break;
             case PC4:
                /* Pin PC4 is configured to Push-pull */
                GPIO->P[2].MODEL = (GPIO->P[2].MODEL & ~_GPIO_P_MODEL_MODE4_MASK)
                      | GPIO_P_MODEL_MODE4_PUSHPULL;
+            break;
+            case PC8:
+               /* Pin PC8 is configured to Push-pull */
+               GPIO->P[2].MODEH = (GPIO->P[2].MODEH & ~_GPIO_P_MODEH_MODE8_MASK)
+                     | GPIO_P_MODEH_MODE8_PUSHPULL;
             break;
             case PC9:
                /* Pin PC9 is configured to Push-pull */
@@ -1083,6 +1422,11 @@ bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
                /* Pin PF2 is configured to Push-pull */
                GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE2_MASK)
                      | GPIO_P_MODEL_MODE2_PUSHPULL;
+            break;
+            case PF3:
+               /* Pin PF3 is configured to Push-pull */
+               GPIO->P[5].MODEL = (GPIO->P[5].MODEL & ~_GPIO_P_MODEL_MODE3_MASK)
+                     | GPIO_P_MODEL_MODE3_PUSHPULL;
             break;
             case PF4:
                /* Pin PF4 is configured to Push-pull */

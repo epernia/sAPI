@@ -66,7 +66,6 @@ extern "C" {
 typedef enum{
    GPIO_INPUT, GPIO_OUTPUT,
    GPIO_INPUT_PULLUP, GPIO_INPUT_PULLDOWN,
-   GPIO_INPUT_PULLUP_PULLDOWN,
    GPIO_ENABLE, GPIO_DISABLE
 } gpioConfig_t;
 
@@ -135,8 +134,6 @@ typedef enum{
 
 /* ------ End EM4 --------------------------------- */
 
-
-
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
@@ -160,9 +157,6 @@ bool_t gpioInterruptSet( gpioMap_t pin, gpioInterrupt_t interruptMode );
 //gpioInterruptCallback_t gpioInterruptCallbackGet( gpioMap_t pin );
 
 //gpioInterrupt_t gpioInterruptGet( gpioMap_t pin );
-
-
-
 
 
 /* ------ EM4 ------------------------------- */
