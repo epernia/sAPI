@@ -1,0 +1,149 @@
+/* Copyright 2016, Pablo Ridolfi.
+ * Copyright 2016, Eric Pernia.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
+ *    software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/* Date: 2016-10-06 */
+
+#ifndef _EVENT_H_
+#define _EVENT_H_
+
+/*==================[inclusions]=============================================*/
+
+#include "os.h"
+#include "os_config.h"
+#include "board.h"
+#include "circularBuffer.h"
+
+/*==================[macros]=================================================*/
+
+/** invalid event definition TODO: redefina esta macro a su criterio */
+// #define INVALID_EVENT NULL
+#define INVALID_EVENT -1 // -1 es un índice invalido para el eventBuffer[]
+
+#define EVENT_TASK_BUFFER_SIZE TASK_COUNT+1 // -1 es un índice invalido para el eventBuffer[]
+
+/*==================[typedef]================================================*/
+
+/** generic type for events TODO: redefina este tipo a su criterio */
+// typedef void * os_event_t;
+typedef uint32_t os_event_t; // Tipo de datos que guarda la dirección del evento
+
+typedef struct{
+   int32_t   counter;
+   circularBuffer_t eventTasksCircularBuff;
+   uint32_t eventTasksCircularBuffMemory[ EVENT_TASK_BUFFER_SIZE ]; // Recordar ingresar tamaño requerido + 1, porque deja un lugar en la cola
+   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	// Es la lista de tareas bloqueadas a la espera del evento
+} os_event_control_block_t;
+
+/*==================[external data declaration]==============================*/
+
+/*==================[external functions declaration]=========================*/
+
+os_event_t os_event_init(void);
+int32_t os_event_wait(os_event_t ev);
+int32_t os_event_set(os_event_t ev);
+
+/*==================[end of file]============================================*/
+#endif /* #ifndef _EVENT_H_ */
+
+
+
+
+
+/*
+
+#define MAXSEM  10
+
+typedef int   queue;   // head index
+typedef int   sem;     // semaphore index
+typedef int   proc;    // process index
+typedef int   cab;     // cab buffer index
+typedef char* pointer; // memory pointer
+
+
+struct scb {
+   int   count; // Semaphpre counter
+   queue qsem;  // Sempaphore queue
+   sem   next;  // Pointer to de next
+};
+
+
+struct scb vsem[MAXSEM];
+
+sem s1 = newsem(0);  //defines a semaphore for synchronization, whereas
+
+count = 0;
+
+The wait primitive is used by a task to wait for an event associated with a
+semaphore. If the counter is equal to zero, the
+task is blocked, and it is inserted in the semaphore queue. In this case, the
+first ready task is assigned to the processor by the dispatch primitive.
+
+wait(ev){
+	Task.state = WAITING;
+	sched();
+}
+
+To ensure the consistency of the kernel data structures, all semaphore system
+calls are executed with cpu interrupts disabled. Note that semaphore queues are
+ordered by decreasing absolute deadlines, so that, when more tasks are blocked,
+the first task awakened will be the one with the earliest deadline.
+
+
+The signal primitive is used by a task to signal an event associated with a
+semaphore. If no tasks are blocked on that semaphore (that is, if the semaphore
+queue is empty), the counter is incremented, and the task continues its
+execution. If there are blocked tasks, the task with the earliest deadline is
+extracted from the semaphore queue and is inserted in the ready queue. Since a
+task has been awakened, a context switch may occur; hence, the context of the
+running task is saved, a task is selected by the scheduler and a new context is
+loaded.
+
+set(ev){
+
+	Task.state = READY;
+	sched();
+}
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
