@@ -333,3 +333,65 @@ bool_t gpioRead( uint32_t pin ){
 }
 
 /*==================[end of file]============================================*/
+
+
+/*
+
+   
+// inputInterruptCallback
+void gpioInterruptCallbackSet( gpioName_t gpioName,
+                               interruptCallback_t interruptCallback );
+interruptCallback_t gpioInterruptCallbackGet( gpioMap_t pin );
+   
+// inputInterrupt
+void gpioInterruptSet( gpioName_t gpioName, gpioConfig_t interruptMode );
+gpioConfig_t gpioInterruptGet( gpioName_t gpioName );
+
+
+// Se setea la interrupcion vacia por ejemplo para despertar de modo bajo consumo.
+// Si esta sin callback no hace nada la isr.
+// Algunos módulos como UART podrían hacer algo más en la ISR y luego ejecutar el callback
+// de usuario (hook a la ISR)
+
+
+-----------------------------------
+
+Separar el enum de GPIO por tipo de propiedad:
+ - Direction
+ - Power
+ - Strenght
+ - Speed
+ - Interrupt
+ 
+en gpioConfig() poner de parámetros un pin tipo gpioName y un uint32_t para
+los parametros "oreados" que van a ser diferentes enums, esto no debería tirar warnings.
+
+El periph gpio va a tener los módos eléctricos de los pines salvo los
+modos que usan perifericos especificos.
+
+
+
+-----------------------------------
+   
+// Input Interrupt
+   GPIO_INTERRUPT_DISABLE            = 0x00, // default value
+   GPIO_INTERRUPT_LEVEL              = 0x10, // Level-sensitive (high/low). Modify flags:
+      GPIO_LOW                       = 0x01, // default modify flag value
+      GPIO_HIGH                      = 0x02,
+      GPIO_BOTH                      = 0x03,
+   GPIO_INTERRUPT_EDGE               = 0x20, // Edge (Rising/falling).
+   GPIO_INTERRUPT_AYNCHRONOUS_EDGE   = 0x30, // Asynchronous Edge (Rising/falling).
+   GPIO_INTERRUPT_SYNCHRONOUS_EDGE   = 0x40, // Synchronous Edge (Rising/falling). Modify flags:
+      GPIO_FALLING                   = 0x01, // default modify flag value
+      GPIO_RISING                    = 0x02
+         
+         
+Sacar:
+
+GPIO_INTERRUPT_AYNCHRONOUS_EDGE   = 0x30, // Asynchronous Edge (Rising/falling).
+GPIO_INTERRUPT_SYNCHRONOUS_EDGE   = 0x40, // Synchronous Edge (Rising/falling). Modify flags:
+
+-----------------------------------
+  definir port "virtuales" hasta 32 pines max, pueden ser de 8,16,32 se le pasa un vector de pines.
+
+*/
