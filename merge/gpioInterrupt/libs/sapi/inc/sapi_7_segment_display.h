@@ -1,4 +1,4 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -28,92 +28,60 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-/* Date: 2015-09-23 */
-
-#ifndef _SAPI_DATATYPES_H_
-#define _SAPI_DATATYPES_H_
+#ifndef _SAPI_7_SEGMENT_DISPLAY_H_
+#define _SAPI_7_SEGMENT_DISPLAY_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "stdint.h"
-#include "chip.h" // NXP LPCOpen
-
-/*==================[cplusplus]==============================================*/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
 /*==================[macros]=================================================*/
 
-// Functional states
-#ifndef ON
-   #define ON     1
-#endif
-#ifndef OFF
-   #define OFF    0
-#endif
-
-// Electrical states
-#ifndef HIGH
-   #define HIGH   1
-#endif
-#ifndef LOW
-   #define LOW    0
-#endif
-
-// Logical states
-#ifndef FALSE
-   #define FALSE  0
-#endif
-#ifndef TRUE
-   #define TRUE   (!FALSE)
-#endif
+#define DISPLAY_7_SEGMENT_OFF 25
 
 /*==================[typedef]================================================*/
-
-// Define Boolean Data Type
-typedef uint8_t bool_t;
-
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
-
-// Define Tick Data Type
-typedef uint64_t tick_t;
-
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-// Null Function Pointer definitions
+/* Test 7-segment display connected pins */
+/*
+----------------+------------+-----------+------------
+ Segment ON     | BIN Value  | HEX Value | Output pin
+----------------+------------+-----------+------------
+ Segment 'a' ON | 0b00000001 |   0x20    | ..... (to be complete)
+ Segment 'b' ON | 0b00000010 |   0x80    | .....
+ Segment 'c' ON | 0b00000100 |   0x40    | .....
+ Segment 'd' ON | 0b00001000 |   0x02    | .....
+ Segment 'e' ON | 0b00010000 |   0x04    | .....
+ Segment 'f' ON | 0b00100000 |   0x10    | .....
+ Segment 'g' ON | 0b01000000 |   0x08    | .....
+ Segment 'h' ON | 0b10000000 |   0x80    | .....
+----------------+------------+-----------+------------
 
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
+             a
+           -----
+       f /     / b
+        /  g  /
+        -----
+    e /     / c
+     /  d  /
+     -----    O h = dp (decimal point).
 
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
+*/
+void display7SegmentTestPins( gpioMap_t* display7SegmentPins, gpioMap_t pin );
 
-/*==================[cplusplus]==============================================*/
+/* Configure 7-segment display GPIOs as Outputs */
+void display7SegmentPinConfig( gpioMap_t* display7SegmentPins );
 
-#ifdef __cplusplus
-}
-#endif
+/* Write a symbol on 7-segment display */
+void display7SegmentWrite( gpioMap_t* display7SegmentPins, uint8_t symbolIndex );
+
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DATATYPES_H_ */
+#endif /* #ifndef _SAPI_7_SEGMENT_DISPLAY_H_ */

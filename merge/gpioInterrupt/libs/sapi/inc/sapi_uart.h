@@ -1,4 +1,4 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -28,17 +28,19 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-/* Date: 2015-09-23 */
+/* Date: 2016-02-26 */
 
-#ifndef _SAPI_DATATYPES_H_
-#define _SAPI_DATATYPES_H_
+#ifndef _SAPI_UART_H_
+#define _SAPI_UART_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "stdint.h"
-#include "chip.h" // NXP LPCOpen
+#include "sapi_delay.h"
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -48,66 +50,49 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
-// Functional states
-#ifndef ON
-   #define ON     1
-#endif
-#ifndef OFF
-   #define OFF    0
-#endif
-
-// Electrical states
-#ifndef HIGH
-   #define HIGH   1
-#endif
-#ifndef LOW
-   #define LOW    0
-#endif
-
-// Logical states
-#ifndef FALSE
-   #define FALSE  0
-#endif
-#ifndef TRUE
-   #define TRUE   (!FALSE)
-#endif
-
 /*==================[typedef]================================================*/
 
-// Define Boolean Data Type
-typedef uint8_t bool_t;
+typedef enum{
+   UART_RECEIVE_STRING_CONFIG,
+   UART_RECEIVE_STRING_RECEIVING,
+   UART_RECEIVE_STRING_RECEIVED_OK,
+   UART_RECEIVE_STRING_TIMEOUT
+} waitForReceiveStringOrTimeoutState_t;
 
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
-
-// Define Tick Data Type
-typedef uint64_t tick_t;
-
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
+typedef struct{
+   waitForReceiveStringOrTimeoutState_t state;
+   char*    string;
+   uint16_t stringSize;
+   uint16_t stringIndex;
+   tick_t   timeout;
+   delay_t  delay;
+} waitForReceiveStringOrTimeout_t;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-// Null Function Pointer definitions
+waitForReceiveStringOrTimeoutState_t waitForReceiveStringOrTimeout(
+   uartMap_t uart, waitForReceiveStringOrTimeout_t* instance );
 
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
+bool_t waitForReceiveStringOrTimeoutBlocking(
+   uartMap_t uart, char* string, uint16_t stringSize, tick_t timeout );
 
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
+void uartConfig( uartMap_t uart, uint32_t baudRate );
+
+bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte );
+void uartWriteByte( uartMap_t uart, uint8_t byte );
+
+void uartWriteString( uartMap_t uart, char* str );
+
+/*==================[ISR external functions declaration]======================*/
+
+/* 0x28 0x000000A0 - Handler for ISR UART0 (IRQ 24) */
+void UART0_IRQHandler(void);
+/* 0x2a 0x000000A8 - Handler for ISR UART2 (IRQ 26) */
+void UART2_IRQHandler(void);
+/* 0x2b 0x000000AC - Handler for ISR UART3 (IRQ 27) */
+void UART3_IRQHandler(void);
 
 /*==================[cplusplus]==============================================*/
 
@@ -116,4 +101,4 @@ bool_t sapiNullFuncPtrBVptr( void* );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DATATYPES_H_ */
+#endif /* _SAPI_UART_H_ */

@@ -1,4 +1,5 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
+ * Copyright 2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -28,17 +29,18 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-/* Date: 2015-09-23 */
+/* Date: 2016-02-10 */
 
-#ifndef _SAPI_DATATYPES_H_
-#define _SAPI_DATATYPES_H_
+#ifndef SAPI_SERVO_H_
+#define SAPI_SERVO_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "stdint.h"
-#include "chip.h" // NXP LPCOpen
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -46,68 +48,52 @@
 extern "C" {
 #endif
 
-/*==================[macros]=================================================*/
-
-// Functional states
-#ifndef ON
-   #define ON     1
-#endif
-#ifndef OFF
-   #define OFF    0
-#endif
-
-// Electrical states
-#ifndef HIGH
-   #define HIGH   1
-#endif
-#ifndef LOW
-   #define LOW    0
-#endif
-
-// Logical states
-#ifndef FALSE
-   #define FALSE  0
-#endif
-#ifndef TRUE
-   #define TRUE   (!FALSE)
-#endif
+/*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
 
-// Define Boolean Data Type
-typedef uint8_t bool_t;
-
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
-
-// Define Tick Data Type
-typedef uint64_t tick_t;
-
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
+typedef enum{
+   SERVO_ENABLE, SERVO_DISABLE,
+   SERVO_ENABLE_OUTPUT, SERVO_DISABLE_OUTPUT
+} servoConfig_t;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-// Null Function Pointer definitions
+/*
+ * @Brief: Initializes the servo peripheral
+ * @param  uint8_t servoNumber
+ * @param  uint8_t config
+ * @return bool_t true (1) if config it is ok
+ * @IMPORTANT:   this function uses Timer 1, 2 and 3 to generate the servo signals, so
+ *   they won't be available to use.
+ */
+bool_t servoConfig( servoMap_t servoNumber, servoConfig_t config );
 
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
+/*
+ * @brief:   Tells if the servo is currently active, and its position
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @param:   value:   value of the servo, from 0 to 180
+ * @return:   position (1 ~ SERVO_TOTALNUMBER), 0 if the element was not found.
+ */
+uint8_t servoIsAttached( servoMap_t servoNumber);
 
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
+/*
+ * @brief: read the value of the servo
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @return: value of the servo (0 ~ 180).
+ *   If an error ocurred, return = EMPTY_POSITION = 255
+ */
+uint16_t servoRead( servoMap_t servoNumber);
+
+/*
+ * @brief: change the value of the servo
+ * @param:   servoNumber:   ID of the servo, from 0 to 8
+ * @param:   value:   value of the servo, from 0 to 180
+ * @return: True if the value was successfully changed, False if not.
+ */
+bool_t servoWrite( servoMap_t servoNumber, uint16_t angle );
 
 /*==================[cplusplus]==============================================*/
 
@@ -116,4 +102,4 @@ bool_t sapiNullFuncPtrBVptr( void* );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DATATYPES_H_ */
+#endif /* SAPI_SERVO_H_ */

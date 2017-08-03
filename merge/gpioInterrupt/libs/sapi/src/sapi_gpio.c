@@ -1,4 +1,4 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -28,6 +28,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 /* Date: 2015-09-23 */
@@ -38,30 +39,6 @@
 
 /*==================[macros and definitions]=================================*/
 
-#define GPIO_MODE_MASK    0x7F
-#define GPIO_SPEED_MASK   0x380
-#define GPIO_EVENT_MASK   0x7C00
-#define GPIO_POWER_MASK   0x8000
-
-#define GPIO_SET_CONFIG_PROPERTY( gpioName, property , mask ) gpioInstances[(gpioName)].config = (gpioInstances[(gpioName)].config & ~(mask)) | ((property) & (mask)) 
-
-#define GPIO_GET_CONFIG_PROPERTY( gpioName, mask ) gpioInstances[(gpioName)].config & (mask)
-
-/* ----- Begin Pin Config Structs NXP LPC4337 ----- */
-
-typedef struct{
-   int8_t port;
-   int8_t pin;
-} gpioConfigLpc4337_t;
-
-typedef struct{
-    pinConfigLpc4337_t pinName;
-                int8_t func;
-   gpioConfigLpc4337_t gpio;
-} pinConfigGpioLpc4337_t;
-
-/* ------ End Pin Config Structs NXP LPC4337 ------ */
-
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
@@ -70,10 +47,10 @@ typedef struct{
 
 const pinConfigGpioLpc4337_t gpioPinsConfig[] = {
 
-   /*{ {PinNamePortN ,PinNamePinN}, PinFUNC, {GpioPortN, GpioPinN} }*/
+	/*{ {PinNamePortN ,PinNamePinN}, PinFUNC, {GpioPortN, GpioPinN} }*/
 
    /* --------------------------------------------------------------- */
-   /*                           EDU-CIAA-NXP                          */
+	/*                           EDU-CIAA-NXP                          */
    /* --------------------------------------------------------------- */
    /*                             Snap  sAPI   Connector  Serigraphy  */
    /* --------------------------------------------------------------- */
@@ -213,7 +190,7 @@ const pinConfigGpioLpc4337_t gpioPinsConfig[] = {
 
 /*==================[internal functions definition]==========================*/
 
-static void gpioObtainPinConfig( uint32_t pin,
+static void gpioObtainPinConfig( gpioMap_t pin,
                                 int8_t *pinNamePort, int8_t *pinNamePin,
 																int8_t *func, int8_t *gpioPort,
 																int8_t *gpioPin ){
@@ -227,7 +204,7 @@ static void gpioObtainPinConfig( uint32_t pin,
 
 /*==================[external functions definition]==========================*/
 
-bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
+bool_t gpioConfig( gpioMap_t pin, gpioConfig_t config ){
 
    bool_t ret_val     = 1;
 
@@ -278,7 +255,6 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
          );
          Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
       break;
-      /*
       case GPIO_INPUT_PULLUP_PULLDOWN:
          Chip_SCU_PinMux(
             pinNamePort,
@@ -288,7 +264,7 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
          );
          Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
       break;
-      */
+
       case GPIO_OUTPUT:
          Chip_SCU_PinMux(
             pinNamePort,
@@ -310,7 +286,7 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
 }
 
 
-bool_t gpioWrite( uint32_t pin, bool_t value ){
+bool_t gpioWrite( gpioMap_t pin, bool_t value ){
 
    bool_t ret_val     = 1;
 
@@ -331,13 +307,13 @@ bool_t gpioWrite( uint32_t pin, bool_t value ){
 }
 
 
-bool_t gpioToggle( uint32_t pin ){
+bool_t gpioToggle( gpioMap_t pin ){
 
    return gpioWrite( pin, !gpioRead(pin) );
 }
 
 
-bool_t gpioRead( uint32_t pin ){
+bool_t gpioRead( gpioMap_t pin ){
 
    bool_t ret_val     = OFF;
 

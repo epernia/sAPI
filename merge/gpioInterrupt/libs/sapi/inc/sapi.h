@@ -28,17 +28,42 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 /* Date: 2015-09-23 */
 
-#ifndef _SAPI_DATATYPES_H_
-#define _SAPI_DATATYPES_H_
+#ifndef _SAPI_H_
+#define _SAPI_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "stdint.h"
-#include "chip.h" // NXP LPCOpen
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
+
+//#include "sapi_isr_vector.h"
+
+#include "sapi_board.h"
+#include "sapi_tick.h"
+#include "sapi_gpio.h"
+#include "sapi_uart.h"
+#include "sapi_adc.h"
+#include "sapi_dac.h"
+#include "sapi_i2c.h"
+#include "sapi_rtc.h"
+#include "sapi_sleep.h"
+
+#include "sapi_circularBuffer.h"
+
+#include "sapi_delay.h"             // Use Tick module
+
+#include "sapi_7_segment_display.h" // Use GPIO and Delay modules
+#include "sapi_keypad.h"            // Use GPIO and Delay modules
+#include "sapi_pwm.h"               // Use SCT and GPIO modules
+#include "sapi_servo.h"             // Use Timer and GPIO modules
+#include "sapi_hmc5883l.h"          // Use I2C module
+
+/* External Peripherals */
 
 /*==================[cplusplus]==============================================*/
 
@@ -48,66 +73,11 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
-// Functional states
-#ifndef ON
-   #define ON     1
-#endif
-#ifndef OFF
-   #define OFF    0
-#endif
-
-// Electrical states
-#ifndef HIGH
-   #define HIGH   1
-#endif
-#ifndef LOW
-   #define LOW    0
-#endif
-
-// Logical states
-#ifndef FALSE
-   #define FALSE  0
-#endif
-#ifndef TRUE
-   #define TRUE   (!FALSE)
-#endif
-
 /*==================[typedef]================================================*/
-
-// Define Boolean Data Type
-typedef uint8_t bool_t;
-
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
-
-// Define Tick Data Type
-typedef uint64_t tick_t;
-
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-
-// Null Function Pointer definitions
-
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
-
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
 
 /*==================[cplusplus]==============================================*/
 
@@ -116,4 +86,4 @@ bool_t sapiNullFuncPtrBVptr( void* );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DATATYPES_H_ */
+#endif /* #ifndef _SAPI_H_ */

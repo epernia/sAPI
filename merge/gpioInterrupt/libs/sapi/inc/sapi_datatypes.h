@@ -1,4 +1,4 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2015-2016, Eric Pernia.
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -28,6 +28,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 /* Date: 2015-09-23 */
@@ -38,7 +39,8 @@
 /*==================[inclusions]=============================================*/
 
 #include "stdint.h"
-#include "chip.h" // NXP LPCOpen
+#include "chip.h"
+#include "board.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -47,8 +49,7 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
-
-// Functional states
+/* Functional states */
 #ifndef ON
    #define ON     1
 #endif
@@ -56,7 +57,7 @@ extern "C" {
    #define OFF    0
 #endif
 
-// Electrical states
+/* Electrical states */
 #ifndef HIGH
    #define HIGH   1
 #endif
@@ -64,7 +65,8 @@ extern "C" {
    #define LOW    0
 #endif
 
-// Logical states
+/* Logical states */
+
 #ifndef FALSE
    #define FALSE  0
 #endif
@@ -74,40 +76,35 @@ extern "C" {
 
 /*==================[typedef]================================================*/
 
-// Define Boolean Data Type
+/* Define Boolean Data Type */
 typedef uint8_t bool_t;
 
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
+/* Define real Data Types (floating point) */
+typedef float  real32_t;
+//typedef double real64_t; // In LPC4337 float = double (Floating Point single precision, 32 bits)
 
-// Define Tick Data Type
+/* Define Tick Data Type */
 typedef uint64_t tick_t;
 
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
+/*
+ * Function Pointer definition
+ * --------------------------------------
+ * param:  void * - For passing arguments
+ * return: bool_t - For Error Reports
+ */
+typedef bool_t (*sAPI_FuncPtr_t)(void *);
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-// Null Function Pointer definitions
-
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
-
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
+/*
+ * Null Function Pointer definition
+ * --------------------------------------
+ * param:  void * - Not used
+ * return: bool_t - Return always true
+ */
+bool_t sAPI_NullFuncPtr(void *);
 
 /*==================[cplusplus]==============================================*/
 

@@ -1,4 +1,4 @@
-/* Copyright 2015-2017, Eric Pernia.
+/* Copyright 2016, Ian Olivieri
  * All rights reserved.
  *
  * This file is part sAPI library for microcontrollers.
@@ -28,17 +28,18 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
-/* Date: 2015-09-23 */
+/* Date: 2016-02-10 */
 
-#ifndef _SAPI_DATATYPES_H_
-#define _SAPI_DATATYPES_H_
+#ifndef SAPI_SCT_H_
+#define SAPI_SCT_H_
 
 /*==================[inclusions]=============================================*/
 
-#include "stdint.h"
-#include "chip.h" // NXP LPCOpen
+#include "sapi_datatypes.h"
+#include "sapi_peripheral_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -46,68 +47,56 @@
 extern "C" {
 #endif
 
-/*==================[macros]=================================================*/
-
-// Functional states
-#ifndef ON
-   #define ON     1
-#endif
-#ifndef OFF
-   #define OFF    0
-#endif
-
-// Electrical states
-#ifndef HIGH
-   #define HIGH   1
-#endif
-#ifndef LOW
-   #define LOW    0
-#endif
-
-// Logical states
-#ifndef FALSE
-   #define FALSE  0
-#endif
-#ifndef TRUE
-   #define TRUE   (!FALSE)
-#endif
+/*==================[macros and definitions]=================================*/
 
 /*==================[typedef]================================================*/
 
-// Define Boolean Data Type
-typedef uint8_t bool_t;
+/*  SCT names are defined in sAPI_PeripheralMap.h:
+ * NOTE: CTOUT11 has no SCT mode associated, so it can't be used!
 
-// Define real Data Types (floating point)
-typedef float  float32_t;
-typedef double float64_t; // In LPC4337 float = double
-                         // (Floating Point single precision, 32 bits)
-
-// Define Tick Data Type
-typedef uint64_t tick_t;
-
-// Define Function Pointer type definitions
-
-// param:  void * - For passing arguments
-// return: void   - Nothing
-typedef void (*sapiFuncPtrVVptr_t)(void *);
-
-// param:  void * - For passing arguments
-// return: bool_t - For Error Reports
-typedef bool_t (*sapiFuncPtrBVptr_t)(void *);
+typedef enum{
+   CTOUT0, CTOUT1, CTOUT2, CTOUT3, CTOUT4, CTOUT5, CTOUT6, CTOUT7, CTOUT8,
+   CTOUT9, CTOUT10, CTOUT11, CTOUT12, CTOUT13
+} SctMap_t;
+*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+/*
+ * @brief:   Initialize the SCT peripheral with the given frequency
+ * @param:   frequency:   value in Hz
+ * @note:   there can only be 1 frequency in all the SCT peripheral.
+ */
+void Sct_Init(uint32_t frequency);
 
-// Null Function Pointer definitions
+/*
+ * @brief	Enables pwm function for the given pin
+ * @param	sctNumber:   pin where the pwm signal will be generated
+ */
+void Sct_EnablePwmFor(uint8_t sctNumber);
 
-// param:  void * - Not used
-// return: void   - Nothing
-void sapiNullFuncPtrVVptr( void* );
+/*
+ * @brief   Converts a value in microseconds (uS = 1x10^-6 sec) to ticks
+ * @param   value:   8bit value, from 0 to 255
+ * @return   Equivalent in Ticks for the LPC4337
+ */
+uint32_t Sct_Uint8ToTicks(uint8_t value);
 
-// param:  void * - Not used
-// return: bool_t - Return always true
-bool_t sapiNullFuncPtrBVptr( void* );
+/*
+ * @brief:   Sets the pwm duty cycle
+ * @param:	sctNumber:   pin where the pwm signal is generated
+ * @param	value:   8bit value, from 0 to 255
+ * @note   For the 'ticks' parameter, see function Sct_Uint8ToTicks
+ */
+void Sct_SetDutyCycle(uint8_t sctNumber, uint8_t value);
+
+/*
+ * @brief:   Gets the pwm duty cycle
+ * @param:	sctNumber:   pin where the pwm signal is generated
+ * @return:   duty cycle of the channel, from 0 to 255
+ */
+uint8_t Sct_GetDutyCycle(uint8_t sctNumber);
 
 /*==================[cplusplus]==============================================*/
 
@@ -116,4 +105,4 @@ bool_t sapiNullFuncPtrBVptr( void* );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_DATATYPES_H_ */
+#endif /* SAPI_SCT_H_ */
