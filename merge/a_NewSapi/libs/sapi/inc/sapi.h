@@ -63,13 +63,14 @@
 // Board ----------------------------------------------------------------------
 
 #include "sapi_board.h"
-#include "sapi_peripheral_map.h"
-
+//#include "sapi_peripheral_map.h"
 
 // Abstract modules -----------------------------------------------------------
 /*
 #include "sapi_tick.h"              // Use Timer module
+*/
 #include "sapi_circularBuffer.h"
+/*
 #include "sapi_sleep.h"
 
 #include "sapi_delay.h"             // Use Tick module
@@ -81,7 +82,7 @@
 #include "sapi_consolePrint.h"      // Use Print module
 
 #include "sapi_pwm.h"               // Use Timer module
-
+*/
 
 // Virtual peripherals --------------------------------------------------------
 

@@ -1,7 +1,7 @@
 /* Copyright 2015-2017, Eric Pernia.
  * All rights reserved.
  *
- * This file is part of CIAA Firmware.
+* This file is part sAPI library for microcontrollers.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,9 +35,10 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_gpio.h"
+#include "chip.h" // NXP LPCOpen
 
 /*==================[macros and definitions]=================================*/
-
+/*
 #define GPIO_MODE_MASK    0x7F
 #define GPIO_SPEED_MASK   0x380
 #define GPIO_EVENT_MASK   0x7C00
@@ -46,7 +47,7 @@
 #define GPIO_SET_CONFIG_PROPERTY( gpioName, property , mask ) gpioInstances[(gpioName)].config = (gpioInstances[(gpioName)].config & ~(mask)) | ((property) & (mask)) 
 
 #define GPIO_GET_CONFIG_PROPERTY( gpioName, mask ) gpioInstances[(gpioName)].config & (mask)
-
+*/
 /* ----- Begin Pin Config Structs NXP LPC4337 ----- */
 
 typedef struct{

@@ -109,6 +109,8 @@ void sapiNullFuncPtrVVptr( void* );
 // return: bool_t - Return always true
 bool_t sapiNullFuncPtrBVptr( void* );
 
+typedef sapiFuncPtrVVptr_t interruptCallback_t;
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
