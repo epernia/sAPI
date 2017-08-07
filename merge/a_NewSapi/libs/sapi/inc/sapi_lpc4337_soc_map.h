@@ -32,66 +32,172 @@
 
 /* Date: 2015-09-23 */
 
-#ifndef _SAPI_PERIPHERALMAP_H_
-#define _SAPI_PERIPHERALMAP_H_
+#ifndef _SAPI_LPC4337_SOC_MAP_H_
+#define _SAPI_LPC4337_SOC_MAP_H_
 
 /*==================[inclusions]=============================================*/
 
 #include "sapi_datatypes.h"
-/*
-#include "sapi_peripheral_map_soc.h"
-#include "sapi_peripheral_map_board.h"
-*/
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*==================[macros & typedef]=======================================*/
+/*==================[macros]=================================================*/
 
-/* ---------------------- GPIO Map --------------------- */
+/*==================[typedef]================================================*/
 
-/* GPIO instances size */
-#define GPIO_INSTANCES_SIZE 64
+/* ----- Begin Pin Config Structs NXP LPC4337 ----- */
 
-/* GPIO name enum type */
-// Redefinition of GPIO
-/*typedef enum{
-   GPIO0,  GPIO1,  GPIO2,  GPIO3,  GPIO4,  GPIO5,  GPIO6,  GPIO7,
-   GPIO8,  GPIO9,  GPIO10, GPIO11, GPIO12, GPIO13, GPIO14, GPIO15,
-   GPIO16, GPIO17, GPIO18, GPIO19, GPIO20, GPIO21, GPIO22, GPIO23,
-   GPIO24, GPIO25, GPIO26, GPIO27, GPIO28, GPIO29, GPIO30, GPIO31,
-   GPIO32, GPIO33, GPIO34, GPIO35, GPIO36, GPIO37, GPIO38, GPIO39,
-   GPIO40, GPIO41, GPIO42, GPIO43, GPIO44, GPIO45, GPIO46, GPIO47,
-   GPIO48, GPIO49, GPIO50, GPIO51, GPIO52, GPIO53, GPIO54, GPIO55,
-   GPIO56, GPIO57, GPIO58, GPIO59, GPIO60, GPIO61, GPIO62, GPIO63
-} gpioName_t;
-*/
+typedef struct{
+   int8_t port;
+   int8_t pin;
+} pinConfigLpc4337_t;
 
-/* ---------------------- UART Map --------------------- */
+/* ------ End Pin Config Structs NXP LPC4337 ------ */
 
-/* UART instances size */
-#define UART_INSTANCES_SIZE 8
 
-/* UART name enum type */
+/* ------- Begin EDU-CIAA-NXP Peripheral Map ------ */
+
+/* Defined for sapi_gpio.h */
+typedef enum{
+   /* EDU-CIAA-NXP */
+
+   // P1 header
+   P4_1,
+   P7_5,
+   P1_5,
+   P4_2,
+   P4_3,
+   P4_0,
+   P7_4,
+
+   P3_2,
+   P3_1,
+
+   P2_3,
+   P2_4,
+
+   // P2 header
+   P6_12,
+   P6_11,
+   P6_9,
+   P6_7,
+   P6_4,
+
+   P4_4,
+   P4_5,
+   P4_6,
+   P4_8,
+   P4_10,
+
+   P1_3,
+
+   P1_20,
+   P1_18,
+   P1_17,
+   P1_16,
+   P7_7,
+   P0_1,
+   P0_0,
+
+   P6_10,
+   P6_8,
+   P6_5,
+   P6_1,
+
+   P4_9,
+
+   P1_4,
+
+   P1_15,
+
+   // Switches
+   // 36   37     38     39
+   P1_0,
+   P1_1,
+   P1_2,
+   P1_6,
+
+   // Leds
+   // 40   41     42     43     44     45
+   P2_0,
+   P2_1,
+   P2_2,
+   P2_10,
+   P2_11,
+   P2_12,
+
+
+   /* CIAA-NXP */ /// Ver!
+ /* 46     47     48     49     50     51     52     53 */
+   DI0,
+   DI1,
+   DI2,
+   DI3,
+   DI4,
+   DI5,
+   DI6,
+   DI7,
+ /* 54     55     56     57     58     59     60     61 */
+   DO0,
+   DO1,
+   DO2,
+   DO3,
+   DO4,
+   DO5,
+   DO6,
+   DO7
+} gpioSocMap_t;
+
+/* Defined for sapi_adc.h */
+typedef enum{
+   ADC0_CH4 = 62,   // Ver CIAA NXP
+   ADC0_CH3 = 63,
+   ADC0_CH2 = 64,
+   ADC0_CH1 = 65
+} adcSocMap_t;
+
+/* Defined for sapi_dac.h */
+typedef enum{
+   DAC
+} dacSocMap_t;
+
+/* Defined for sapi_uart.h */
+typedef enum{
+   UART0,
+   UART2,
+   UART3
+} uartSocMap_t;
+
+/*Defined for sapi_timer.h*/
+//NOTE: if servo is enable (servoConfig used) the only available timer to use is TIMER0
+typedef enum{
+   TIMER0,
+   TIMER1,
+   TIMER2,
+   TIMER3,
+   SYSTICK,
+   SCT
+} timerSocMap_t;
+
+/*Defined for sapi_i2c.h*/
+/* Comment because already defined in "i2c_18xx_43xx.h"*/
 /*
 typedef enum{
-   UART0, UART1, UART2, UART3, UART4, UART5, UART6, UART7
-} uartName_t;
+   I2C0 // TODO: Add support for I2C1
+} i2cMap_t;
 */
+typedef uint8_t i2cSocMap_t;
 
-/* --------------------- TIMER Map --------------------- */
-
-/* TIMER instances size */
-#define TIMER_INSTANCES_SIZE 8
-
-/* TIMER name enum type */
-/*
 typedef enum{
-   TIMER0, TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7
-} timerName_t;
-*/
+   SPI0
+} spiSocMap_t;
+
+/* ------- End EDU-CIAA-NXP Peripheral Map -------- */
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
@@ -103,4 +209,4 @@ typedef enum{
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_PERIPHERALMAP_H_ */
+#endif /* #ifndef _SAPI_LPC4337_SOC_MAP_H_ */

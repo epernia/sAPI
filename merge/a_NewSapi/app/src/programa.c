@@ -42,13 +42,12 @@ int main( void ){
       
       // Si se presiona TEC4, enciende el LED3
       gpioWrite( LED3, !(gpioRead(TEC4)) );
-/*
+
       // Intercambia el valor del LEDB
-      gpioToggle( LEDB );
+      //gpioOutputToggle( LEDB );
       
       // Retardo bloqueante durante 100ms
-      delay( 100 );
-*/
+//      delay( 100 );
    } 
 
    // NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa se ejecuta 

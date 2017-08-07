@@ -38,8 +38,9 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_datatypes.h"
-#include "sapi_soc_map.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -52,36 +53,46 @@ extern "C" {
 #define GPIO_STRENGTH(n)    ( (n) << 4 )
 #define GPIO_SPEED(n)       ( (n) << 7 )
 */
+
+/* ----------------- POSIX like methods ---------------- */
+
+// Write a GPIO
+#define gpioWrite( gpioName, value )    gpioValueSet( (gpioName), (value) )
+
+// Read a GPIO
+#define gpioRead( gpioName )            gpioValueGet( (gpioName) )
+
 /*==================[typedef]================================================*/
   
 /* GPIO Config int32_t */
 /*
 
-gpioConfig[31:0] = gpioInterrupt_t[24:31], 
-                   gpioStrenght_t[16:23], 
-                   gpioSpeed_t[8:15],  
+gpioConfig[31:0] = gpioInterruptMode_t[23:20], 
+                   gpioInterrupt_t[19:16], 
+                   gpioStrenght_t[15:12], 
+                   gpioSpeed_t[11:8],  
                    gpioPull_t[7:4]
                    gpioMode_t[3:0]
 
-               intm   int   stre  speed  pull    mode
-  31  28 27  24 23  20 19  16 15  12 11  8   7  4    3  0
-   0000   0000   0000   0000   0000   0000   0000    0000
-                    0      0      0      0      0 Di    0   DISABLE
-                   01     01      1      1      1 Up    1   INPUT
-                   10     10     10     10     10 Dn   10   OUTPUT
-                                 11     11             10   PUSHPULL
-                                100    100             11   OPENDRAIN
-                                101    101             11   OPENCOLLECTOR
+                 intm   int    stre  speed  pull    mode
+  31  28 27  24 23  20 19  16 15  12 11  8  7  4    3  0
+   0000   0000   0000   0000   0000   0000  0000    0000
+                    0      0      0      0     0 Di    0   DISABLE
+                   01     01      1      1     1 Up    1   INPUT
+                   10     10     10     10    10 Dn   10   OUTPUT
+                                 11     11            10   PUSHPULL
+                                100    100            11   OPENDRAIN
+                                101    101            11   OPENCOLLECTOR
                                 110    110
                                 111    111
 */
 
 /* GPIO Properties */  
 /*
- All GPIO:
+ GPIO module:
  - Power
 
- Single pin:
+ GPIO Single pin:
  - Mode
  - Strenght
  - Speed
@@ -107,6 +118,12 @@ typedef enum{
    GPIO_PULL_UP           = (1<<4),
    GPIO_PULL_DOWN         = (2<<4)
 } gpioPull_t;
+   
+typedef enum{
+   GPIO_INPUT_PULL_DISABLE      = GPIO_INPUT,      // default value
+   GPIO_INPUT_PULL_UP           = GPIO_INPUT | GPIO_PULL_UP,
+   GPIO_INPUT_PULL_DOWN         = GPIO_INPUT | GPIO_PULL_DOWN,
+} gpioModePull_t;
    
 typedef enum{
    // Input Speed modes   
@@ -136,21 +153,24 @@ typedef enum{
    // Input Interrupt
    GPIO_INTERRUPT_DISABLE      = (0 << 16), // default value
    GPIO_INTERRUPT_LEVEL        = (1 << 16), // Level-sensitive (high/low). Modify flags:
-   GPIO_INTERRUPT_EDGE         = (2 << 16), // Edge (Rising/falling).
-   
-      GPIO_LOW                 = (1 << 20), // default modify flag value
-      GPIO_HIGH                = (2 << 20),
-      GPIO_BOTH                = (3 << 20),
-      GPIO_FALLING             = (1 << 20), // default modify flag value
-      GPIO_RISING              = (2 << 20), 
-   
+   GPIO_INTERRUPT_EDGE         = (2 << 16)  // Edge (Rising/falling).
+      /*
    GPIO_INTERRUPT_LEVEL_LOW    = GPIO_INTERRUPT_LEVEL | GPIO_LOW,
    GPIO_INTERRUPT_LEVEL_HIGH   = GPIO_INTERRUPT_LEVEL | GPIO_HIGH,
    GPIO_INTERRUPT_LEVEL_BOTH   = GPIO_INTERRUPT_LEVEL | GPIO_BOTH,
    
    GPIO_INTERRUPT_EDGE_FALLING = GPIO_INTERRUPT_EDGE | GPIO_FALLING,
    GPIO_INTERRUPT_EDGE_RISING  = GPIO_INTERRUPT_EDGE | GPIO_RISING
-} gpioInterrupt_t;
+   */
+} gpioInterruptMode_t;
+
+typedef enum{   
+   GPIO_LOW                 = (1 << 20), // default modify flag value
+   GPIO_HIGH                = (2 << 20),
+   GPIO_FALLING             = (1 << 20), // default modify flag value
+   GPIO_RISING              = (2 << 20),
+   GPIO_BOTH                = (3 << 20)
+} gpioInterruptType_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -167,9 +187,13 @@ bool_t gpioPowerGet( void );
    
 /* -- Single Pin property getters and setters methods - */
    
-// direction
+// mode
 void gpioModeSet( int32_t gpioName, gpioMode_t mode );
 gpioMode_t gpioModeGet( int32_t gpioName );
+
+// pull
+void gpioPullSet( int32_t gpioName, gpioPull_t pull );
+gpioPull_t gpioPullGet( int32_t gpioName );
    
 // value
 void gpioValueSet( int32_t gpioName, bool_t value );
@@ -190,35 +214,35 @@ void gpioConfig( int32_t gpioName, int32_t config );
 
 /* ------------ Interrupt properties methods ----------- */   
    
-// inputInterruptCallback
+// Input Interrupt Callback
 void gpioInterruptCallbackSet( int32_t gpioName,
                                interruptCallback_t interruptCallback );
 interruptCallback_t gpioInterruptCallbackGet( int32_t pin );
    
-// inputInterrupt
-void gpioInterruptSet( int32_t gpioName, gpioInterrupt_t interruptMode );
-gpioInterrupt_t gpioInterruptGet( int32_t gpioName );
+// Input Interrupt Mode
+void gpioInterruptModeSet( int32_t gpioName, gpioInterruptMode_t interruptMode );
+gpioInterruptMode_t gpioInterruptModeGet( int32_t gpioName );
+
+// Input Interrupt Type
+void gpioInterruptTypeSet( int32_t gpioName, gpioInterruptType_t interruptType );
+gpioInterruptType_t gpioInterruptTypeGet( int32_t gpioName );
+
+// Input Interrupt
+void gpioInterruptSet( int32_t gpioName, int32_t interruptMode );
+int32_t gpioInterruptGet( int32_t gpioName );
    
 // Se setea la interrupcion vacia por ejemplo para despertar de modo bajo consumo.
 // Si esta sin callback no hace nada la isr.
-// Algunos módulos como UART podrían hacer algo más en la ISR y luego ejecutar el callback
+// Algunos modulos como UART podrían hacer algo más en la ISR y luego ejecutar el callback
 // de usuario (hook a la ISR)
-
-/* ----------------- POSIX like methods ---------------- */
-
-// Write a GPIO
-#define gpioWrite( gpioName, value )    gpioSetValue( (gpioName), (value) )
-
-// Read a GPIO
-#define gpioRead( gpioName )            gpioGetValue( (gpioName) )
 
 /* -------------- Especific modes methods -------------- */
    
 // Toggle a GPIO output --> Only for output mode
-gpioOutputToggle( int32_t gpioName );
+void gpioOutputToggle( int32_t gpioName );
 
 // Read a GPIO input with a debounce time --> Only for input mode
-gpioInputReadDebounced( int32_t gpioName, tick_t debounceTime );
+bool_t gpioInputReadDebounced( int32_t gpioName, tick_t debounceTime );
    
 /* ----------------- GPIO PORT method ------------------ */
 

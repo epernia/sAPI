@@ -63,12 +63,14 @@
 // Board ----------------------------------------------------------------------
 
 #include "sapi_board.h"
-//#include "sapi_peripheral_map.h"
+#include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 // Abstract modules -----------------------------------------------------------
-/*
-#include "sapi_tick.h"              // Use Timer module
-*/
+
+//#include "sapi_tick.h"              // Use Timer module
+
 #include "sapi_circularBuffer.h"
 /*
 #include "sapi_sleep.h"
@@ -83,14 +85,13 @@
 
 #include "sapi_pwm.h"               // Use Timer module
 */
-
 // Virtual peripherals --------------------------------------------------------
 
-#include "sapi_i2c_soft.h"          // Use GPIO and Tick modules
+//#include "sapi_i2c_soft.h"          // Use GPIO and Tick modules
 
 
 // External peripherals -------------------------------------------------------
-
+/*
 #include "sapi_7_segment_display.h" // Use GPIO and Delay modules
 #include "sapi_keypad.h"            // Use GPIO and Delay modules
 #include "sapi_servo_angular.h"     // Use Timer and GPIO modules

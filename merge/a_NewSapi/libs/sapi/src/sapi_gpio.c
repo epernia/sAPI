@@ -50,6 +50,9 @@
 */
 /* ----- Begin Pin Config Structs NXP LPC4337 ----- */
 
+#define LPC4337_GPIO_INPUT    0
+#define LPC4337_GPIO_OUTPUT   1
+
 typedef struct{
    int8_t port;
    int8_t pin;
@@ -228,7 +231,25 @@ static void gpioObtainPinConfig( uint32_t pin,
 
 /*==================[external functions definition]==========================*/
 
-bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
+/* --------- Peripheral configutation methods ------------------------------ */
+
+// Initialize
+void gpioInit( void ){  
+   /* Initializes GPIO */
+   Chip_GPIO_Init(LPC_GPIO_PORT); 
+}
+   
+// power. Enable or disable the peripheral energy and clock
+void gpioPowerSet( bool_t power ){   
+}
+
+bool_t gpioPowerGet( void ){   
+}
+   
+/* -- Single Pin property getters and setters methods - */
+   
+// mode
+void gpioModeSet( int32_t gpioName, gpioMode_t mode ){
 
    bool_t ret_val     = 1;
 
@@ -240,15 +261,13 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   gpioObtainPinConfig( pin, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( gpioName, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
-   switch(config){
+   switch( mode ){
 
-      case GPIO_ENABLE:
-		   /* Initializes GPIO */
-		   Chip_GPIO_Init(LPC_GPIO_PORT);
-	   break;
+      case GPIO_DISABLE:
+      break;
 
       case GPIO_INPUT:
          Chip_SCU_PinMux(
@@ -257,10 +276,56 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
             SCU_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS,
             func
          );
-         Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
+         Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), LPC4337_GPIO_INPUT );
       break;
 
-      case GPIO_INPUT_PULLUP:
+      case GPIO_OUTPUT:
+      //case GPIO_PUSHPULL:
+      case GPIO_OPENDRAIN:
+      //case GPIO_OPENCOLLECTOR:         
+         Chip_SCU_PinMux(
+            pinNamePort,
+            pinNamePin,
+            SCU_MODE_INACT | SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN,
+            func
+         );
+         Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), LPC4337_GPIO_OUTPUT );
+         Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, OFF);
+      break;
+
+      default:
+         ret_val = 0;
+      break;
+   }
+}
+
+gpioMode_t gpioModeGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+
+// pull
+void gpioPullSet( int32_t gpioName, gpioPull_t pull ){
+   
+   bool_t ret_val     = 1;
+
+   int8_t pinNamePort = 0;
+   int8_t pinNamePin  = 0;
+
+   int8_t func        = 0;
+
+   int8_t gpioPort    = 0;
+   int8_t gpioPin     = 0;
+
+   gpioObtainPinConfig( gpioName, &pinNamePort, &pinNamePin, &func,
+                           &gpioPort, &gpioPin );
+
+   switch( pull ){
+
+      case GPIO_PULL_DISABLE:
+      break;
+
+      case GPIO_PULL_UP:
          Chip_SCU_PinMux(
             pinNamePort,
             pinNamePin,
@@ -270,7 +335,7 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
          Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
       break;
 
-      case GPIO_INPUT_PULLDOWN:
+      case GPIO_PULL_DOWN:
          Chip_SCU_PinMux(
             pinNamePort,
             pinNamePin,
@@ -290,30 +355,18 @@ bool_t gpioConfig( uint32_t pin, gpioConfig_t config ){
          Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_INPUT );
       break;
       */
-      case GPIO_OUTPUT:
-         Chip_SCU_PinMux(
-            pinNamePort,
-            pinNamePin,
-            SCU_MODE_INACT | SCU_MODE_ZIF_DIS | SCU_MODE_INBUFF_EN,
-            func
-         );
-         Chip_GPIO_SetDir( LPC_GPIO_PORT, gpioPort, ( 1 << gpioPin ), GPIO_OUTPUT );
-         Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, 0);
-      break;
 
       default:
          ret_val = 0;
       break;
    }
-
-   return ret_val;
-
 }
 
-
-bool_t gpioWrite( uint32_t pin, bool_t value ){
-
-   bool_t ret_val     = 1;
+gpioPull_t gpioPullGet( int32_t gpioName ){
+}
+   
+// value
+void gpioValueSet( int32_t gpioName, bool_t value ){
 
    int8_t pinNamePort = 0;
    int8_t pinNamePin  = 0;
@@ -323,24 +376,13 @@ bool_t gpioWrite( uint32_t pin, bool_t value ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   gpioObtainPinConfig( pin, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( gpioName, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
    Chip_GPIO_SetPinState( LPC_GPIO_PORT, gpioPort, gpioPin, value);
-
-   return ret_val;
 }
 
-
-bool_t gpioToggle( uint32_t pin ){
-
-   return gpioWrite( pin, !gpioRead(pin) );
-}
-
-
-bool_t gpioRead( uint32_t pin ){
-
-   bool_t ret_val     = OFF;
+bool_t gpioValueGet( int32_t gpioName ){
 
    int8_t pinNamePort = 0;
    int8_t pinNamePin  = 0;
@@ -350,12 +392,130 @@ bool_t gpioRead( uint32_t pin ){
    int8_t gpioPort    = 0;
    int8_t gpioPin     = 0;
 
-   gpioObtainPinConfig( pin, &pinNamePort, &pinNamePin, &func,
+   gpioObtainPinConfig( gpioName, &pinNamePort, &pinNamePin, &func,
                            &gpioPort, &gpioPin );
 
-   ret_val = (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );
+   return (bool_t) Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, gpioPort, gpioPin );
+}
 
-   return ret_val;
+// speed
+void gpioSpeedSet( int32_t gpioName, gpioSpeed_t speed ){
+   // TODO: Implement
+}
+
+gpioSpeed_t gpioSpeedGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+   
+// stength
+void gpioStengthSet( int32_t gpioName, gpioStrenght_t speed ){
+   // TODO: Implement
+}
+
+gpioStrenght_t gpioStengthGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+
+/* ------- Single Pin multiple property getters and setters methods -------- */
+
+// config  is an uint32_t with "an OR" of direction, value, speed, stength
+void gpioConfig( int32_t gpioName, int32_t config ){   
+   
+   // TODO: Implement
+   
+   gpioMode_t mode        = config & 0x0000000F;
+   gpioPull_t pull        = config & 0x000000F0;
+   gpioSpeed_t speed      = config & 0x00000F00;
+   gpioStrenght_t stength = config & 0x0000F000;
+   int32_t interrupt      = config & 0x00FF0000;
+   
+   // Mode
+   gpioModeSet( gpioName, mode );
+
+   // Pull
+   gpioPullSet( gpioName, pull );
+
+   // Speed
+   gpioSpeedSet( gpioName, speed );
+   
+   // Stength
+   gpioStengthSet( gpioName, stength );
+   
+   // Input interrupt
+   gpioInterruptSet( gpioName, interrupt );
+}
+
+/* ------------ Interrupt properties methods ----------- */   
+   
+// Input Interrupt Callback
+void gpioInterruptCallbackSet( int32_t gpioName,
+                               interruptCallback_t interruptCallback ){
+   // TODO: Implement
+}
+
+interruptCallback_t gpioInterruptCallbackGet( int32_t pin ){
+   // TODO: Implement
+   return 0;
+}
+   
+// Input Interrupt Mode
+void gpioInterruptModeSet( int32_t gpioName, gpioInterruptMode_t interruptMode ){
+   // TODO: Implement
+}
+
+gpioInterruptMode_t gpioInterruptModeGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+
+// Input Interrupt Type
+void gpioInterruptTypeSet( int32_t gpioName, gpioInterruptType_t interruptType ){
+   // TODO: Implement
+}
+
+gpioInterruptType_t gpioInterruptTypeGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+
+// Input Interrupt
+void gpioInterruptSet( int32_t gpioName, int32_t interruptMode ){
+   // TODO: Implement
+}
+
+int32_t gpioInterruptGet( int32_t gpioName ){
+   // TODO: Implement
+   return 0;
+}
+
+/* -------------- Especific modes methods -------------- */
+   
+// Toggle a GPIO output --> Only for output mode
+void gpioOutputToggle( int32_t gpioName ){
+   return gpioValueSet( gpioName, !gpioValueGet(gpioName) );
+}
+
+// Read a GPIO input with a debounce time --> Only for input mode
+bool_t gpioInputReadDebounced( int32_t gpioName, tick_t debounceTime ){
+   // TODO: Implement
+   return 0;
+}
+   
+/* ----------------- GPIO PORT method ------------------ */
+
+// Config Group of GPIOs
+void gpioGroupModeSet( int32_t* gpios, 
+                       uint8_t gpiosSize, 
+                       int32_t config ){
+   // TODO: Implement
+
+
+   uint32_t i;
+
+   for( i=0; i<gpiosSize; i++ )
+      gpioConfig( gpios[i], config );
 }
 
 /*==================[end of file]============================================*/

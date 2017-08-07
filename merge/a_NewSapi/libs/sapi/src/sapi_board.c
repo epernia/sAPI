@@ -65,15 +65,15 @@ void boardInit( void ){
 //   tickInit( 1 );
 
    // Inicializar GPIOs
-   gpioConfig( 0, GPIO_ENABLE );
+   gpioInit();
 
-   // Configuración de pines de entrada para Teclas de la EDU-CIAA-NXP
+   // Configuracion de pines de entrada para Teclas de la EDU-CIAA-NXP
    gpioConfig( TEC1, GPIO_INPUT );
    gpioConfig( TEC2, GPIO_INPUT );
    gpioConfig( TEC3, GPIO_INPUT );
    gpioConfig( TEC4, GPIO_INPUT );
 
-   // Configuración de pines de salida para Leds de la EDU-CIAA-NXP
+   // Configuracion de pines de salida para Leds de la EDU-CIAA-NXP
    gpioConfig( LEDR, GPIO_OUTPUT );
    gpioConfig( LEDG, GPIO_OUTPUT );
    gpioConfig( LEDB, GPIO_OUTPUT );
@@ -81,7 +81,7 @@ void boardInit( void ){
    gpioConfig( LED2, GPIO_OUTPUT );
    gpioConfig( LED3, GPIO_OUTPUT );
 
-   // Configuración de pines de entrada de la CIAA-NXP
+   // Configuracion de pines de entrada de la CIAA-NXP
    gpioConfig( DI0, GPIO_INPUT );
    gpioConfig( DI1, GPIO_INPUT );
    gpioConfig( DI2, GPIO_INPUT );
@@ -91,7 +91,7 @@ void boardInit( void ){
    gpioConfig( DI6, GPIO_INPUT );
    gpioConfig( DI7, GPIO_INPUT );
 
-   // Configuración de pines de salida de la CIAA-NXP
+   // Configuracion de pines de salida de la CIAA-NXP
    gpioConfig( DO0, GPIO_OUTPUT );
    gpioConfig( DO1, GPIO_OUTPUT );
    gpioConfig( DO2, GPIO_OUTPUT );

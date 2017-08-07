@@ -32,65 +32,61 @@
 
 /* Date: 2015-09-23 */
 
-#ifndef _SAPI_PERIPHERALMAP_H_
-#define _SAPI_PERIPHERALMAP_H_
+#ifndef _SAPI_CIAA_NXP_V1_BOARD_MAP_H_
+#define _SAPI_CIAA_NXP_V1_BOARD_MAP_H_
 
 /*==================[inclusions]=============================================*/
 
 #include "sapi_datatypes.h"
-/*
-#include "sapi_peripheral_map_soc.h"
-#include "sapi_peripheral_map_board.h"
-*/
+
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*==================[macros & typedef]=======================================*/
+/*==================[macros]=================================================*/
 
-/* ---------------------- GPIO Map --------------------- */
+/*==================[typedef]================================================*/
+/*
+typedef enum{*/
+ /* 46     47     48     49     50     51     52     53 */
+/*   DI0,   DI1,   DI2,   DI3,   DI4,   DI5,   DI6,   DI7,*/
+ /* 54     55     56     57     58     59     60     61 */
+/*   DO0,   DO1,   DO2,   DO3,   DO4,   DO5,   DO6,   DO7
+} gpioBoardMap_t;
 
-/* GPIO instances size */
-#define GPIO_INSTANCES_SIZE 64
+typedef enum{*/
+/* 62         63       64        65       */
+/*   AI3 = 62, AI2 = 63, AI1 = 64, AI0 = 65
+} adcBoardMap_t;
 
-/* GPIO name enum type */
-// Redefinition of GPIO
-/*typedef enum{
-   GPIO0,  GPIO1,  GPIO2,  GPIO3,  GPIO4,  GPIO5,  GPIO6,  GPIO7,
-   GPIO8,  GPIO9,  GPIO10, GPIO11, GPIO12, GPIO13, GPIO14, GPIO15,
-   GPIO16, GPIO17, GPIO18, GPIO19, GPIO20, GPIO21, GPIO22, GPIO23,
-   GPIO24, GPIO25, GPIO26, GPIO27, GPIO28, GPIO29, GPIO30, GPIO31,
-   GPIO32, GPIO33, GPIO34, GPIO35, GPIO36, GPIO37, GPIO38, GPIO39,
-   GPIO40, GPIO41, GPIO42, GPIO43, GPIO44, GPIO45, GPIO46, GPIO47,
-   GPIO48, GPIO49, GPIO50, GPIO51, GPIO52, GPIO53, GPIO54, GPIO55,
-   GPIO56, GPIO57, GPIO58, GPIO59, GPIO60, GPIO61, GPIO62, GPIO63
-} gpioName_t;
+typedef enum{*/
+/* 66 */
+/*   AO = 66
+} dacBoardMap_t;
+
+typedef enum{
+   UART_USB, UART_232, UART_485
+} uartBoardMap_t;
+
+typedef enum{
+   TIMER0, TIMER1, TIMER2, TIMER3
+} timerBoardMap_t;
 */
-
-/* ---------------------- UART Map --------------------- */
-
-/* UART instances size */
-#define UART_INSTANCES_SIZE 8
-
-/* UART name enum type */
+/*Defined for sapi_i2c.h*/
+/* Comment because already defined in "i2c_18xx_43xx.h"*/
 /*
 typedef enum{
-   UART0, UART1, UART2, UART3, UART4, UART5, UART6, UART7
-} uartName_t;
+   I2C0 // TODO: Add support for I2C1
+} i2cBoardMap_t;
 */
-
-/* --------------------- TIMER Map --------------------- */
-
-/* TIMER instances size */
-#define TIMER_INSTANCES_SIZE 8
-
-/* TIMER name enum type */
 /*
+typedef uint8_t i2cMap_t;
+
 typedef enum{
-   TIMER0, TIMER1, TIMER2, TIMER3, TIMER4, TIMER5, TIMER6, TIMER7
-} timerName_t;
+   SPI0
+} spiBoardMap_t;
 */
 /*==================[external data declaration]==============================*/
 
@@ -103,4 +99,4 @@ typedef enum{
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SAPI_PERIPHERALMAP_H_ */
+#endif /* #ifndef _SAPI_CIAA_NXP_V1_BOARD_MAP_H_ */
