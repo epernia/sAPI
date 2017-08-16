@@ -35,7 +35,7 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_sleep.h"
+#include "sapi_core.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -56,7 +56,7 @@
  * @param  nothing
  * @return nothing
  */
-void sleepUntilNextInterrupt( void ){
+void coreSleepUntilNextInterrupt( int32_t coreName ){
 
    /* Instert an assembly instruction wfi (wait for interrupt) */
    __asm volatile( "wfi" );

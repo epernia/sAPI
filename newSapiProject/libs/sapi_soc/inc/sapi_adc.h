@@ -41,6 +41,8 @@
 
 #include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -64,7 +66,7 @@ typedef enum{
 
 void adcInit( adcConfig_t config );
 
-uint16_t adcRead( adcMap_t analogInput );
+uint16_t adcRead( uint32_t analogInput );
 
 /*==================[cplusplus]==============================================*/
 

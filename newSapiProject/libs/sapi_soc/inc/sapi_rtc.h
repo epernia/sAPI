@@ -41,6 +41,8 @@
 
 #include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -73,21 +75,21 @@ typedef struct {
  * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcInit( rtc_t * rtc );
+bool_t rtcInit( int32_t rtcName, rtc_t * rtc );
 
 /*
  * @Brief: Get time from RTC peripheral.
  * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcRead( rtc_t * rtc );
+bool_t rtcRead( int32_t rtcName, rtc_t * rtc );
 
 /*
  * @Brief: Set time on RTC peripheral.
  * @param  RTC_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcWrite( rtc_t * rtc );
+bool_t rtcWrite( int32_t rtcName, rtc_t * rtc );
 
 /*==================[cplusplus]==============================================*/
 

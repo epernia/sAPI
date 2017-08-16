@@ -37,6 +37,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_adc.h"
+#include "chip.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -111,7 +112,7 @@ void adcInit( adcConfig_t config ){
  * @param   AI0 ... AIn
  * @return  analog value
  */
-uint16_t adcRead( adcMap_t analogInput ){
+uint16_t adcRead( uint32_t analogInput ){
 
    uint8_t lpcAdcChannel = 66 - analogInput;
    uint16_t analogValue = 0;

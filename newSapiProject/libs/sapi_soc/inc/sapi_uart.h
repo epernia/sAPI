@@ -38,9 +38,12 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "sapi_delay.h"
 #include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
+
+#include "sapi_delay.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -110,20 +113,20 @@ typedef struct{
 // Receive
 
 waitForReceiveStringsOrTimeoutState_t waitForReceiveStringsOrTimeout(
-   uartMap_t uart, waitForReceiveStringsOrTimeout_t* instance );
+   int32_t uart, waitForReceiveStringsOrTimeout_t* instance );
 
 
 bool_t waitForReceiveStringOrTimeoutBlocking(
-   uartMap_t uart, char* str, uint16_t strLen, tick_t timeout );
+   int32_t uart, char* str, uint16_t strLen, tick_t timeout );
 
 
 
-void uartInit( uartMap_t uart, uint32_t baudRate );
+void uartInit( int32_t uart, uint32_t baudRate );
 
-bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte );
-void uartWriteByte( uartMap_t uart, uint8_t byte );
+bool_t uartReadByte( int32_t uart, uint8_t* receivedByte );
+void uartWriteByte( int32_t uart, uint8_t byte );
 
-void uartWriteString( uartMap_t uart, char* str );
+void uartWriteString( int32_t uart, char* str );
 
 /*==================[ISR external functions declaration]======================*/
 

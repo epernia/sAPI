@@ -59,8 +59,8 @@
 
 /* Configure keypad pins */
 bool_t keypadConfig( keypad_t* keypad,
-                     gpioName_t* keypadRowPins, uint8_t keypadRowSize,
-                     gpioName_t* keypadColPins, uint8_t keypadColSize ){
+                     int32_t* keypadRowPins, uint8_t keypadRowSize,
+                     int32_t* keypadColPins, uint8_t keypadColSize ){
 
    bool_t retVal = TRUE;
 
@@ -85,7 +85,7 @@ bool_t keypadConfig( keypad_t* keypad,
 
    // Configure Columns as Inputs with pull-up resistors enable
    for( i=0; i<keypadColSize; i++ ){
-      gpioConfig( keypad->keypadColPins[i], GPIO_INPUT | GPIO_PULLUP );
+      gpioConfig( keypad->keypadColPins[i], GPIO_INPUT | GPIO_PULL_UP );
    }
 
    return retVal;

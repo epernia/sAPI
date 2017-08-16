@@ -36,7 +36,7 @@
 
 #include "sapi_board.h"
 
-//#include "sapi_tick.h"
+#include "sapi_tick.h"
 #include "sapi_gpio.h"
 
 /*==================[macros and definitions]=================================*/
@@ -61,8 +61,8 @@ void boardInit( void ){
 
    //Board_Init(); // From Board module (modules/lpc4337_m4/board)
 
-   /// Inicializar el conteo de Ticks con resolucion de 1ms, sin tickHook
-//   tickInit( 1 );
+   // Inicializar el conteo de Ticks con resolucion de 1ms, sin tickHook
+   tickInit( 1 );
 
    // Inicializar GPIOs
    gpioInit();

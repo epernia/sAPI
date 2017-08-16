@@ -37,6 +37,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_dac.h"
+#include "chip.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -87,14 +88,14 @@ void dacInit( dacConfig_t config ){
  * @param   value: analog value to be writen in the DAC, from 0 to 1023
  * @return  none
  */
-void dacWrite( dacMap_t analogOutput, uint16_t value ){
+void dacWrite( uint32_t analogOutput, uint16_t value ){
 
-   if( analogOutput == AO ){
+   //if( analogOutput == AO ){
       if( value > 1023 ){
          value = 1023;
       }
       Chip_DAC_UpdateValue( LPC_DAC, value );
-   }
+   //}
 }
 
 /*==================[end of file]============================================*/

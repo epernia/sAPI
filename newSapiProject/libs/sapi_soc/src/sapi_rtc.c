@@ -37,6 +37,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_rtc.h"
+#include "chip.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -57,7 +58,7 @@
  * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcInit( rtc_t * rtc ){
+bool_t rtcInit( int32_t rtcName, rtc_t* rtc ){
 
    bool_t ret_val = 1;
 
@@ -69,7 +70,7 @@ bool_t rtcInit( rtc_t * rtc ){
    } else {
 
       /* RTC Block section ------------------------- */
-      Chip_RTC_Init(LPC_RTC);
+      Chip_RTC_Init( LPC_RTC );
 
       /* Set current time for RTC */
       /* Current time is 22:00:00 , 2016-07-02 */
@@ -82,11 +83,11 @@ bool_t rtcInit( rtc_t * rtc ){
       rtcTime.time[RTC_TIMETYPE_YEAR]       = 2016;
       Chip_RTC_SetFullAlarmTime(LPC_RTC, &rtcTime);
       */
-      rtcWrite( rtc );
+      rtcWrite( rtcName, rtc );
 
       /* Enable rtc (starts increase the tick counter
          and second counter register) */
-      Chip_RTC_Enable(LPC_RTC, ENABLE);
+      Chip_RTC_Enable( LPC_RTC, ENABLE );
 
       init = 1;
    }
@@ -99,21 +100,21 @@ bool_t rtcInit( rtc_t * rtc ){
  * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcRead( rtc_t * rtc ){
+bool_t rtcRead( int32_t rtcName, rtc_t* rtc ){
 
    bool_t ret_val = 1;
 
    RTC_TIME_T rtcTime;
 
-   Chip_RTC_GetFullTime(LPC_RTC, &rtcTime);
+   Chip_RTC_GetFullTime( LPC_RTC, &rtcTime );
 
-   rtc->sec = rtcTime.time[RTC_TIMETYPE_SECOND];
-   rtc->min = rtcTime.time[RTC_TIMETYPE_MINUTE];
-   rtc->hour = rtcTime.time[RTC_TIMETYPE_HOUR];
-   rtc->wday = rtcTime.time[RTC_TIMETYPE_DAYOFWEEK];
-   rtc->mday = rtcTime.time[RTC_TIMETYPE_DAYOFMONTH];
-   rtc->month = rtcTime.time[RTC_TIMETYPE_MONTH];
-   rtc->year = rtcTime.time[RTC_TIMETYPE_YEAR];
+   rtc->sec = rtcTime.time[ RTC_TIMETYPE_SECOND ];
+   rtc->min = rtcTime.time[ RTC_TIMETYPE_MINUTE ];
+   rtc->hour = rtcTime.time[ RTC_TIMETYPE_HOUR ];
+   rtc->wday = rtcTime.time[ RTC_TIMETYPE_DAYOFWEEK ];
+   rtc->mday = rtcTime.time[ RTC_TIMETYPE_DAYOFMONTH ];
+   rtc->month = rtcTime.time[ RTC_TIMETYPE_MONTH ];
+   rtc->year = rtcTime.time[ RTC_TIMETYPE_YEAR ];
 
    return ret_val;
 }
@@ -123,21 +124,21 @@ bool_t rtcRead( rtc_t * rtc ){
  * @param  rtc_t rtc: RTC structure
  * @return bool_t true (1) if config it is ok
  */
-bool_t rtcWrite( rtc_t * rtc ){
+bool_t rtcWrite( int32_t rtcName, rtc_t* rtc ){
 
    bool_t ret_val = 1;
 
    RTC_TIME_T rtcTime;
 
-   rtcTime.time[RTC_TIMETYPE_SECOND]     = rtc->sec;
-   rtcTime.time[RTC_TIMETYPE_MINUTE]     = rtc->min;
-   rtcTime.time[RTC_TIMETYPE_HOUR]       = rtc->hour;
-   rtcTime.time[RTC_TIMETYPE_DAYOFMONTH] = rtc->wday;
-   rtcTime.time[RTC_TIMETYPE_DAYOFMONTH] = rtc->mday;
-   rtcTime.time[RTC_TIMETYPE_MONTH]      = rtc->month;
-   rtcTime.time[RTC_TIMETYPE_YEAR]	     = rtc->year;
+   rtcTime.time[ RTC_TIMETYPE_SECOND ]     = rtc->sec;
+   rtcTime.time[ RTC_TIMETYPE_MINUTE ]     = rtc->min;
+   rtcTime.time[ RTC_TIMETYPE_HOUR ]       = rtc->hour;
+   rtcTime.time[ RTC_TIMETYPE_DAYOFMONTH ] = rtc->wday;
+   rtcTime.time[ RTC_TIMETYPE_DAYOFMONTH ] = rtc->mday;
+   rtcTime.time[ RTC_TIMETYPE_MONTH ]      = rtc->month;
+   rtcTime.time[ RTC_TIMETYPE_YEAR ]	    = rtc->year;
 
-   Chip_RTC_SetFullTime(LPC_RTC, &rtcTime);
+   Chip_RTC_SetFullTime( LPC_RTC, &rtcTime );
 
    return ret_val;
 }

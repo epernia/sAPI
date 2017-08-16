@@ -141,7 +141,7 @@ typedef struct{
 
 bool_t hmc5883lIsAlive(void);
 bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t * config );
-bool_t hmc5883lConfig( HMC5883L_config_t config );
+bool_t hmc5883lInit( HMC5883L_config_t config );
 bool_t hmc5883lRead( int16_t * x, int16_t * y, int16_t * z );
 
 /*==================[cplusplus]==============================================*/

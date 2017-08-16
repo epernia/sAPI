@@ -66,7 +66,7 @@ tick_t tickRead( void );
 void tickWrite( tick_t ticks );
 
 // Tick interrupt callback
-bool_t tickInterruptCallbackSet( sAPI_FuncPtr_t tickCallback );
+bool_t tickInterruptCallbackSet( interruptCallback_t tickCallback );
 
 // Enable or disable the peripheral energy and clock
 void tickPowerSet( bool_t power );

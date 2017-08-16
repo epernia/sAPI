@@ -160,7 +160,7 @@ uint8_t display7SegmentOutputs[26] = {
 	-----    O h = dp (decimal pint).
 
 */
-void display7SegmentTestPins( int32_t* display7SegmentPins, gpioName_t pin ){
+void display7SegmentTestPins( int32_t* display7SegmentPins, int32_t pin ){
 
    uint8_t i = 0;
 

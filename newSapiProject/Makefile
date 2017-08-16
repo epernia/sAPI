@@ -1,7 +1,8 @@
 include config.mk
 
-SRC=$(wildcard app/src/*.c) $(foreach m, $(MODULES), $(wildcard libs/$(m)/src/*.c))
-INCLUDES=$(foreach m, $(MODULES), -Ilibs/$(m)/inc) -Iapp/inc
+MODULES=$(sort $(dir $(wildcard libs/*/)))
+SRC=$(wildcard app/src/*.c) $(foreach m, $(MODULES), $(wildcard $(m)/src/*.c))
+INCLUDES=$(foreach m, $(MODULES), -I$(m)/inc) -Iapp/inc
 _DEFINES=$(foreach m, $(DEFINES), -D$(m))
 OUT=out
 OBJECTS=$(SRC:%.c=$(OUT)/%.o)
@@ -47,6 +48,8 @@ Q=@
 endif
 
 Compilar_proyecto: $(TARGET) $(TARGET_BIN) $(TARGET_LST) Uso_de_memoria
+
+-include $(foreach m, $(MODULES), $(wildcard $(m)/module.mk))
 
 -include $(DEPS)
 

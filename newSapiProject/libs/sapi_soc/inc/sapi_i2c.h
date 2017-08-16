@@ -49,6 +49,8 @@
 
 #include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -57,6 +59,8 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
+
+#define i2cConfig i2cInit
 
 #define I2C_SOFTWARE_SDA_DIR   GPIO7
 #define I2C_SOFTWARE_SDA_IN    GPIO7
@@ -87,9 +91,9 @@ typedef enum{
 
 /*==================[external functions declaration]=========================*/
 
-bool_t i2cConfig( i2cMap_t i2cNumber, uint32_t clockRateHz );
+bool_t i2cInit( int32_t i2cName, uint32_t clockRateHz );
 
-bool_t i2cRead( i2cMap_t  i2cNumber,
+bool_t i2cRead( int32_t i2cName,
                 uint8_t  i2cSlaveAddress,
                 uint8_t* dataToReadBuffer,
                 uint16_t dataToReadBufferSize,
@@ -98,7 +102,7 @@ bool_t i2cRead( i2cMap_t  i2cNumber,
                 uint16_t receiveDataBufferSize,
                 bool_t   sendReadStop );
 
-bool_t i2cWrite( i2cMap_t  i2cNumber,
+bool_t i2cWrite( int32_t i2cName,
                  uint8_t  i2cSlaveAddress,
                  uint8_t* transmitDataBuffer,
                  uint16_t transmitDataBufferSize,

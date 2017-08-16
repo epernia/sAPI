@@ -33,13 +33,15 @@
 
 /* Date: 2016-08-15 */
 
-#ifndef SAPI_SCT_H_
-#define SAPI_SCT_H_
+#ifndef SAPI_CORE_H_
+#define SAPI_CORE_H_
 
 /*==================[inclusions]=============================================*/
 
 #include "sapi_datatypes.h"
 #include "sapi_peripheral_map.h"
+#include "sapi_board_map.h"
+#include "sapi_soc_map.h"
 
 /*==================[cplusplus]==============================================*/
 
@@ -60,7 +62,7 @@ extern "C" {
  * @param  nothing
  * @return nothing
  */
-void sleepUntilNextInterrupt( void );
+void coreSleepUntilNextInterrupt( int32_t coreName );
 
 /*==================[cplusplus]==============================================*/
 
@@ -69,4 +71,4 @@ void sleepUntilNextInterrupt( void );
 #endif
 
 /*==================[end of file]============================================*/
-#endif /* SAPI_SCT_H_ */
+#endif /* SAPI_CORE_H_ */

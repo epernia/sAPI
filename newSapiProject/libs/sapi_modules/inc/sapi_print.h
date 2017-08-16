@@ -106,36 +106,26 @@ char* uintToAsciiHex( uint64_t value, uint8_t bitSize );
 
 /*==================[typedef]================================================*/
 
-typedef uartMap_t print_t;
-
-typedef enum{
-   BIN_FORMAT = 2,
-   DEC_FORMAT = 10,
-   HEX_FORMAT = 16
-} numberFormat_t;
+typedef uint32_t print_t;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
 // Initialize
-void printSetUart( print_t* printer, uartMap_t uart );
-void printConfigUart( print_t* printer, uartMap_t uart, uint32_t baudRate );
+void printSetUart( print_t* printer, int32_t uart );
+void printConfigUart( print_t* printer, int32_t uart, uint32_t baudRate );
 
 // Print String
 void printString( print_t printer, char* string );
 void printEnter( print_t printer );
 
 // Print Integer
+/*
 void printIntFormat( print_t printer, int64_t number, numberFormat_t format );
 void printUIntFormat( print_t printer, uint64_t number, numberFormat_t format );
+*/
 void printHex( print_t printer, uint64_t number, uint8_t bitSize );
-
-// C++ version 0.4 char* style "itoa":
-bool_t int64ToString( int64_t value, char* result, uint8_t base );
-bool_t uint64ToString( uint64_t value, char* result, uint8_t base );
-
-char* uintToAsciiHex( uint64_t value, uint8_t bitSize );
 
 /*==================[examples]===============================================*/
 

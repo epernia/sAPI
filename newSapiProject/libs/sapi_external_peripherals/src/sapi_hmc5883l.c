@@ -66,7 +66,7 @@ bool_t hmc5883lPrepareDefaultConfig( HMC5883L_config_t * config ){
 }
 
 
-bool_t hmc5883lConfig( HMC5883L_config_t config ){
+bool_t hmc5883lInit( HMC5883L_config_t config ){
 
    uint8_t registerA, registerB, registerMode;
 
@@ -83,7 +83,7 @@ bool_t hmc5883lConfig( HMC5883L_config_t config ){
 
    registerMode = config.mode;
 
-   i2cConfig( I2C0, 100000 );
+   //i2cConfig( I2C0, 100000 );
 
    transmitDataBuffer[0] = HMC5883L_REG_CONFIG_A;
    transmitDataBuffer[1] = registerA;

@@ -36,10 +36,6 @@ extern "C" {
    #define consolePrintlnString(string);              printlnString((consolePrint),(string));
 
    // Print Integer
-   #define consolePrintIntFormat(number,format);      printIntFormat((consolePrint),(number),(format));
-   #define consolePrintUIntFormat(number,format);     printUIntFormat((consolePrint),(number),(format));
-   #define consolePrintlnIntFormat(number,format);    printlnIntFormat((consolePrint),(number),(format));
-   #define consolePrintlnUIntFormat(number,format);   printlnUIntFormat((consolePrint),(number),(format));
    #define consolePrintInt(number);                   printInt((consolePrint),(number));
    #define consolePrintUInt(number);                  printUInt((consolePrint),(number));
    #define consolePrintlnInt(number);                 printlnInt((consolePrint),(number));
@@ -60,10 +56,6 @@ extern "C" {
    #define consolePrintlnString(string);              ;
 
    // Print Integer
-   #define consolePrintIntFormat(number,format);      ;
-   #define consolePrintUIntFormat(number,format);     ;
-   #define consolePrintlnIntFormat(number,format);    ;
-   #define consolePrintlnUIntFormat(number,format);   ;
    #define consolePrintInt(number);                   ;
    #define consolePrintUInt(number);                  ;
    #define consolePrintlnInt(number);                 ;

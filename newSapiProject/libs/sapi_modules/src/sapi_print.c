@@ -37,6 +37,7 @@
 
 #include "sapi_print.h"   // <= own header
 
+#include "sapi_convert.h"    // <= convert header
 #include "sapi_uart.h"    // <= UART header
 
 /*==================[macros and definitions]=================================*/
@@ -55,11 +56,11 @@
 
 // Print uart configuration
 
-void printSetUart( print_t* printer, uartMap_t uart ){
+void printSetUart( print_t* printer, int32_t uart ){
    *printer = uart;
 }
 
-void printConfigUart( print_t* printer, uartMap_t uart, uint32_t baudRate ){
+void printConfigUart( print_t* printer, int32_t uart, uint32_t baudRate ){
    *printer = uart;
    uartConfig( uart, baudRate );
 }
@@ -77,7 +78,7 @@ void printEnter( print_t printer ){
 
 
 // Print Integer
-
+/*
 void printIntFormat( print_t printer, int64_t number, numberFormat_t format ){
 
    char strNumber[65];
@@ -95,87 +96,10 @@ void printUIntFormat( print_t printer, uint64_t number, numberFormat_t format ){
       uartWriteString( printer, strNumber );
    }
 }
+*/
 
 void printHex( print_t printer, uint64_t number, uint8_t bitSize ){
    printString( printer, uintToAsciiHex( number , bitSize ) );
-}
-
-
-// C++ version 0.4 char* style "itoa":
-// Written by Luk�s Chmela
-// Released under GPLv3.
-// Modified by Eric Pernia.
-bool_t int64ToString( int64_t value, char* result, uint8_t base ){
-   // check that the base if valid
-   if( base < 2 || base > 36 ){
-      *result = '\0';
-      return FALSE;
-   }
-
-   char* ptr = result, *ptr1 = result, tmp_char;
-   int64_t tmp_value;
-
-   do {
-      tmp_value = value;
-      value /= (int64_t)base;
-      *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * (int64_t)base)];
-   } while ( value );
-
-   // Apply negative sign
-   if (tmp_value < 0) *ptr++ = '-';
-   *ptr-- = '\0';
-   while(ptr1 < ptr) {
-      tmp_char = *ptr;
-      *ptr--= *ptr1;
-      *ptr1++ = tmp_char;
-   }
-   return TRUE;
-}
-
-// C++ version 0.4 char* style "itoa":
-// Written by Luk�s Chmela
-// Released under GPLv3.
-// Modified by Eric Pernia.
-bool_t uint64ToString( uint64_t value, char* result, uint8_t base ){
-   // check that the base if valid
-   if( base < 2 || base > 36 ){
-      *result = '\0';
-      return FALSE;
-   }
-
-   char* ptr = result, *ptr1 = result, tmp_char;
-   uint64_t tmp_value;
-
-   do {
-      tmp_value = value;
-      value /= (uint64_t)base;
-      *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * (uint64_t)base)];
-   } while ( value );
-
-   // Apply negative sign
-   if (tmp_value < 0) *ptr++ = '-';
-   *ptr-- = '\0';
-   while(ptr1 < ptr) {
-      tmp_char = *ptr;
-      *ptr--= *ptr1;
-      *ptr1++ = tmp_char;
-   }
-   return TRUE;
-}
-
-char* uintToAsciiHex( uint64_t value, uint8_t bitSize ){
-   
-   static char result[17];
-   uint8_t i = 0;
-   uint8_t vectorNumHex[] = "0123456789ABCDEF";
-   
-   result[bitSize/4] = 0;
-   
-   for( i=0; i<bitSize/4; i++ ){
-      result[(bitSize/4)-i-1] = vectorNumHex[ (uint8_t)(( value & (((uint64_t)0x0F)<<(4*i)) ) >> (4*i)) ];
-   }
-
-   return result;
 }
 
 /*==================[end of file]============================================*/

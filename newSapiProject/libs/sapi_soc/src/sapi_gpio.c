@@ -35,7 +35,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_gpio.h"
-#include "chip.h" // NXP LPCOpen
+#include "chip.h"
 
 /*==================[macros and definitions]=================================*/
 /*

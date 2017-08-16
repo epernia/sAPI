@@ -64,10 +64,6 @@ void debugPrintlnHex( uint64_t number, uint8_t bitSize );
    #define debugPrintlnString(string);              printlnString((debugPrint),(string));
 
    // Print Integer
-   #define debugPrintIntFormat(number,format);      printIntFormat((debugPrint),(number),(format));
-   #define debugPrintUIntFormat(number,format);     printUIntFormat((debugPrint),(number),(format));
-   #define debugPrintlnIntFormat(number,format);    printlnIntFormat((debugPrint),(number),(format));
-   #define debugPrintlnUIntFormat(number,format);   printlnUIntFormat((debugPrint),(number),(format));
    #define debugPrintInt(number);                   printInt((debugPrint),(number));
    #define debugPrintUInt(number);                  printUInt((debugPrint),(number));
    #define debugPrintlnInt(number);                 printlnInt((debugPrint),(number));
@@ -88,10 +84,6 @@ void debugPrintlnHex( uint64_t number, uint8_t bitSize );
    #define debugPrintlnString(string);              ;
 
    // Print Integer
-   #define debugPrintIntFormat(number,format);      ;
-   #define debugPrintUIntFormat(number,format);     ;
-   #define debugPrintlnIntFormat(number,format);    ;
-   #define debugPrintlnUIntFormat(number,format);   ;
    #define debugPrintInt(number);                   ;
    #define debugPrintUInt(number);                  ;
    #define debugPrintlnInt(number);                 ;

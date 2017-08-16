@@ -56,7 +56,7 @@
 
 /*==================[external functions definition]==========================*/
 
-bool_t spiInit( spiMap_t spi ){
+bool_t spiInit( int32_t spi ){
    
    bool_t retVal = TRUE;
    
@@ -83,7 +83,7 @@ bool_t spiInit( spiMap_t spi ){
 }
 
 
-bool_t spiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize ){
+bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
    
    bool_t retVal = TRUE;
    
@@ -105,7 +105,7 @@ bool_t spiRead( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize ){
 }
 
 
-bool_t spiWrite( spiMap_t spi, uint8_t* buffer, uint32_t bufferSize){
+bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize){
    
    bool_t retVal = TRUE;
    

@@ -36,6 +36,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi_uart.h"
+#include "chip.h"
 
 #include "string.h"
 
@@ -57,7 +58,7 @@
 
 
 waitForReceiveStringsOrTimeoutState_t waitForReceiveStringsOrTimeout(
-   uartMap_t uart, waitForReceiveStringsOrTimeout_t* instance ){
+   int32_t uart, waitForReceiveStringsOrTimeout_t* instance ){
 
    uint8_t receiveByte;
    uint32_t i=0;
@@ -187,7 +188,7 @@ waitForReceiveStringsOrTimeoutState_t waitForReceiveStringsOrTimeout(
 
 // FIXME: Mantener por compatibilidad!!
 bool_t waitForReceiveStringOrTimeoutBlocking(
-   uartMap_t uart, char* str, uint16_t strLen, tick_t timeout ){
+   int32_t uart, char* str, uint16_t strLen, tick_t timeout ){
 
    bool_t retVal = TRUE; // True if OK
       
@@ -227,7 +228,7 @@ bool_t waitForReceiveStringOrTimeoutBlocking(
 
 /*
 waitForReceiveStringOrTimeoutState_t waitForReceiveStringOrTimeout(
-   uartMap_t uart, waitForReceiveStringOrTimeout_t* instance ){
+   int32_t uart, waitForReceiveStringOrTimeout_t* instance ){
 
    uint8_t receiveByte;
    uint32_t i=0;
@@ -302,7 +303,7 @@ waitForReceiveStringOrTimeoutState_t waitForReceiveStringOrTimeout(
 
 
 bool_t waitForReceiveStringOrTimeoutBlocking(
-   uartMap_t uart, char* string, uint16_t stringSize, tick_t timeout ){
+   int32_t uart, char* string, uint16_t stringSize, tick_t timeout ){
 
    bool_t retVal = TRUE; // True if OK
 
@@ -329,7 +330,7 @@ bool_t waitForReceiveStringOrTimeoutBlocking(
 }
 */
 
-void uartInit( uartMap_t uart, uint32_t baudRate ){
+void uartInit( int32_t uart, uint32_t baudRate ){
    switch(uart){
    case UART_USB:
       Chip_UART_Init(UART_USB_LPC);
@@ -362,7 +363,7 @@ void uartInit( uartMap_t uart, uint32_t baudRate ){
 }
 
 
-bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte ){
+bool_t uartReadByte( int32_t uart, uint8_t* receivedByte ){
 
    bool_t retVal = TRUE;
 
@@ -389,7 +390,7 @@ bool_t uartReadByte( uartMap_t uart, uint8_t* receivedByte ){
 }
 
 
-void uartWriteByte( uartMap_t uart, uint8_t byte ){
+void uartWriteByte( int32_t uart, uint8_t byte ){
 
    switch(uart){
    case UART_USB:
@@ -406,7 +407,7 @@ void uartWriteByte( uartMap_t uart, uint8_t byte ){
 }
 
 
-void uartWriteString( uartMap_t uart, char* str ){
+void uartWriteString( int32_t uart, char* str ){
    while(*str != 0){
 	  uartWriteByte( uart, (uint8_t)*str );
 	  str++;

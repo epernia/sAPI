@@ -46,7 +46,7 @@
 typedef struct{
    uint32_t* keypadRowPins;
    uint8_t keypadRowSize;
-   gpioName_t* keypadColPins;
+   uint32_t* keypadColPins;
    uint8_t keypadColSize;
 } keypad_t;
 
@@ -56,8 +56,8 @@ typedef struct{
 
 /* Configure keypad pins */
 bool_t keypadConfig( keypad_t* keypad,
-                     uint32_t* keypadRowPins, uint8_t keypadRowSize,
-                     uint32_t* keypadColPins, uint8_t keypadColSize );
+                     int32_t* keypadRowPins, uint8_t keypadRowSize,
+                     int32_t* keypadColPins, uint8_t keypadColSize );
 
 /* Return TRUE if any key is pressed or FALSE (0) in other cases.
  * If exist key pressed write pressed key on key variable */

@@ -50,7 +50,7 @@
 /* This global variable holds the tick count */
 volatile tick_t tickCounter;
 volatile tick_t tickRateMS;
-volatile sAPI_FuncPtr_t tickHookFunction = sAPI_NullFuncPtr;
+volatile interruptCallback_t tickHookFunction = sapiNullFuncPtrVVptr;
 
 /*==================[internal functions definition]==========================*/
 
@@ -82,6 +82,8 @@ bool_t tickInit( tick_t tickRateMSvalue ) {
          ret_val = 0;
       }
       */
+      
+      tickPowerSet( ON );
    }
    else{
       // Error, tickRateMS variable not in range (1 <= tickRateMS <= 50)
@@ -101,14 +103,14 @@ void tickWrite( tick_t ticks ) {
 }
 
 // Tick interrupt callback
-bool_t tickInterruptCallbackSet( sAPI_FuncPtr_t tickCallback ) {
+bool_t tickInterruptCallbackSet( interruptCallback_t tickCallback ) {
 
    bool_t retVal = TRUE;
 
    if( tickCallback != NULL ){
       tickHookFunction = tickCallback;
    } else {
-      tickHookFunction = sAPI_NullFuncPtr;
+      tickHookFunction = sapiNullFuncPtrVVptr;
       retVal = FALSE;
    }
 
@@ -142,6 +144,7 @@ void SysTick_Handler(void) {
       // Execute Tick Hook function
 	   (* tickHookFunction )( 0 );
    }
+
 }
 
 /*==================[end of file]============================================*/
