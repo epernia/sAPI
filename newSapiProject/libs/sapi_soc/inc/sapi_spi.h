@@ -167,12 +167,14 @@ typedef enum{
 
 /*==================[external functions declaration]=========================*/
 
+//Multiple frames transfer
 bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
 
 bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
 
 bool_t spiXfer( int32_t spi, uint8_t* bufferin, uint8_t* bufferout, uint32_t count );
 
+//Single frame transfer
 uint16_t spiReadSingle( int32_t spi );
   
 void spiWriteSingle( int32_t spi, uint16_t data );
@@ -217,6 +219,11 @@ spiPolarity_t spiPolarityGet( int32_t spi );
 // Bitrate
 void spiBitrateSet( int32_t spi, spiBitrate_t bitrate );
 spiBitrate_t spiBitrateGet( int32_t spi );
+
+/* ------- Single Pin multiple property getters and setters methods -------- */
+
+// config  is an uint32_t with "an OR" of Bitrate, Clock polarity, Bit transfer order, etc.
+void spiConfig( int32_t spi, uint32_t config );
 
 /*==================[cplusplus]==============================================*/
 
