@@ -1,4 +1,5 @@
 /* Copyright 2016, Eric Pernia.
+ * Copyright 2017, Marcos Ziegler.
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -102,62 +103,62 @@ spiConfig[31:0] = spiInterruptMode_t[31:28],
    
 typedef enum{
    // Master mode
-   SAPI_SPI_MODE_MASTER = (0 << 0),
+   SPI_MODE_MASTER = (0 << 0),
    // Slave mode
-   SAPI_SPI_MODE_SLAVE  = (1 << 0)
+   SPI_MODE_SLAVE  = (1 << 0)
 } spiMode_t;
    
 typedef enum {
    // Select bits per frame
-   SAPI_SPI_BITS_8  = (0 << 4),
-   SAPI_SPI_BITS_9  = (1 << 4),
-   SAPI_SPI_BITS_10 = (2 << 4),
-   SAPI_SPI_BITS_11 = (3 << 4),
-   SAPI_SPI_BITS_12 = (4 << 4),
-   SAPI_SPI_BITS_13 = (5 << 4),
-   SAPI_SPI_BITS_14 = (6 << 4),
-   SAPI_SPI_BITS_15 = (7 << 4),
-   SAPI_SPI_BITS_16 = (8 << 4)
+   SPI_BITS_8  = (0 << 4),
+   SPI_BITS_9  = (1 << 4),
+   SPI_BITS_10 = (2 << 4),
+   SPI_BITS_11 = (3 << 4),
+   SPI_BITS_12 = (4 << 4),
+   SPI_BITS_13 = (5 << 4),
+   SPI_BITS_14 = (6 << 4),
+   SPI_BITS_15 = (7 << 4),
+   SPI_BITS_16 = (8 << 4)
 } spiBits_t;
    
 typedef enum{
    // Data sampled on the first clock edge of SCK. A transfer starts and ends with activation and deactivation of the SSEL signal
-   SAPI_SPI_PHASE_FIRST   = (0 << 8),
+   SPI_PHASE_FIRST   = (0 << 8),
    // Data is sampled on the second clock edge of the SCK. A transfer starts with the first clock edge, and ends with the last sampling edge when SSEL signal is active  
-   SAPI_SPI_PHASE_SECOND  = (1 << 8)
+   SPI_PHASE_SECOND  = (1 << 8)
 } spiClockPhase_t;
 
 typedef enum{
    // Clock is active high
-   SAPI_SPI_POLARITY_HIGH = (0 << 12),
+   SPI_POLARITY_HIGH = (0 << 12),
    // Clock is active low
-   SAPI_SPI_POLARITY_LOW  = (1 << 12)
+   SPI_POLARITY_LOW  = (1 << 12)
 } spiPolarity_t;
 
 typedef enum{
    // SPI data is transferred MSB (bit 7) first
-   SAPI_SPI_ORDER_MSB = (0 << 16),
+   SPI_ORDER_MSB = (0 << 16),
    // SPI data is transferred LSB (bit 0) first
-   SAPI_SPI_ORDER_LSB = (1 << 16)
+   SPI_ORDER_LSB = (1 << 16)
 } spiDataOrder_t;
 
 typedef enum{
    // SPI bitrate
-   SAPI_SPI_BITRATE_110    = (0 << 20),
-   SAPI_SPI_BITRATE_300    = (1 << 20),
-   SAPI_SPI_BITRATE_600    = (2 << 20),
-   SAPI_SPI_BITRATE_1200   = (3 << 20),
-   SAPI_SPI_BITRATE_2400   = (4 << 20),
-   SAPI_SPI_BITRATE_4800   = (5 << 20),
-   SAPI_SPI_BITRATE_9600   = (6 << 20),
-   SAPI_SPI_BITRATE_14400  = (7 << 20),
-   SAPI_SPI_BITRATE_19200  = (8 << 20),
-   SAPI_SPI_BITRATE_38400  = (9 << 20),
-   SAPI_SPI_BITRATE_57600  = (10 << 20),
-   SAPI_SPI_BITRATE_115200 = (11 << 20),
-   SAPI_SPI_BITRATE_230400 = (12 << 20),
-   SAPI_SPI_BITRATE_460800 = (13 << 20),
-   SAPI_SPI_BITRATE_921600 = (14 << 20)
+   SPI_BITRATE_110    = (0 << 20),
+   SPI_BITRATE_300    = (1 << 20),
+   SPI_BITRATE_600    = (2 << 20),
+   SPI_BITRATE_1200   = (3 << 20),
+   SPI_BITRATE_2400   = (4 << 20),
+   SPI_BITRATE_4800   = (5 << 20),
+   SPI_BITRATE_9600   = (6 << 20),
+   SPI_BITRATE_14400  = (7 << 20),
+   SPI_BITRATE_19200  = (8 << 20),
+   SPI_BITRATE_38400  = (9 << 20),
+   SPI_BITRATE_57600  = (10 << 20),
+   SPI_BITRATE_115200 = (11 << 20),
+   SPI_BITRATE_230400 = (12 << 20),
+   SPI_BITRATE_460800 = (13 << 20),
+   SPI_BITRATE_921600 = (14 << 20)
 } spiBitrate_t;
 
 /*==================[external data declaration]==============================*/
