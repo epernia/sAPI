@@ -51,9 +51,39 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
-#define spiConfig spiInit
-
 /*==================[typedef]================================================*/
+
+/* SPI Config int32_t */
+/*
+
+spiConfig[31:0] = spiInterruptMode_t[31:28], 
+                  spiInterrupt_t[27:24], 
+                  spiBitrate_t[23:20], 
+                  spiBitOrder_t[19:16], 
+                  spiPolarity_t[15:12], 
+                  spiPhase_t[11:8],  
+                  spiBits_t[7:4]
+                  spiMode_t[3:0]
+
+   intm   int      bitrat        order      polar       ph         bits    mode
+  31  28 27  24    23  20        19  16     15  12    11  8        7  4    3  0
+   0000   0000      0000          0000       0000      0000        0000    0000
+                       0  110        0  MSB     0  HI     0 first     0  8    0 MASTER
+                       1  300        1  LSB     1  LO     1 second    1  9    1 SLAVE
+                      10  600                                        10 10
+                      11  1200                                       11 11
+                     100  2400                                      100 12
+                     101  4800                                      101 13
+                     110  9600                                      110 14
+                     111  14400                                     111 15
+                    1000  19200                                    1000 16
+                    1001  38400                 
+                    1010  57600  
+                    1011  115200 
+                    1100  230400 
+                    1101  460800 
+                    1110  921600 
+*/
 
 /* SPI Properties */  
 /*
@@ -72,44 +102,63 @@ extern "C" {
    
 typedef enum{
    // Master mode
-   SAPI_SPI_MODE_MASTER  = 0,
+   SAPI_SPI_MODE_MASTER = (0 << 0),
    // Slave mode
-   SAPI_SPI_MODE_SLAVE   = 1
+   SAPI_SPI_MODE_SLAVE  = (1 << 0)
 } spiMode_t;
    
 typedef enum {
    // Select bits per frame
-   SAPI_SPI_BITS_8,
-   SAPI_SPI_BITS_9,
-   SAPI_SPI_BITS_10,
-   SAPI_SPI_BITS_11,
-   SAPI_SPI_BITS_12,
-   SAPI_SPI_BITS_13,
-   SAPI_SPI_BITS_14,
-   SAPI_SPI_BITS_15,
-   SAPI_SPI_BITS_16
+   SAPI_SPI_BITS_8  = (0 << 4),
+   SAPI_SPI_BITS_9  = (1 << 4),
+   SAPI_SPI_BITS_10 = (2 << 4),
+   SAPI_SPI_BITS_11 = (3 << 4),
+   SAPI_SPI_BITS_12 = (4 << 4),
+   SAPI_SPI_BITS_13 = (5 << 4),
+   SAPI_SPI_BITS_14 = (6 << 4),
+   SAPI_SPI_BITS_15 = (7 << 4),
+   SAPI_SPI_BITS_16 = (8 << 4)
 } spiBits_t;
    
 typedef enum{
    // Data sampled on the first clock edge of SCK. A transfer starts and ends with activation and deactivation of the SSEL signal
-   SAPI_SPI_PHASE_FIRST   = 0,
+   SAPI_SPI_PHASE_FIRST   = (0 << 8),
    // Data is sampled on the second clock edge of the SCK. A transfer starts with the first clock edge, and ends with the last sampling edge when SSEL signal is active  
-   SAPI_SPI_PHASE_SECOND  = 1
+   SAPI_SPI_PHASE_SECOND  = (1 << 8)
 } spiClockPhase_t;
 
 typedef enum{
    // Clock is active high
-   SAPI_SPI_POLARITY_HIGH = 0,
+   SAPI_SPI_POLARITY_HIGH = (0 << 12),
    // Clock is active low
-   SAPI_SPI_POLARITY_LOW = 1
+   SAPI_SPI_POLARITY_LOW  = (1 << 12)
 } spiPolarity_t;
 
 typedef enum{
    // SPI data is transferred MSB (bit 7) first
-   SAPI_SPI_ORDER_MSB = 0,
+   SAPI_SPI_ORDER_MSB = (0 << 16),
    // SPI data is transferred LSB (bit 0) first
-   SAPI_SPI_ORDER_LSB = 1
+   SAPI_SPI_ORDER_LSB = (1 << 16)
 } spiDataOrder_t;
+
+typedef enum{
+   // SPI bitrate
+   SAPI_SPI_BITRATE_110    = (0 << 20),
+   SAPI_SPI_BITRATE_300    = (1 << 20),
+   SAPI_SPI_BITRATE_600    = (2 << 20),
+   SAPI_SPI_BITRATE_1200   = (3 << 20),
+   SAPI_SPI_BITRATE_2400   = (4 << 20),
+   SAPI_SPI_BITRATE_4800   = (5 << 20),
+   SAPI_SPI_BITRATE_9600   = (6 << 20),
+   SAPI_SPI_BITRATE_14400  = (7 << 20),
+   SAPI_SPI_BITRATE_19200  = (8 << 20),
+   SAPI_SPI_BITRATE_38400  = (9 << 20),
+   SAPI_SPI_BITRATE_57600  = (10 << 20),
+   SAPI_SPI_BITRATE_115200 = (11 << 20),
+   SAPI_SPI_BITRATE_230400 = (12 << 20),
+   SAPI_SPI_BITRATE_460800 = (13 << 20),
+   SAPI_SPI_BITRATE_921600 = (14 << 20)
+} spiBitrate_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -144,23 +193,25 @@ spiBits_t spiBitsGet( int32_t spi );
 void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase );
 bool_t spiClockPhaseGet( int32_t spi );
 
-// Bit trasnfer order
-void spiDataOrderSet( int32_t spi, spiDataOrder_t order );
-spiDataOrder_t spiDataOrderGet( int32_t spi );
+// Bit transfer order
+void spiBitOrderSet( int32_t spi, spiBitOrder_t order );
+spiBitOrder_t spiBitOrderGet( int32_t spi );
 
 // Clock polarity
 void spiPolaritySet( int32_t spi, spiPolarity_t order );
 spiPolarity_t spiPolarityGet( int32_t spi );
 
 // Bitrate
-void spiBitRateSet( int32_t spi, uint32_t bitrate );
-uint32_t spiBitRateGet( int32_t spi );
+void spiBitrateSet( int32_t spi, spiBitrate_t bitrate );
+spiBitrate_t spiBitrateGet( int32_t spi );
 
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus
 }
 #endif
+
+/*==================[module example]=========================================*/
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_SPI_H_ */
