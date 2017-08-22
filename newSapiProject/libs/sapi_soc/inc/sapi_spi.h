@@ -169,9 +169,15 @@ typedef enum{
 
 bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
 
-bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize);
+bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
 
-bool_t spiXfer( int32_t spi, uint8_t* bufferin, uint8_t* bufferout, uint32_t count);
+bool_t spiXfer( int32_t spi, uint8_t* bufferin, uint8_t* bufferout, uint32_t count );
+
+uint16_t spiReadSingle( int32_t spi );
+  
+void spiWriteSingle( int32_t spi, uint16_t data );
+
+uint16_t spiXferSingle( int32_t spi, uint16_t data );
 
 /* --------- Peripheral configutation methods ------------------------------ */
 
