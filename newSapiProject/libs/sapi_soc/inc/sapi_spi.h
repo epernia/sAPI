@@ -171,6 +171,8 @@ bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
 
 bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize);
 
+bool_t spiXfer( int32_t spi, uint8_t* bufferin, uint8_t* bufferout, uint32_t count);
+
 /* --------- Peripheral configutation methods ------------------------------ */
 
 // Initialize
