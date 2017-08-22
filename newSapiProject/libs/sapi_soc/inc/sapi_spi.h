@@ -179,6 +179,10 @@ void spiWriteSingle( int32_t spi, uint16_t data );
 
 uint16_t spiXferSingle( int32_t spi, uint16_t data );
 
+void spiCSSet( int32_t spi, uint8_t slave, bool_t value );
+
+bool_t spiCSGet( int32_t spi, uint8_t slave );
+
 /* --------- Peripheral configutation methods ------------------------------ */
 
 // Initialize
