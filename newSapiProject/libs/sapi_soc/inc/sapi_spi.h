@@ -161,6 +161,14 @@ typedef enum{
    SPI_BITRATE_921600 = (14 << 20)
 } spiBitrate_t;
 
+typedef enum{
+   // Input Interrupt
+   GPIO_INTERRUPT_DISABLE     = (0 << 16), // default value
+   SPI_INTERRUPT_TX_COMPLETE  = (1 << 16), // Interrupt generated when transfer completed
+   GPIO_INTERRUPT_RX_COMPLETE = (2 << 16),  // Interrupt generated when receive completed
+   GPIO_INTERRUPT_COMPLETE = GPIO_INTERRUPT_RX_COMPLETE | GPIO_INTERRUPT_TX_COMPLETE
+} spiInterruptMode_t;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[ISR external functions declaration]=====================*/
@@ -224,6 +232,16 @@ spiBitrate_t spiBitrateGet( int32_t spi );
 
 // config  is an uint32_t with "an OR" of Bitrate, Clock polarity, Bit transfer order, etc.
 void spiConfig( int32_t spi, uint32_t config );
+
+/* ------------ Interrupt properties methods ----------- */
+
+// spi Interrupt Callback
+void spiInterruptCallbackSet( int32_t spi,
+                               interruptCallback_t interruptCallback );
+interruptCallback_t spiInterruptCallbackGet( int32_t spi );
+
+void spiInterruptModeSet( int32_t spi, spiInterruptMode_t interruptMode );
+spiInterruptMode_t spiInterruptModeGet( int32_t spi );
 
 /*==================[cplusplus]==============================================*/
 
