@@ -163,10 +163,10 @@ typedef enum{
 
 typedef enum{
    // Input Interrupt
-   GPIO_INTERRUPT_DISABLE     = (0 << 16), // default value
+   SPI_INTERRUPT_DISABLE     = (0 << 16), // default value
    SPI_INTERRUPT_TX_COMPLETE  = (1 << 16), // Interrupt generated when transfer completed
-   GPIO_INTERRUPT_RX_COMPLETE = (2 << 16),  // Interrupt generated when receive completed
-   GPIO_INTERRUPT_COMPLETE = GPIO_INTERRUPT_RX_COMPLETE | GPIO_INTERRUPT_TX_COMPLETE
+   SPI_INTERRUPT_RX_COMPLETE = (2 << 16),  // Interrupt generated when receive completed
+   SPI_INTERRUPT_COMPLETE = GPIO_INTERRUPT_RX_COMPLETE | GPIO_INTERRUPT_TX_COMPLETE
 } spiInterruptMode_t;
 
 /*==================[external data declaration]==============================*/
