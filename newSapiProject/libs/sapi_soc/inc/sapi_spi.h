@@ -57,7 +57,7 @@ extern "C" {
 /* SPI Config int32_t */
 /*
 
-spiConfig[31:0] = spiInterruptMode_t[31:28], 
+spiConfig[31:0] = spiXferMode_t[31:28], 
                   spiInterrupt_t[27:24], 
                   spiBitrate_t[23:20], 
                   spiBitOrder_t[19:16], 
@@ -66,24 +66,24 @@ spiConfig[31:0] = spiInterruptMode_t[31:28],
                   spiBits_t[7:4]
                   spiMode_t[3:0]
 
-   intm   int      bitrat        order      polar       ph         bits    mode
-  31  28 27  24    23  20        19  16     15  12    11  8        7  4    3  0
-   0000   0000      0000          0000       0000      0000        0000    0000
-                       0  110        0  MSB     0  HI     0 first     0  8    0 MASTER
-                       1  300        1  LSB     1  LO     1 second    1  9    1 SLAVE
-                      10  600                                        10 10
-                      11  1200                                       11 11
-                     100  2400                                      100 12
-                     101  4800                                      101 13
-                     110  9600                                      110 14
-                     111  14400                                     111 15
-                    1000  19200                                    1000 16
-                    1001  38400                 
-                    1010  57600  
-                    1011  115200 
-                    1100  230400 
-                    1101  460800 
-                    1110  921600 
+  block           int           bitrat        order      polar       ph         bits    mode
+  31  28         27  24         23  20        19  16     15  12    11  8        7  4    3  0
+   0000           0000           0000          0000       0000      0000        0000    0000
+      0  BLOCK       0  DISABLE     0  110        0  MSB     0  HI     0 first     0  8    0 MASTER
+      1  NONBLOCK    1  TX          1  300        1  LSB     1  LO     1 second    1  9    1 SLAVE
+                    10  RX         10  600                                        10 10
+                                   11  1200                                       11 11
+                                  100  2400                                      100 12
+                                  101  4800                                      101 13
+                                  110  9600                                      110 14
+                                  111  14400                                     111 15
+                                 1000  19200                                    1000 16
+                                 1001  38400                 
+                                 1010  57600  
+                                 1011  115200 
+                                 1100  230400 
+                                 1101  460800 
+                                 1110  921600 
 */
 
 /* SPI Properties */  
@@ -163,11 +163,17 @@ typedef enum{
 
 typedef enum{
    // Input Interrupt
-   SPI_INTERRUPT_DISABLE     = (0 << 16), // default value
-   SPI_INTERRUPT_TX_COMPLETE  = (1 << 16), // Interrupt generated when transfer completed
-   SPI_INTERRUPT_RX_COMPLETE = (2 << 16),  // Interrupt generated when receive completed
+   SPI_INTERRUPT_DISABLE     = (0 << 24), // default value
+   SPI_INTERRUPT_TX_COMPLETE  = (1 << 24), // Interrupt generated when transfer completed
+   SPI_INTERRUPT_RX_COMPLETE = (2 << 24),  // Interrupt generated when receive completed
    SPI_INTERRUPT_COMPLETE = GPIO_INTERRUPT_RX_COMPLETE | GPIO_INTERRUPT_TX_COMPLETE
 } spiInterruptMode_t;
+
+typedef enum{
+   // Transfer mode
+   SPI_BLOCK     = (0 << 28), // blocking transfer
+   SPI_NONBLOCK  = (1 << 28), // non-blocking transfer
+} spiXferMode_t;
 
 /*==================[external data declaration]==============================*/
 
@@ -176,11 +182,7 @@ typedef enum{
 /*==================[external functions declaration]=========================*/
 
 //Multiple frames transfer
-bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
-
-bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize );
-
-bool_t spiXfer( int32_t spi, uint8_t* bufferin, uint8_t* bufferout, uint32_t count );
+bool_t spiStartXfer( int32_t spi, const uint16_t* bufferout, uint16_t* bufferin, size_t count);
 
 //Single frame transfer
 uint16_t spiReadSingle( int32_t spi );
