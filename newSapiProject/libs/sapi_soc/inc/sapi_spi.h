@@ -175,6 +175,16 @@ typedef enum{
    SPI_NONBLOCK  = (1 << 28), // non-blocking transfer
 } spiXferMode_t;
 
+typedef enum{
+   SPI_BEFORE_XFER,
+   SPI_AFTER_XFER,
+   SPI_BEFORE_FRAME,
+   SPI_AFTER_FRAME,
+   SPI_XFER_ERROR
+} spiEvent_t;
+
+typedef void (spiCallback_t)( int32_t spi, spiEvent_t event, void *user );
+
 /*==================[external data declaration]==============================*/
 
 /*==================[ISR external functions declaration]=====================*/
@@ -182,7 +192,9 @@ typedef enum{
 /*==================[external functions declaration]=========================*/
 
 //Multiple frames transfer
-bool_t spiStartXfer( int32_t spi, const uint16_t* bufferout, uint16_t* bufferin, size_t count);
+bool_t spiXferStart( int32_t spi, const uint16_t* bufferout, uint16_t* bufferin, size_t count );
+
+void spiXferEnd( int32_t spi );
 
 //Single frame transfer
 uint16_t spiReadSingle( int32_t spi );
@@ -234,6 +246,8 @@ spiBitrate_t spiBitrateGet( int32_t spi );
 
 // config  is an uint32_t with "an OR" of Bitrate, Clock polarity, Bit transfer order, etc.
 void spiConfig( int32_t spi, uint32_t config );
+
+void spiConfigCallback( int32_t spi, spiCallback_t *callback, void *userptr );
 
 /* ------------ Interrupt properties methods ----------- */
 
