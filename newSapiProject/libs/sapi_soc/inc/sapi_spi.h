@@ -176,6 +176,12 @@ typedef enum{
 } spiXferMode_t;
 
 typedef enum{
+   SPI_ERROR,
+   SPI_READY,
+   SPI_BUSY
+} spiStatus_t;
+
+typedef enum{
    SPI_BEFORE_XFER,
    SPI_AFTER_XFER,
    SPI_BEFORE_FRAME,
@@ -241,6 +247,8 @@ spiPolarity_t spiPolarityGet( int32_t spi );
 // Bitrate
 void spiBitrateSet( int32_t spi, spiBitrate_t bitrate );
 spiBitrate_t spiBitrateGet( int32_t spi );
+
+spiStatus_t spiStatusGet( int32_t spi );
 
 /* ------- Single Pin multiple property getters and setters methods -------- */
 
