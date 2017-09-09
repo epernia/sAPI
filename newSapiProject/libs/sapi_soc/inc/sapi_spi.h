@@ -162,14 +162,6 @@ typedef enum{
 } spiBitrate_t;
 
 typedef enum{
-   // Input Interrupt
-   SPI_INTERRUPT_DISABLE     = (0 << 24), // default value
-   SPI_INTERRUPT_TX_COMPLETE  = (1 << 24), // Interrupt generated when transfer completed
-   SPI_INTERRUPT_RX_COMPLETE = (2 << 24),  // Interrupt generated when receive completed
-   SPI_INTERRUPT_COMPLETE = GPIO_INTERRUPT_RX_COMPLETE | GPIO_INTERRUPT_TX_COMPLETE
-} spiInterruptMode_t;
-
-typedef enum{
    // Transfer mode
    SPI_BLOCK     = (0 << 28), // blocking transfer
    SPI_NONBLOCK  = (1 << 28), // non-blocking transfer
@@ -256,16 +248,6 @@ spiStatus_t spiStatusGet( int32_t spi );
 void spiConfig( int32_t spi, uint32_t config );
 
 void spiConfigCallback( int32_t spi, spiCallback_t *callback, void *userptr );
-
-/* ------------ Interrupt properties methods ----------- */
-
-// spi Interrupt Callback
-void spiInterruptCallbackSet( int32_t spi,
-                               interruptCallback_t interruptCallback );
-interruptCallback_t spiInterruptCallbackGet( int32_t spi );
-
-void spiInterruptModeSet( int32_t spi, spiInterruptMode_t interruptMode );
-spiInterruptMode_t spiInterruptModeGet( int32_t spi );
 
 /*==================[cplusplus]==============================================*/
 
