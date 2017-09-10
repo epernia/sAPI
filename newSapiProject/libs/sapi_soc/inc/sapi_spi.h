@@ -66,24 +66,24 @@ spiConfig[31:0] = spiXferMode_t[31:28],
                   spiBits_t[7:4]
                   spiMode_t[3:0]
 
-  block           int           bitrat        order      polar       ph         bits    mode
+  block                                       order      polar       ph                 mode
   31  28         27  24         23  20        19  16     15  12    11  8        7  4    3  0
    0000           0000           0000          0000       0000      0000        0000    0000
-      0  BLOCK       0  DISABLE     0  110        0  MSB     0  HI     0 first     0  8    0 MASTER
-      1  NONBLOCK    1  TX          1  300        1  LSB     1  LO     1 second    1  9    1 SLAVE
-                    10  RX         10  600                                        10 10
-                                   11  1200                                       11 11
-                                  100  2400                                      100 12
-                                  101  4800                                      101 13
-                                  110  9600                                      110 14
-                                  111  14400                                     111 15
-                                 1000  19200                                    1000 16
-                                 1001  38400                 
-                                 1010  57600  
-                                 1011  115200 
-                                 1100  230400 
-                                 1101  460800 
-                                 1110  921600 
+      0  BLOCK                                    0  MSB     0  HI     0 first             0 MASTER
+      1  NONBLOCK                                 1  LSB     1  LO     1 second            1 SLAVE
+                                                                                             
+                                                                                            
+                                                                                               
+                                                                                             
+                                                                                             
+                                                                                           
+                                                                                               
+                                                             
+                                                      
+                                                     
+                                                      
+                                                    
+                                                    
 */
 
 /* SPI Properties */  
@@ -108,19 +108,6 @@ typedef enum{
    SPI_MODE_SLAVE  = (1 << 0)
 } spiMode_t;
    
-typedef enum {
-   // Select bits per frame
-   SPI_BITS_8  = (0 << 4),
-   SPI_BITS_9  = (1 << 4),
-   SPI_BITS_10 = (2 << 4),
-   SPI_BITS_11 = (3 << 4),
-   SPI_BITS_12 = (4 << 4),
-   SPI_BITS_13 = (5 << 4),
-   SPI_BITS_14 = (6 << 4),
-   SPI_BITS_15 = (7 << 4),
-   SPI_BITS_16 = (8 << 4)
-} spiBits_t;
-   
 typedef enum{
    // Data sampled on the first clock edge of SCK. A transfer starts and ends with activation and deactivation of the SSEL signal
    SPI_PHASE_FIRST   = (0 << 8),
@@ -141,25 +128,6 @@ typedef enum{
    // SPI data is transferred LSB (bit 0) first
    SPI_ORDER_LSB = (1 << 16)
 } spiDataOrder_t;
-
-typedef enum{
-   // SPI bitrate
-   SPI_BITRATE_110    = (0 << 20),
-   SPI_BITRATE_300    = (1 << 20),
-   SPI_BITRATE_600    = (2 << 20),
-   SPI_BITRATE_1200   = (3 << 20),
-   SPI_BITRATE_2400   = (4 << 20),
-   SPI_BITRATE_4800   = (5 << 20),
-   SPI_BITRATE_9600   = (6 << 20),
-   SPI_BITRATE_14400  = (7 << 20),
-   SPI_BITRATE_19200  = (8 << 20),
-   SPI_BITRATE_38400  = (9 << 20),
-   SPI_BITRATE_57600  = (10 << 20),
-   SPI_BITRATE_115200 = (11 << 20),
-   SPI_BITRATE_230400 = (12 << 20),
-   SPI_BITRATE_460800 = (13 << 20),
-   SPI_BITRATE_921600 = (14 << 20)
-} spiBitrate_t;
 
 typedef enum{
    // Transfer mode
@@ -221,8 +189,8 @@ void spiModeSet( int32_t spi, spiMode_t mode );
 spiMode_t spiModeGet( int32_t spi );
 
 // Bits per frame
-void spiBitsSet( int32_t spi, spiBits_t bits );
-spiBits_t spiBitsGet( int32_t spi );
+void spiBitsSet( int32_t spi, uint8_t bits );
+uint8_t spiBitsGet( int32_t spi );
    
 // Clock phase
 void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase );
@@ -236,9 +204,9 @@ spiBitOrder_t spiBitOrderGet( int32_t spi );
 void spiPolaritySet( int32_t spi, spiPolarity_t order );
 spiPolarity_t spiPolarityGet( int32_t spi );
 
-// Bitrate
-void spiBitrateSet( int32_t spi, spiBitrate_t bitrate );
-spiBitrate_t spiBitrateGet( int32_t spi );
+// Frequency
+void spiFreqSet( int32_t spi, uint32_t freq );
+uint32_t spiBitrateGet( int32_t spi );
 
 spiStatus_t spiStatusGet( int32_t spi );
 
