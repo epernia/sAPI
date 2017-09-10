@@ -57,20 +57,17 @@ extern "C" {
 /* SPI Config int32_t */
 /*
 
-spiConfig[31:0] = spiXferMode_t[31:28], 
-                  spiInterrupt_t[27:24], 
-                  spiBitrate_t[23:20], 
-                  spiBitOrder_t[19:16], 
-                  spiPolarity_t[15:12], 
-                  spiPhase_t[11:8],  
-                  spiBits_t[7:4]
+spiConfig[31:0] = spiBitOrder_t[19:16],
+                  spiPolarity_t[15:12],
+                  spiPhase_t[11:8],
+                  spiBlockmode_t[7:4],
                   spiMode_t[3:0]
 
-  block                                       order      polar       ph                 mode
-  31  28         27  24         23  20        19  16     15  12    11  8        7  4    3  0
-   0000           0000           0000          0000       0000      0000        0000    0000
-      0  BLOCK                                    0  MSB     0  HI     0 first             0 MASTER
-      1  NONBLOCK                                 1  LSB     1  LO     1 second            1 SLAVE
+                               order      polar       ph         xfer          mode
+  31  28    27  24    23  20   19  16     15  12    11  8        7  4          3  0
+   0000      0000      0000     0000       0000      0000        0000          0000
+                                   0  MSB     0  HI     0 first     0 BLOCK       0 MASTER
+                                   1  LSB     1  LO     1 second    1 NONBLOCK    1 SLAVE
                                                                                              
                                                                                             
                                                                                                
@@ -81,9 +78,7 @@ spiConfig[31:0] = spiXferMode_t[31:28],
                                                              
                                                       
                                                      
-                                                      
-                                                    
-                                                    
+                                                                                                      
 */
 
 /* SPI Properties */  
@@ -91,12 +86,12 @@ spiConfig[31:0] = spiXferMode_t[31:28],
  SPI module:
  - Power
  - Mode (master/slave)
+ - Transfer mode (blocking/nonblocking)
  - Bits per frame
  - Bit order (LSB first/MSB first)
  - Clock phase (sample on first edge/sample on second edge)
  - Clock polarity (active high/active low)
- - Bitrate
- - Interrupt (Ver cuales pueden tener)
+ - Frequency
 */
    
 /* SPI Properties values */   
@@ -127,7 +122,7 @@ typedef enum{
    SPI_ORDER_MSB = (0 << 16),
    // SPI data is transferred LSB (bit 0) first
    SPI_ORDER_LSB = (1 << 16)
-} spiDataOrder_t;
+} spiBitOrder_t;
 
 typedef enum{
    // Transfer mode
@@ -188,6 +183,10 @@ bool_t spiPowerGet( int32_t spi );
 void spiModeSet( int32_t spi, spiMode_t mode );
 spiMode_t spiModeGet( int32_t spi );
 
+// Transfer mode
+void spiXferModeSet( int32_t spi, spiXferMode_t mode );
+spiXferMode_t spiXferModeGet( int32_t spi );
+
 // Bits per frame
 void spiBitsSet( int32_t spi, uint8_t bits );
 uint8_t spiBitsGet( int32_t spi );
@@ -212,7 +211,7 @@ spiStatus_t spiStatusGet( int32_t spi );
 
 /* ------- Single Pin multiple property getters and setters methods -------- */
 
-// config  is an uint32_t with "an OR" of Bitrate, Clock polarity, Bit transfer order, etc.
+// config  is an uint32_t with "an OR" of Frequency, Clock polarity, Bit transfer order, etc.
 void spiConfig( int32_t spi, uint32_t config );
 
 void spiConfigCallback( int32_t spi, spiCallback_t *callback, void *userptr );
