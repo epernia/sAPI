@@ -153,16 +153,16 @@ typedef void (spiCallback_t)( int32_t spi, spiEvent_t event, void *user );
 /*==================[external functions declaration]=========================*/
 
 //Multiple frames transfer
-bool_t spiXferStart( int32_t spi, const uint16_t* bufferout, uint16_t* bufferin, size_t count );
+bool_t spiXferStart( int32_t spi, const uint32_t* bufferout, uint32_t* bufferin, size_t count );
 
 void spiXferEnd( int32_t spi );
 
 //Single frame transfer
-uint16_t spiReadSingle( int32_t spi );
+uint32_t spiReadSingle( int32_t spi );
   
-void spiWriteSingle( int32_t spi, uint16_t data );
+void spiWriteSingle( int32_t spi, uint32_t data );
 
-uint16_t spiXferSingle( int32_t spi, uint16_t data );
+uint32_t spiXferSingle( int32_t spi, uint32_t data );
 
 void spiCSSet( int32_t spi, uint8_t slave, bool_t value );
 
