@@ -102,7 +102,13 @@ typedef enum{
    // Slave mode
    SPI_MODE_SLAVE  = (1 << 0)
 } spiMode_t;
-   
+ 
+typedef enum{
+   // Transfer mode
+   SPI_BLOCK     = (0 << 4), // blocking transfer
+   SPI_NONBLOCK  = (1 << 4), // non-blocking transfer
+} spiXferMode_t;
+  
 typedef enum{
    // Data sampled on the first clock edge of SCK. A transfer starts and ends with activation and deactivation of the SSEL signal
    SPI_PHASE_FIRST   = (0 << 8),
@@ -123,12 +129,6 @@ typedef enum{
    // SPI data is transferred LSB (bit 0) first
    SPI_ORDER_LSB = (1 << 16)
 } spiBitOrder_t;
-
-typedef enum{
-   // Transfer mode
-   SPI_BLOCK     = (0 << 28), // blocking transfer
-   SPI_NONBLOCK  = (1 << 28), // non-blocking transfer
-} spiXferMode_t;
 
 typedef enum{
    SPI_ERROR,
