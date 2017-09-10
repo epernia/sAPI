@@ -205,7 +205,7 @@ spiPolarity_t spiPolarityGet( int32_t spi );
 
 // Frequency
 void spiFreqSet( int32_t spi, uint32_t freq );
-uint32_t spiBitrateGet( int32_t spi );
+uint32_t spiFreqGet( int32_t spi );
 
 spiStatus_t spiStatusGet( int32_t spi );
 
