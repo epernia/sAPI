@@ -144,7 +144,7 @@ typedef enum{
    SPI_XFER_ERROR
 } spiEvent_t;
 
-typedef void (spiCallback_t)( int32_t spi, spiEvent_t event, void *user );
+typedef void (spiCallback_t)( void );
 
 /*==================[external data declaration]==============================*/
 
@@ -177,7 +177,7 @@ void spiInit( int32_t spi );
 void spiPowerSet( int32_t spi, bool_t power );
 bool_t spiPowerGet( int32_t spi );
    
-/* -- Single Pin property getters and setters methods - */
+/* -- spi properties getters and setters methods - */
    
 // SPI mode
 void spiModeSet( int32_t spi, spiMode_t mode );
@@ -209,12 +209,13 @@ uint32_t spiFreqGet( int32_t spi );
 
 spiStatus_t spiStatusGet( int32_t spi );
 
-/* ------- Single Pin multiple property getters and setters methods -------- */
+/* ------- spi multiple property getters and setters methods -------- */
 
 // config  is an uint32_t with "an OR" of Frequency, Clock polarity, Bit transfer order, etc.
 void spiConfig( int32_t spi, uint32_t config );
 
-void spiConfigCallback( int32_t spi, spiCallback_t *callback, void *userptr );
+// Set the callback method for a specified event that occurs while transferring data
+void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t *callback);
 
 /*==================[cplusplus]==============================================*/
 
