@@ -44,6 +44,13 @@
 
 /*==================[macros and definitions]=================================*/
 
+typedef struct{
+   void* bufferOut;
+   void* bufferIn;
+   uint32_t count;
+   uint32_t index;
+} spiTransferInfo_t;
+
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
