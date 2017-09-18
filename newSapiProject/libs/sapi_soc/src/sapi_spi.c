@@ -89,6 +89,23 @@ bool_t spiInit( int32_t spi ){
    return retVal;
 }
 
+bool_t spiXferStart( int32_t spi, const void* bufferout, void* bufferin, size_t count )
+{
+   bool_t retVal = TRUE;
+
+   if( spi == SPI0 ){
+      
+   } else{
+      retVal = FALSE;
+   }
+	
+   return retVal;
+}
+
+void spiXferEnd( int32_t spi )
+{
+
+}
 
 bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
    
