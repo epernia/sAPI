@@ -49,13 +49,15 @@ typedef struct{
    void* bufferIn;
    uint32_t count;
    uint32_t index;
-} spiTransferInfo_t;
+} spiXferInfo_t;
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
+
+spiTransferInfo_t spi0XferInfo;
 
 /*==================[external data definition]===============================*/
 
@@ -113,7 +115,16 @@ bool_t spiXferStart( int32_t spi, const void* bufferout, void* bufferin, size_t 
       }
       else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
       {
-         
+         if( spi == SPI0 ){
+            spi0XferInfo.tx_data = bufferout;
+            spi0XferInfo.rx_data = bufferin;
+            spi0XferInfo.count  = count;
+            spi0XferInfo.index  = 0;
+            /* TODO: Set beginning of transfer somehow. Set state? */
+            //retVal = TRUE;
+         } else{
+
+	 }
       }
       else
       {
