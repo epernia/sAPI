@@ -94,28 +94,31 @@ bool_t spiXferStart( int32_t spi, const void* bufferout, void* bufferin, size_t 
    bool_t retVal = FALSE;
    Chip_SSP_DATA_SETUP_T xferConfig;
 
-   if(SPI_IS_BLOCKING(spiConfigGet(spi)))
+   if(SPI_READY == spiStatusGet(spi))
    {
-      xferConfig.tx_data = bufferout;
-      xferConfig.tx_cnt  = 0;
-      xferConfig.rx_data = bufferin;
-      xferConfig.rx_cnt  = 0;
-      xferConfig.length  = count;
+      if(SPI_IS_BLOCKING(spiConfigGet(spi)))
+      {
+         xferConfig.tx_data = bufferout;
+         xferConfig.tx_cnt  = 0;
+         xferConfig.rx_data = bufferin;
+         xferConfig.rx_cnt  = 0;
+         xferConfig.length  = count;
 
-      if( spi == SPI0 ){
-         Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
-         retVal = TRUE;
-      } else{
-
+         if( spi == SPI0 ){
+            Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+            retVal = TRUE;
+         } else{
+            
+         }
       }
-   }
-   else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
-   {
-
-   }
-   else
-   {
-
+      else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      {
+         
+      }
+      else
+      {
+         
+      }
    }
 
    return retVal;
