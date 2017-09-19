@@ -45,8 +45,8 @@
 /*==================[macros and definitions]=================================*/
 
 typedef struct{
-   void* bufferOut;
-   void* bufferIn;
+   spi_data_t* bufferOut;
+   spi_data_t* bufferIn;
    uint32_t count;
    uint32_t index;
    spiStatus_t status;
@@ -92,7 +92,7 @@ bool_t spiInit( int32_t spi ){
    return retVal;
 }
 
-bool_t spiXferStart( int32_t spi, const void* bufferout, void* bufferin, size_t count )
+bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* bufferin, size_t count )
 {
    bool_t retVal = FALSE;
    Chip_SSP_DATA_SETUP_T xferConfig;
