@@ -49,6 +49,7 @@ typedef struct{
    void* bufferIn;
    uint32_t count;
    uint32_t index;
+   spiStatus_t status;
 } spiXferInfo_t;
 
 /*==================[internal data declaration]==============================*/
@@ -121,7 +122,10 @@ bool_t spiXferStart( int32_t spi, const void* bufferout, void* bufferin, size_t 
             spi0XferInfo.count  = count;
             spi0XferInfo.index  = 0;
             /* TODO: Set beginning of transfer somehow. Set state? */
-            //retVal = TRUE;
+            spi0XferInfo.status = SPI_BUSY;
+            Chip_SSP_Int_FlushData(LPC_SSP1);
+            Chip_SSP_SendFrame(LPC_SSP1, bufferout[0]);
+            retVal = TRUE;
          } else{
 
 	 }
