@@ -143,6 +143,25 @@ void spiXferEnd( int32_t spi )
 {
 
 }
+/*
+void spi0_irqhandler(void)
+{
+   Chip_SSP_Int_Disable(LPC_SSP);
+   if (SSP_DATA_BYTES(ssp_format.bits) == 1) {
+      Chip_SSP_Int_RWFrames8Bits(LPC_SSP, &xf_setup);
+   }
+   else {
+      Chip_SSP_Int_RWFrames16Bits(LPC_SSP, &xf_setup);
+   }
+   
+   if ((xf_setup.rx_cnt != xf_setup.length) || (xf_setup.tx_cnt != xf_setup.length)) {
+      Chip_SSP_Int_Enable(LPC_SSP);
+   }
+   else {
+      isXferCompleted = 1;
+   }
+}
+*/
 
 bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
    
