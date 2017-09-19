@@ -147,18 +147,29 @@ void spiXferEnd( int32_t spi )
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP);
-   if (SSP_DATA_BYTES(ssp_format.bits) == 1) {
-      Chip_SSP_Int_RWFrames8Bits(LPC_SSP, &xf_setup);
+
+   if ((xf_setup->tx_cnt != xf_setup->length) || (xf_setup->rx_cnt != xf_setup->length)) {
+   /* check if RX FIFO contains data */
+   SSP_Read2BFifo(pSSP, xf_setup);
+   while ((Chip_SSP_GetStatus(pSSP, SSP_STAT_TNF)) && (xf_setup->tx_cnt != xf_setup->length)) {
+      /* Write data to buffer */
+      SSP_Write2BFifo(pSSP, xf_setup);
+      /* Check overrun error in RIS register */
+      if (Chip_SSP_GetRawIntStatus(pSSP, SSP_RORRIS) == SET) {
+         return ERROR;
+      }
+      /*  Check for any data available in RX FIFO			 */
+      SSP_Read2BFifo(pSSP, xf_setup);
    }
-   else {
-      Chip_SSP_Int_RWFrames16Bits(LPC_SSP, &xf_setup);
+
+      return SUCCESS;
    }
    
    if ((xf_setup.rx_cnt != xf_setup.length) || (xf_setup.tx_cnt != xf_setup.length)) {
       Chip_SSP_Int_Enable(LPC_SSP);
    }
    else {
-      isXferCompleted = 1;
+      spi0XferInfo.status = READY;
    }
 }
 */
