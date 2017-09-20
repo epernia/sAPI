@@ -150,10 +150,10 @@ void spi0_irqhandler(void)
 
    if ((xf_setup->tx_cnt != xf_setup->length) || (xf_setup->rx_cnt != xf_setup->length)) {
    /* check if RX FIFO contains data */
-   SSP_Read2BFifo(pSSP, xf_setup);
+   *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
    while ((Chip_SSP_GetStatus(pSSP, SSP_STAT_TNF)) && (xf_setup->tx_cnt != xf_setup->length)) {
       /* Write data to buffer */
-      SSP_Write2BFifo(pSSP, xf_setup);
+      Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0XferInfo.tx_data + spi0XferInfo.index));
       /* Check overrun error in RIS register */
       if (Chip_SSP_GetRawIntStatus(pSSP, SSP_RORRIS) == SET) {
          return ERROR;
