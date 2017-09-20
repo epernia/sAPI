@@ -137,9 +137,7 @@ typedef enum{
 } spiStatus_t;
 
 typedef enum{
-   SPI_BEFORE_XFER,
    SPI_AFTER_XFER,
-   SPI_BEFORE_FRAME,
    SPI_AFTER_FRAME,
    SPI_XFER_ERROR
 } spiEvent_t;
