@@ -143,12 +143,23 @@ bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* buffe
 
 void spiXferEnd( int32_t spi )
 {
-
+   if(SPI_BUSY == spiStatusGet(spi))
+   {
+      if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      {
+         if( spi == SPI0 ){
+            Chip_SSP_Int_FlushData(LPC_SSP1);
+            spi0XferInfo.status = READY;
+         } else{
+            
+         }
+      }
+   }
 }
 
 void spi0_irqhandler(void)
 {
-   Chip_SSP_Int_Disable(LPC_SSP);
+   Chip_SSP_Int_Disable(LPC_SSP1);
    if (spi0XferInfo.afterFrameCallback) {
       (spi0XferInfo.afterFrameCallback)();
    }
@@ -164,7 +175,7 @@ void spi0_irqhandler(void)
       spi0XferInfo.index = 0;
       spi0XferInfo.status = SPI_READY;
    }
-   Chip_SSP_Int_Enable(LPC_SSP);
+   Chip_SSP_Int_Enable(LPC_SSP1);
 }
 
 /*==================[ISR external functions definition]======================*/
