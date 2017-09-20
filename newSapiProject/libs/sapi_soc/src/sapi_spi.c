@@ -49,7 +49,6 @@ typedef struct{
    spi_data_t* bufferIn;
    uint32_t count;
    uint32_t index;
-   spiCallback_t beforeFrameCallback;
    spiCallback_t afterFrameCallback;
    spiCallback_t afterXferCallback;
    spiStatus_t status;
