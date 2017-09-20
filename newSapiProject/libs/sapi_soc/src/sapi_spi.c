@@ -150,12 +150,18 @@ void spiXferEnd( int32_t spi )
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP);
+   if (spi0XferInfo.afterFrameCallback) {
+      (spi0XferInfo.afterFrameCallback)();
+   }
    if (spi0XferInfo.index < spi0XferInfo.count) {
       /* check if RX FIFO contains data */
       *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
       Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0XferInfo.tx_data + spi0XferInfo.index));
    }
    else {
+      if (spi0XferInfo.afterXferCallback) {
+         (spi0XferInfo.afterXferCallback)();
+      }
       spi0XferInfo.index = 0;
       spi0XferInfo.status = SPI_READY;
    }
