@@ -49,6 +49,9 @@ typedef struct{
    spi_data_t* bufferIn;
    uint32_t count;
    uint32_t index;
+   spiCallback_t beforeFrameCallback;
+   spiCallback_t afterFrameCallback;
+   spiCallback_t afterXferCallback;
    spiStatus_t status;
 } spiXferInfo_t;
 
@@ -147,7 +150,6 @@ void spiXferEnd( int32_t spi )
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP);
-
    if (spi0XferInfo.index < spi0XferInfo.count) {
       /* check if RX FIFO contains data */
       *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
