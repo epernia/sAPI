@@ -160,51 +160,6 @@ void spi0_irqhandler(void)
    Chip_SSP_Int_Enable(LPC_SSP);
 }
 
-
-bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
-   
-   bool_t retVal = TRUE;
-   
-   Chip_SSP_DATA_SETUP_T xferConfig;
-
-	xferConfig.tx_data = NULL;
-	xferConfig.tx_cnt  = 0;
-	xferConfig.rx_data = buffer;
-	xferConfig.rx_cnt  = 0;
-	xferConfig.length  = bufferSize;
-
-   if( spi == SPI0 ){
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
-   } else{
-      retVal = FALSE;
-   }
-   
-   return retVal;	
-}
-
-
-bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize){
-   
-   bool_t retVal = TRUE;
-   
-   Chip_SSP_DATA_SETUP_T xferConfig;
-
-	xferConfig.tx_data = buffer;
-	xferConfig.tx_cnt  = 0;
-	xferConfig.rx_data = NULL;
-	xferConfig.rx_cnt  = 0;
-	xferConfig.length  = bufferSize;
-
-   if( spi == SPI0 ){
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
-   } else{
-      retVal = FALSE;
-   }
-   
-   return retVal;
-}
-
-
 /*==================[ISR external functions definition]======================*/
 
 
