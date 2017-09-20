@@ -124,7 +124,7 @@ bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* buffe
             /* TODO: Set beginning of transfer somehow. Set state? */
             spi0XferInfo.status = SPI_BUSY;
             Chip_SSP_Int_FlushData(LPC_SSP1);
-            Chip_SSP_SendFrame(LPC_SSP1, bufferout[0]);
+            Chip_SSP_SendFrame(LPC_SSP1, spi0XferInfo.tx_data[spi0XferInfo.index++]);
             retVal = TRUE;
          } else{
 
@@ -143,36 +143,23 @@ void spiXferEnd( int32_t spi )
 {
 
 }
-/*
+
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP);
 
-   if ((xf_setup->tx_cnt != xf_setup->length) || (xf_setup->rx_cnt != xf_setup->length)) {
-   /* check if RX FIFO contains data */
-   *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
-   while ((Chip_SSP_GetStatus(pSSP, SSP_STAT_TNF)) && (xf_setup->tx_cnt != xf_setup->length)) {
-      /* Write data to buffer */
+   if (spi0XferInfo.index < spi0XferInfo.count) {
+      /* check if RX FIFO contains data */
+      *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
       Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0XferInfo.tx_data + spi0XferInfo.index));
-      /* Check overrun error in RIS register */
-      if (Chip_SSP_GetRawIntStatus(pSSP, SSP_RORRIS) == SET) {
-         return ERROR;
-      }
-      /*  Check for any data available in RX FIFO			 */
-      SSP_Read2BFifo(pSSP, xf_setup);
-   }
-
-      return SUCCESS;
-   }
-   
-   if ((xf_setup.rx_cnt != xf_setup.length) || (xf_setup.tx_cnt != xf_setup.length)) {
-      Chip_SSP_Int_Enable(LPC_SSP);
    }
    else {
-      spi0XferInfo.status = READY;
+      spi0XferInfo.index = 0;
+      spi0XferInfo.status = SPI_READY;
    }
+   Chip_SSP_Int_Enable(LPC_SSP);
 }
-*/
+
 
 bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
    
