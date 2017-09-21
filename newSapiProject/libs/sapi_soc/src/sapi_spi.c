@@ -157,6 +157,8 @@ void spiXferEnd( int32_t spi )
    }
 }
 
+/*==================[ISR external functions definition]======================*/
+
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP1);
@@ -177,10 +179,6 @@ void spi0_irqhandler(void)
    }
    Chip_SSP_Int_Enable(LPC_SSP1);
 }
-
-/*==================[ISR external functions definition]======================*/
-
-
 
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
