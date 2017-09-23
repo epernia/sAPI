@@ -63,11 +63,11 @@ spiConfig[31:0] = spiBitOrder_t[19:16],
                   spiBlockmode_t[7:4],
                   spiMode_t[3:0]
 
-                               order      polar       ph         xfer          mode
-  31  28    27  24    23  20   19  16     15  12    11  8        7  4          3  0
-   0000      0000      0000     0000       0000      0000        0000          0000
-                                   0  MSB     0  HI     0 first     0 BLOCK       0 MASTER
-                                   1  LSB     1  LO     1 second    1 NONBLOCK    1 SLAVE
+             bits      order      polar      ph         xfer          mode
+  31  13    12  5      4  4       3  3      2  2        1  1          0  0
+   0000      0x00         0          0         0           0             0
+                          0  MSB     0  HI     0 first     0 BLOCK       0 MASTER
+                          1  LSB     1  LO     1 second    1 NONBLOCK    1 SLAVE
                                                                                              
                                                                                             
                                                                                                
