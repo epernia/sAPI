@@ -106,29 +106,29 @@ typedef enum{
  
 typedef enum{
    // Transfer mode
-   SPI_BLOCK     = (0 << 4), // blocking transfer
-   SPI_NONBLOCK  = (1 << 4), // non-blocking transfer
+   SPI_BLOCK     = (0 << 1), // blocking transfer
+   SPI_NONBLOCK  = (1 << 1), // non-blocking transfer
 } spiXferMode_t;
-  
+
 typedef enum{
    // Data sampled on the first clock edge of SCK. A transfer starts and ends with activation and deactivation of the SSEL signal
-   SPI_PHASE_FIRST   = (0 << 8),
+   SPI_PHASE_FIRST   = (0 << 2),
    // Data is sampled on the second clock edge of the SCK. A transfer starts with the first clock edge, and ends with the last sampling edge when SSEL signal is active  
-   SPI_PHASE_SECOND  = (1 << 8)
+   SPI_PHASE_SECOND  = (1 << 2)
 } spiClockPhase_t;
 
 typedef enum{
    // Clock is active high
-   SPI_POLARITY_HIGH = (0 << 12),
+   SPI_POLARITY_HIGH = (0 << 3),
    // Clock is active low
-   SPI_POLARITY_LOW  = (1 << 12)
+   SPI_POLARITY_LOW  = (1 << 3)
 } spiPolarity_t;
 
 typedef enum{
    // SPI data is transferred MSB (bit 7) first
-   SPI_ORDER_MSB = (0 << 16),
+   SPI_ORDER_MSB = (0 << 4),
    // SPI data is transferred LSB (bit 0) first
-   SPI_ORDER_LSB = (1 << 16)
+   SPI_ORDER_LSB = (1 << 4)
 } spiBitOrder_t;
 
 typedef enum{
