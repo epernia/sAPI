@@ -52,7 +52,7 @@ typedef struct{
    spiCallback_t afterFrameCallback;
    spiCallback_t afterXferCallback;
    spiStatus_t status;
-} spiXferInfo_t;
+} spiInfo_t;
 
 /*==================[internal data declaration]==============================*/
 
@@ -60,7 +60,7 @@ typedef struct{
 
 /*==================[internal data definition]===============================*/
 
-spiTransferInfo_t spi0XferInfo;
+spiInfo_t spi0Info;
 
 /*==================[external data definition]===============================*/
 
@@ -119,12 +119,12 @@ bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* buffe
       else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
       {
          if( spi == SPI0 ){
-            spi0XferInfo.tx_data = bufferout;
-            spi0XferInfo.rx_data = bufferin;
-            spi0XferInfo.count  = count;
-            spi0XferInfo.index  = 0;
+            spi0Info.tx_data = bufferout;
+            spi0Info.rx_data = bufferin;
+            spi0Info.count  = count;
+            spi0Info.index  = 0;
             /* TODO: Set beginning of transfer somehow. Set state? */
-            spi0XferInfo.status = SPI_BUSY;
+            spi0Info.status = SPI_BUSY;
             Chip_SSP_Int_FlushData(LPC_SSP1);
             Chip_SSP_SendFrame(LPC_SSP1, spi0XferInfo.tx_data[spi0XferInfo.index++]);
             retVal = TRUE;
