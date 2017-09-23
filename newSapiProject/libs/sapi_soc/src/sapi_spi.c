@@ -157,6 +157,30 @@ void spiXferEnd( int32_t spi )
    }
 }
 
+void spiConfig( int32_t spi, uint32_t config ){   
+   
+   // TODO: Implement
+   
+   spiMode_t mode           = config & 0x00000001;
+   spiBlockmode_t blockMode = config & 0x00000002;
+   spiPhase_t phase         = config & 0x00000004;
+   spiPolarity_t polarity   = config & 0x00000008;
+   spiBitOrder_t order      = config & 0x00000010;
+   int8_t bits              = config & 0x000001E0;
+
+   spiModeSet( gpioName, mode );
+
+   spiBlockmodeSet( gpioName, pull );
+
+   spiPhaseSet( spi, phase);
+
+   spiPolaritySet( gpioName, stength );
+
+   spiBitOrderSet( gpioName, speed );
+
+   //TODO
+}
+
 /*==================[ISR external functions definition]======================*/
 
 void spi0_irqhandler(void)
