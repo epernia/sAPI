@@ -126,7 +126,7 @@ bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* buffe
             /* TODO: Set beginning of transfer somehow. Set state? */
             spi0Info.status = SPI_BUSY;
             Chip_SSP_Int_FlushData(LPC_SSP1);
-            Chip_SSP_SendFrame(LPC_SSP1, spi0XferInfo.tx_data[spi0XferInfo.index++]);
+            Chip_SSP_SendFrame(LPC_SSP1, spi0Info.tx_data[spi0Info.index++]);
             retVal = TRUE;
          } else{
 
@@ -149,7 +149,7 @@ void spiXferEnd( int32_t spi )
       {
          if( spi == SPI0 ){
             Chip_SSP_Int_FlushData(LPC_SSP1);
-            spi0XferInfo.status = READY;
+            spi0Info.status = READY;
          } else{
             
          }
@@ -166,17 +166,21 @@ void spiConfig( int32_t spi, uint32_t config ){
    spiPhase_t phase         = config & 0x00000004;
    spiPolarity_t polarity   = config & 0x00000008;
    spiBitOrder_t order      = config & 0x00000010;
-   int8_t bits              = config & 0x000001E0;
+   //int8_t bits              = config & 0x000001E0;
 
-   spiModeSet( gpioName, mode );
+   spiModeSet( spi, mode );
 
-   spiBlockmodeSet( gpioName, pull );
+   spiBlockmodeSet( spi, pull );
 
    spiPhaseSet( spi, phase);
 
-   spiPolaritySet( gpioName, stength );
+   spiPolaritySet( spi, stength );
 
-   spiBitOrderSet( gpioName, speed );
+   spiBitOrderSet( spi, speed );
+
+   spiBitsSet( spi, SPI_BITS_DEFAULT );
+
+   spiFreqSet( spi, SPI_FREQ_DEFAULT );
 
    //TODO
 }
@@ -186,20 +190,20 @@ void spiConfig( int32_t spi, uint32_t config ){
 void spi0_irqhandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP1);
-   if (spi0XferInfo.afterFrameCallback) {
-      (spi0XferInfo.afterFrameCallback)();
+   if (spi0Info.afterFrameCallback) {
+      (spi0Info.afterFrameCallback)();
    }
-   if (spi0XferInfo.index < spi0XferInfo.count) {
+   if (spi0Info.index < spi0Info.count) {
       /* check if RX FIFO contains data */
-      *((uint16_t*)spi0XferInfo.rx_data + spi0XferInfo.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
-      Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0XferInfo.tx_data + spi0XferInfo.index));
+      *((uint16_t*)spi0Info.rx_data + spi0Info.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
+      Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0Info.tx_data + spi0Info.index));
    }
    else {
-      if (spi0XferInfo.afterXferCallback) {
-         (spi0XferInfo.afterXferCallback)();
+      if (spi0Info.afterXferCallback) {
+         (spi0Info.afterXferCallback)();
       }
-      spi0XferInfo.index = 0;
-      spi0XferInfo.status = SPI_READY;
+      spi0Info.index = 0;
+      spi0Info.status = SPI_READY;
    }
    Chip_SSP_Int_Enable(LPC_SSP1);
 }
