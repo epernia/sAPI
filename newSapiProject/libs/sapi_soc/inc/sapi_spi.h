@@ -57,11 +57,12 @@ extern "C" {
 /* SPI Config int32_t */
 /*
 
-spiConfig[31:0] = spiBitOrder_t[19:16],
-                  spiPolarity_t[15:12],
-                  spiPhase_t[11:8],
-                  spiBlockmode_t[7:4],
-                  spiMode_t[3:0]
+spiConfig[31:0] = uint8_t[12:5],
+                  spiBitOrder_t[4:4],
+                  spiPolarity_t[3:3],
+                  spiPhase_t[2:2],
+                  spiBlockmode_t[1:1],
+                  spiMode_t[0:0]
 
              bits      order      polar      ph         xfer          mode
   31  13    12  5      4  4       3  3      2  2        1  1          0  0
