@@ -57,8 +57,7 @@ extern "C" {
 /* SPI Config int32_t */
 /*
 
-spiConfig[31:0] = uint8_t[12:5],
-                  spiBitOrder_t[4:4],
+spiConfig[31:0] = spiBitOrder_t[4:4],
                   spiPolarity_t[3:3],
                   spiPhase_t[2:2],
                   spiBlockmode_t[1:1],
