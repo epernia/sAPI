@@ -185,6 +185,101 @@ void spiConfig( int32_t spi, uint32_t config ){
    //TODO
 }
 
+// power. Enable or disable the peripheral energy and clock
+void spiPowerSet( int32_t spi, bool_t power )
+{
+
+}
+
+bool_t spiPowerGet( int32_t spi )
+{
+
+}
+   
+/* -- spi properties getters and setters methods - */
+   
+// SPI mode
+void spiModeSet( int32_t spi, spiMode_t mode )
+{
+
+}
+
+spiMode_t spiModeGet( int32_t spi )
+{
+
+}
+
+// Transfer mode
+void spiXferModeSet( int32_t spi, spiXferMode_t mode )
+{
+
+}
+
+spiXferMode_t spiXferModeGet( int32_t spi )
+{
+
+}
+
+// Bits per frame
+void spiBitsSet( int32_t spi, uint8_t bits )
+{
+
+}
+
+uint8_t spiBitsGet( int32_t spi )
+{
+
+}
+   
+// Clock phase
+void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
+{
+
+}
+
+bool_t spiClockPhaseGet( int32_t spi )
+{
+
+}
+
+// Bit transfer order
+void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
+{
+
+}
+
+spiBitOrder_t spiBitOrderGet( int32_t spi )
+{
+
+}
+
+// Clock polarity
+void spiPolaritySet( int32_t spi, spiPolarity_t order )
+{
+
+}
+
+spiPolarity_t spiPolarityGet( int32_t spi )
+{
+
+}
+
+// Frequency
+void spiFreqSet( int32_t spi, uint32_t freq )
+{
+
+}
+
+uint32_t spiFreqGet( int32_t spi )
+{
+
+}
+
+spiStatus_t spiStatusGet( int32_t spi )
+{
+
+}
+
 /*==================[ISR external functions definition]======================*/
 
 void spi0_irqhandler(void)
