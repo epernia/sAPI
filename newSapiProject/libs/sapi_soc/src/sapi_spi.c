@@ -44,6 +44,12 @@
 
 /*==================[macros and definitions]=================================*/
 
+#define SPI_MODE_MASK     0x00000001
+#define SPI_BLOCK_MASK    0x00000002
+#define SPI_PHASE_MASK    0x00000004
+#define SPI_POLARITY_MASK 0x00000008
+#define SPI_ORDER_MASK    0x00000010
+
 typedef struct{
    spi_data_t* bufferOut;
    spi_data_t* bufferIn;
@@ -207,10 +213,12 @@ void spiModeSet( int32_t spi, spiMode_t mode )
       if( SPI_MASTER == mode )
       {
          Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_MASTER);
+         spi0Info.config |= mode;
       }
       else if( SPI_SLAVE == mode )
       {
          Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_SLAVE);
+         spi0Info.config |= mode;
       }
       else
       {
@@ -278,7 +286,6 @@ void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
       }
    }
 }
-}
 
 bool_t spiClockPhaseGet( int32_t spi )
 {
@@ -288,7 +295,11 @@ bool_t spiClockPhaseGet( int32_t spi )
 // Bit transfer order
 void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
 {
-
+   if( spi == SPI0 )
+   {
+      /* Feature not available in SSP0/1 peripherals, only in SPI. MSB is always transferred first. */
+       spi0Info.config &= ~SPI_ORDER_LSB;
+   }
 }
 
 spiBitOrder_t spiBitOrderGet( int32_t spi )
