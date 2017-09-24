@@ -201,7 +201,20 @@ bool_t spiPowerGet( int32_t spi )
 // SPI mode
 void spiModeSet( int32_t spi, spiMode_t mode )
 {
-
+   if( spi == SPI0 )
+   {
+      if( SPI_MASTER == mode )
+      {
+         Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_MASTER);
+      }
+      else if( SPI_SLAVE == mode )
+      {
+         Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_SLAVE);
+      }
+      else
+      {
+      }
+   }
 }
 
 spiMode_t spiModeGet( int32_t spi )
