@@ -213,11 +213,13 @@ void spiModeSet( int32_t spi, spiMode_t mode )
       if( SPI_MASTER == mode )
       {
          Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_MASTER);
+	 spi0Info.config &= ~SPI_MODE_MASK;
          spi0Info.config |= mode;
       }
       else if( SPI_SLAVE == mode )
       {
          Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_SLAVE);
+         spi0Info.config &= ~SPI_MODE_MASK;
          spi0Info.config |= mode;
       }
       else
@@ -238,10 +240,12 @@ void spiXferModeSet( int32_t spi, spiXferMode_t mode )
    {
       if( SPI_BLOCK == mode )
       {
+         spi0Info.config &= ~SPI_BLOCK_MASK;
          spi0Info.config |= mode;
       }
       else if( SPI_NONBLOCK == mode )
       {
+         spi0Info.config &= ~SPI_BLOCK_MASK;
          spi0Info.config |= mode;
       }
       else
@@ -274,11 +278,13 @@ void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
       if( SPI_PHASE_FIRST == phase )
       {
          LPC_SSP1->CR0 = pSSP->CR0 & (~SSP_CR0_CPHA_SECOND);
+         spi0Info.config &= ~SPI_PHASE_MASK;
          spi0Info.config |= phase;
       }
       else if( SPI_PHASE_SECOND == phase )
       {
          LPC_SSP1->CR0 = pSSP->CR0 | SSP_CR0_CPHA_SECOND;
+         spi0Info.config &= ~SPI_PHASE_MASK;
          spi0Info.config |= phase;
       }
       else
@@ -298,7 +304,8 @@ void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
    if( spi == SPI0 )
    {
       /* Feature not available in SSP0/1 peripherals, only in SPI. MSB is always transferred first. */
-       spi0Info.config &= ~SPI_ORDER_LSB;
+      spi0Info.config &= ~SPI_ORDER_MASK;
+      spi0Info.config |= SPI_ORDER_LSB;
    }
 }
 
@@ -311,6 +318,11 @@ spiBitOrder_t spiBitOrderGet( int32_t spi )
 void spiPolaritySet( int32_t spi, spiPolarity_t order )
 {
 
+	#define SPI_MODE_MASK     0x00000001
+#define SPI_BLOCK_MASK    0x00000002
+#define SPI_PHASE_MASK    0x00000004
+#define SPI_POLARITY_MASK 0x00000008
+#define SPI_ORDER_MASK    0x00000010
 }
 
 spiPolarity_t spiPolarityGet( int32_t spi )
