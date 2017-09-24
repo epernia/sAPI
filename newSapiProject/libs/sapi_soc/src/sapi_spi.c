@@ -52,6 +52,7 @@ typedef struct{
    spiCallback_t afterFrameCallback;
    spiCallback_t afterXferCallback;
    spiStatus_t status;
+   uint32_t config;
 } spiInfo_t;
 
 /*==================[internal data declaration]==============================*/
@@ -225,7 +226,20 @@ spiMode_t spiModeGet( int32_t spi )
 // Transfer mode
 void spiXferModeSet( int32_t spi, spiXferMode_t mode )
 {
-
+   if( spi == SPI0 )
+   {
+      if( SPI_BLOCK == mode )
+      {
+         spi0Info.config |= mode;
+      }
+      else if( SPI_NONBLOCK == mode )
+      {
+         spi0Info.config |= mode;
+      }
+      else
+      {
+      }
+   }
 }
 
 spiXferMode_t spiXferModeGet( int32_t spi )
@@ -247,7 +261,23 @@ uint8_t spiBitsGet( int32_t spi )
 // Clock phase
 void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
 {
-
+   if( spi == SPI0 )
+   {
+      if( SPI_PHASE_FIRST == phase )
+      {
+         LPC_SSP1->CR0 = pSSP->CR0 & (~SSP_CR0_CPHA_SECOND);
+         spi0Info.config |= phase;
+      }
+      else if( SPI_PHASE_SECOND == phase )
+      {
+         LPC_SSP1->CR0 = pSSP->CR0 | SSP_CR0_CPHA_SECOND;
+         spi0Info.config |= phase;
+      }
+      else
+      {
+      }
+   }
+}
 }
 
 bool_t spiClockPhaseGet( int32_t spi )
