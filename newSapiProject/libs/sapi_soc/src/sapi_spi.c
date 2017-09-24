@@ -277,13 +277,13 @@ void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
    {
       if( SPI_PHASE_FIRST == phase )
       {
-         LPC_SSP1->CR0 = pSSP->CR0 & (~SSP_CR0_CPHA_SECOND);
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & (1<<7)) | SSP_CR0_CPHA_FIRST;
          spi0Info.config &= ~SPI_PHASE_MASK;
          spi0Info.config |= phase;
       }
       else if( SPI_PHASE_SECOND == phase )
       {
-         LPC_SSP1->CR0 = pSSP->CR0 | SSP_CR0_CPHA_SECOND;
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & (1<<7)) | SSP_CR0_CPHA_SECOND;
          spi0Info.config &= ~SPI_PHASE_MASK;
          spi0Info.config |= phase;
       }
@@ -315,14 +315,26 @@ spiBitOrder_t spiBitOrderGet( int32_t spi )
 }
 
 // Clock polarity
-void spiPolaritySet( int32_t spi, spiPolarity_t order )
+void spiPolaritySet( int32_t spi, spiPolarity_t polarity )
 {
-
-	#define SPI_MODE_MASK     0x00000001
-#define SPI_BLOCK_MASK    0x00000002
-#define SPI_PHASE_MASK    0x00000004
-#define SPI_POLARITY_MASK 0x00000008
-#define SPI_ORDER_MASK    0x00000010
+   if( spi == SPI0 )
+   {
+      if( SPI_POLARITY_HIGH == polarity )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~(1<<6)) | SPI_CR_CPOL_HI;
+         spi0Info.config &= ~SPI_POLARITY_MASK;
+         spi0Info.config |= polarity;
+      }
+      else if( SPI_POLARITY_LOW == polarity )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~(1<<6)) | SPI_CR_CPOL_LO;
+         spi0Info.config &= ~SPI_POLARITY_MASK;
+         spi0Info.config |= polarity;
+      }
+      else
+      {
+      }
+   }
 }
 
 spiPolarity_t spiPolarityGet( int32_t spi )
