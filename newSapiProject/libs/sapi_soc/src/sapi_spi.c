@@ -361,8 +361,12 @@ void spiFreqSet( int32_t spi, uint32_t freq )
    if( spi == SPI0 )
    {
          Chip_SPI_SetBitRate(LPC_SSP1, freq);
-         /* Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(pSSP));
-            Chip_SSP_SetClockRate(pSSP, cr0_div, prescale);
+         /*
+         pClk = Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(LPC_SSP1));
+         Chip_SSP_SetClockRate(pSSP, cr0_div, prescale);
+         temp = pSSP->CR0 & (~(SSP_CR0_SCR(0xFF)));
+         pSSP->CR0 = temp | (SSP_CR0_SCR(clk_rate));
+         pSSP->CPSR = prescale;
          */
    }
 }
