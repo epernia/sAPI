@@ -177,7 +177,7 @@ void spiConfig( int32_t spi, uint32_t config ){
 
    spiModeSet( spi, mode );
 
-   spiBlockmodeSet( spi, pull );
+   spiXferModeSet( spi, pull );
 
    spiPhaseSet( spi, phase);
 
@@ -262,7 +262,18 @@ spiXferMode_t spiXferModeGet( int32_t spi )
 // Bits per frame
 void spiBitsSet( int32_t spi, uint8_t bits )
 {
-
+   if( spi == SPI0 )
+   {
+      if( bits >= 4 && bits <= 16)
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~0x0F) | (bits - 1)
+         spi0Info.config &= ~SPI_BITS_MASK;
+         spi0Info.config |= bits << 5;
+      }
+      else
+      {
+      }
+   }
 }
 
 uint8_t spiBitsGet( int32_t spi )
@@ -305,7 +316,7 @@ void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
    {
       /* Feature not available in SSP0/1 peripherals, only in SPI. MSB is always transferred first. */
       spi0Info.config &= ~SPI_ORDER_MASK;
-      spi0Info.config |= SPI_ORDER_LSB;
+      spi0Info.config |= SPI_ORDER_MSB; /* Default value */
    }
 }
 
@@ -345,7 +356,15 @@ spiPolarity_t spiPolarityGet( int32_t spi )
 // Frequency
 void spiFreqSet( int32_t spi, uint32_t freq )
 {
-
+   /* Clock 208MHz. Max theoretical bitrate is 208MHz/2 = 104MHz.  PCLK / (CPSDVSR * [SCR+1]). */
+   /* TODO: Validate frequency? */
+   if( spi == SPI0 )
+   {
+         Chip_SPI_SetBitRate(LPC_SSP1, freq);
+         /* Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(pSSP));
+            Chip_SSP_SetClockRate(pSSP, cr0_div, prescale);
+         */
+   }
 }
 
 uint32_t spiFreqGet( int32_t spi )
