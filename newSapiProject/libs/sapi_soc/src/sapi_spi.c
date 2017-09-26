@@ -59,6 +59,7 @@ typedef struct{
    spiCallback_t afterXferCallback;
    spiStatus_t status;
    uint32_t config;
+   uint32_t freq;
 } spiInfo_t;
 
 /*==================[internal data declaration]==============================*/
@@ -360,14 +361,10 @@ void spiFreqSet( int32_t spi, uint32_t freq )
    /* TODO: Validate frequency? */
    if( spi == SPI0 )
    {
-         Chip_SPI_SetBitRate(LPC_SSP1, freq);
-         /*
-         pClk = Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(LPC_SSP1));
-         Chip_SSP_SetClockRate(pSSP, cr0_div, prescale);
-         temp = pSSP->CR0 & (~(SSP_CR0_SCR(0xFF)));
-         pSSP->CR0 = temp | (SSP_CR0_SCR(clk_rate));
-         pSSP->CPSR = prescale;
-         */
+      Chip_SPI_SetBitRate(LPC_SSP1, freq);
+      /* Now find out the exact frequency set */
+      pClk = Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(LPC_SSP1));
+      spi0Info.freq = pClk / (LPC_SSP1->CPSR & 0xF) * (((LPC_SSP1->CR0 >> 8) & 0xF) + 1);
    }
 }
 
