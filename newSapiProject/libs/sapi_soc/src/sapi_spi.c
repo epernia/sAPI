@@ -230,7 +230,13 @@ void spiModeSet( int32_t spi, spiMode_t mode )
 
 spiMode_t spiModeGet( int32_t spi )
 {
+   uint32_t ret = -1;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_MODE_MASK;
+   }
 
+   return ret;
 }
 
 // Transfer mode
@@ -256,7 +262,13 @@ void spiXferModeSet( int32_t spi, spiXferMode_t mode )
 
 spiXferMode_t spiXferModeGet( int32_t spi )
 {
+   uint32_t ret = -1;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_BLOCK_MASK;
+   }
 
+   return ret;
 }
 
 // Bits per frame
@@ -278,7 +290,13 @@ void spiBitsSet( int32_t spi, uint8_t bits )
 
 uint8_t spiBitsGet( int32_t spi )
 {
+   uint8_t ret = 0;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.bits;
+   }
 
+   return ret;
 }
    
 // Clock phase
@@ -306,7 +324,13 @@ void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
 
 bool_t spiClockPhaseGet( int32_t spi )
 {
+   uint32_t ret = -1;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_PHASE_MASK;
+   }
 
+   return ret;
 }
 
 // Bit transfer order
@@ -322,7 +346,13 @@ void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
 
 spiBitOrder_t spiBitOrderGet( int32_t spi )
 {
+   uint32_t ret = -1;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_ORDER_MASK;
+   }
 
+   return ret;
 }
 
 // Clock polarity
@@ -350,7 +380,13 @@ void spiPolaritySet( int32_t spi, spiPolarity_t polarity )
 
 spiPolarity_t spiPolarityGet( int32_t spi )
 {
+   uint32_t ret = -1;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_POLARITY_MASK;
+   }
 
+   return ret;
 }
 
 // Frequency
@@ -369,7 +405,13 @@ void spiFreqSet( int32_t spi, uint32_t freq )
 
 uint32_t spiFreqGet( int32_t spi )
 {
+   uint32_t ret = 0;
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.freq;
+   }
 
+   return ret;
 }
 
 spiStatus_t spiStatusGet( int32_t spi )
