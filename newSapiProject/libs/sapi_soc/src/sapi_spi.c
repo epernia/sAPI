@@ -169,12 +169,11 @@ void spiConfig( int32_t spi, uint32_t config ){
    
    // TODO: Implement
    
-   spiMode_t mode           = config & 0x00000001;
-   spiBlockmode_t blockMode = config & 0x00000002;
-   spiPhase_t phase         = config & 0x00000004;
-   spiPolarity_t polarity   = config & 0x00000008;
-   spiBitOrder_t order      = config & 0x00000010;
-   //int8_t bits              = config & 0x000001E0;
+   spiMode_t mode           = config & SPI_MODE_MASK;
+   spiBlockmode_t blockMode = config & SPI_BLOCK_MASK;
+   spiPhase_t phase         = config & SPI_PHASE_MASK;
+   spiPolarity_t polarity   = config & SPI_POLARITY_MASK;
+   spiBitOrder_t order      = config & SPI_ORDER_MASK;
 
    spiModeSet( spi, mode );
 
