@@ -156,10 +156,6 @@ bool_t spiWriteSingle( int32_t spi, spi_data_t* dataout );
 
 bool_t spiXferSingle( int32_t spi, spi_data_t* dataout , spi_data_t* datain );
 
-void spiCSSet( int32_t spi, uint8_t slave, bool_t value );
-
-bool_t spiCSGet( int32_t spi, uint8_t slave );
-
 /* --------- Peripheral configutation methods ------------------------------ */
 
 // Initialize
