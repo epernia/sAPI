@@ -416,7 +416,7 @@ uint32_t spiFreqGet( int32_t spi )
 
 spiStatus_t spiStatusGet( int32_t spi )
 {
-
+   return spi0Info.status;
 }
 
 /*==================[ISR external functions definition]======================*/
