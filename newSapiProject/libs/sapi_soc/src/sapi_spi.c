@@ -231,6 +231,7 @@ void spiModeSet( int32_t spi, spiMode_t mode )
 spiMode_t spiModeGet( int32_t spi )
 {
    uint32_t ret = -1;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.config & SPI_MODE_MASK;
@@ -263,6 +264,7 @@ void spiXferModeSet( int32_t spi, spiXferMode_t mode )
 spiXferMode_t spiXferModeGet( int32_t spi )
 {
    uint32_t ret = -1;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.config & SPI_BLOCK_MASK;
@@ -291,6 +293,7 @@ void spiBitsSet( int32_t spi, uint8_t bits )
 uint8_t spiBitsGet( int32_t spi )
 {
    uint8_t ret = 0;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.bits;
@@ -325,6 +328,7 @@ void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
 bool_t spiClockPhaseGet( int32_t spi )
 {
    uint32_t ret = -1;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.config & SPI_PHASE_MASK;
@@ -347,6 +351,7 @@ void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
 spiBitOrder_t spiBitOrderGet( int32_t spi )
 {
    uint32_t ret = -1;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.config & SPI_ORDER_MASK;
@@ -381,6 +386,7 @@ void spiPolaritySet( int32_t spi, spiPolarity_t polarity )
 spiPolarity_t spiPolarityGet( int32_t spi )
 {
    uint32_t ret = -1;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.config & SPI_POLARITY_MASK;
@@ -406,6 +412,7 @@ void spiFreqSet( int32_t spi, uint32_t freq )
 uint32_t spiFreqGet( int32_t spi )
 {
    uint32_t ret = 0;
+
    if( spi == SPI0 )
    {
       ret = spi0Info.freq;
@@ -416,7 +423,36 @@ uint32_t spiFreqGet( int32_t spi )
 
 spiStatus_t spiStatusGet( int32_t spi )
 {
-   return spi0Info.status;
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.status;
+   }
+
+   return ret;
+}
+
+void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t *callback)
+{
+   if( spi == SPI0 )
+   {
+      switch(event_mask)
+      {
+         case SPI_AFTER_XFER:
+         {
+            spi0Info.afterXferCallback = callback;
+            break;
+	 }
+         case SPI_AFTER_FRAME:
+         {
+            spi0Info.afterFrameCallback = callback;
+            break;
+	 }
+	 default:
+            break;
+      }
+   }
 }
 
 /*==================[ISR external functions definition]======================*/
