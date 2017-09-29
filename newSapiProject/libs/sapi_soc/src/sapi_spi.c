@@ -207,10 +207,14 @@ void spiPowerSet( int32_t spi, bool_t power )
 
 bool_t spiPowerGet( int32_t spi )
 {
+   bool_t ret = FALSE;
+
    if( spi == SPI0 )
    {
-      ret = spi0Info.config & SPI_MODE_MASK;
+      ret = (LPC_SSP1->CR1 & SSP_CR1_SSP_EN) ? TRUE : FALSE;
    }
+
+   return ret;
 }
    
 /* -- spi properties getters and setters methods - */
