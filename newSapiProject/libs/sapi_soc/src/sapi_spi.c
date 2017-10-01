@@ -165,6 +165,11 @@ void spiXferEnd( int32_t spi )
    }
 }
 
+bool_t spiXferSingle( int32_t spi, const spi_data_t* dataout , spi_data_t* datain )
+{
+   return spiXferStart( spi, dataout, bufferin, 1 );
+}
+
 void spiConfig( int32_t spi, uint32_t config ){   
    
    // TODO: Implement
