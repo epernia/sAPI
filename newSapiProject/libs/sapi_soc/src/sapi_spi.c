@@ -195,13 +195,16 @@ void spiConfig( int32_t spi, uint32_t config ){
 // power. Enable or disable the peripheral energy and clock
 void spiPowerSet( int32_t spi, bool_t power )
 {
-   if( TRUE == power )
+   if( spi == SPI0 )
    {
-      Chip_SSP_Enable(LPC_SSP1);
-   }
-   else
-   {
-      Chip_SSP_Disable(LPC_SSP1);
+      if( TRUE == power )
+      {
+         Chip_SSP_Enable(LPC_SSP1);
+      }
+      else
+      {
+         Chip_SSP_Disable(LPC_SSP1);
+      }
    }
 }
 
