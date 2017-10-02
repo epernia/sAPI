@@ -60,6 +60,7 @@ typedef struct{
    spiStatus_t status;
    uint32_t config;
    uint32_t freq;
+   uint8_t bits;
 } spiInfo_t;
 
 /*==================[internal data declaration]==============================*/
@@ -94,7 +95,10 @@ bool_t spiInit( int32_t spi ){
       // Initialize SSP Peripheral
       Chip_SSP_Init( LPC_SSP1 );
       Chip_SSP_Enable( LPC_SSP1 );
-      
+
+      spiConfig( SPI0, 0 ); // Set default configuration.
+      // master mode, blocking, capture on first clock transition, clock active high, MSB first
+      // Default frequency and bits per transfer.
    } else{
       retVal = FALSE;
    }
