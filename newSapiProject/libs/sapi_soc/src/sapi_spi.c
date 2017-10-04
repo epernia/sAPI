@@ -102,6 +102,7 @@ bool_t spiInit( int32_t spi ){
       Chip_SSP_Int_Enable(LPC_SSP1);
       spiConfigCallback( SPI0, spiEvent_t event_mask, NULL);
       spiConfigCallback( SPI0, spiEvent_t event_mask, NULL);
+      NVIC_EnableIRQ(SSP1_IRQn);
    } else{
       retVal = FALSE;
    }
