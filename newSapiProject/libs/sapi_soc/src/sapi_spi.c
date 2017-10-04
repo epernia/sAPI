@@ -99,6 +99,7 @@ bool_t spiInit( int32_t spi ){
       spiConfig( SPI0, 0 ); // Set default configuration.
       // master mode, blocking, capture on first clock transition, clock active high, MSB first.
       // Default frequency and bits per transfer.
+      Chip_SSP_Int_Enable(LPC_SSP1);
    } else{
       retVal = FALSE;
    }
