@@ -100,6 +100,8 @@ bool_t spiInit( int32_t spi ){
       // master mode, blocking, capture on first clock transition, clock active high, MSB first.
       // Default frequency and bits per transfer.
       Chip_SSP_Int_Enable(LPC_SSP1);
+      spiConfigCallback( SPI0, spiEvent_t event_mask, NULL);
+      spiConfigCallback( SPI0, spiEvent_t event_mask, NULL);
    } else{
       retVal = FALSE;
    }
