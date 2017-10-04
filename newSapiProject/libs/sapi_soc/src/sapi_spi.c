@@ -483,18 +483,20 @@ void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t *callb
 
 /*==================[ISR external functions definition]======================*/
 
-void spi0_irqhandler(void)
+void SSP1_IRQHandler(void)
 {
    Chip_SSP_Int_Disable(LPC_SSP1);
    if (spi0Info.afterFrameCallback) {
       (spi0Info.afterFrameCallback)();
    }
    if (spi0Info.index < spi0Info.count) {
+      /* There are frames pending for transfer */
       /* check if RX FIFO contains data */
       *((uint16_t*)spi0Info.rx_data + spi0Info.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
       Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0Info.tx_data + spi0Info.index));
    }
    else {
+      /* Transfer finished */
       if (spi0Info.afterXferCallback) {
          (spi0Info.afterXferCallback)();
       }
