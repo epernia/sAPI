@@ -44,11 +44,32 @@
 
 /*==================[macros and definitions]=================================*/
 
+#define SPI_MODE_MASK     0x00000001
+#define SPI_BLOCK_MASK    0x00000002
+#define SPI_PHASE_MASK    0x00000004
+#define SPI_POLARITY_MASK 0x00000008
+#define SPI_ORDER_MASK    0x00000010
+
+typedef struct{
+   uint8_t* bufferOut;
+   uint8_t* bufferIn;
+   uint32_t count;
+   uint32_t index;
+   spiCallback_t afterFrameCallback;
+   spiCallback_t afterXferCallback;
+   spiStatus_t status;
+   uint32_t config;
+   uint32_t freq;
+   uint8_t bits;
+} spiInfo_t;
+
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
+
+spiInfo_t spi0Info;
 
 /*==================[external data definition]===============================*/
 
@@ -56,10 +77,8 @@
 
 /*==================[external functions definition]==========================*/
 
-bool_t spiInit( int32_t spi ){
-   
-   bool_t retVal = TRUE;
-   
+void spiInit( int32_t spi ){
+
    if( spi == SPI0 ){
       
   		/* Set up clock and power for SSP1 module */
@@ -74,62 +93,417 @@ bool_t spiInit( int32_t spi ){
       // Initialize SSP Peripheral
       Chip_SSP_Init( LPC_SSP1 );
       Chip_SSP_Enable( LPC_SSP1 );
-      
-   } else{
-      retVal = FALSE;
+
+      spiConfig( SPI0, 0 ); // Set default configuration.
+      // master mode, blocking, capture on first clock transition, clock active high, MSB first.
+      // Default frequency and bits per transfer.
+      Chip_SSP_Int_Enable(LPC_SSP1);
+      spiConfigCallback( SPI0, SPI_AFTER_XFER, NULL);
+      spiConfigCallback( SPI0, SPI_AFTER_FRAME, NULL);
+      spiConfigCallback( SPI0, SPI_XFER_ERROR, NULL);
+      NVIC_EnableIRQ(SSP1_IRQn);
    }
-   
+}
+
+bool_t spiXferStart( int32_t spi, const uint8_t* bufferout, uint8_t* bufferin, uint32_t count )
+{
+   bool_t retVal = FALSE;
+   Chip_SSP_DATA_SETUP_T xferConfig;
+
+   if(SPI_READY == spiStatusGet(spi))
+   {
+      if(SPI_IS_BLOCKING(spiConfigGet(spi)))
+      {
+         xferConfig.tx_data = (uint8_t*)bufferout;
+         xferConfig.tx_cnt  = 0;
+         xferConfig.rx_data = bufferin;
+         xferConfig.rx_cnt  = 0;
+         xferConfig.length  = count;
+
+         if( spi == SPI0 ){
+            Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
+            retVal = TRUE;
+         } else{
+            
+         }
+      }
+      else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      {
+         if( spi == SPI0 ){
+            spi0Info.bufferOut = (uint8_t*)bufferout;
+            spi0Info.bufferIn = bufferin;
+            spi0Info.count  = count;
+            spi0Info.index  = 0;
+            /* TODO: Set beginning of transfer somehow. Set state? */
+            spi0Info.status = SPI_BUSY;
+            Chip_SSP_Int_FlushData(LPC_SSP1);
+            Chip_SSP_SendFrame(LPC_SSP1, spi0Info.bufferOut[spi0Info.index++]);
+            retVal = TRUE;
+         } else{
+
+	 }
+      }
+      else
+      {
+         
+      }
+   }
+
    return retVal;
 }
 
-
-bool_t spiRead( int32_t spi, uint8_t* buffer, uint32_t bufferSize ){
-   
-   bool_t retVal = TRUE;
-   
-   Chip_SSP_DATA_SETUP_T xferConfig;
-
-	xferConfig.tx_data = NULL;
-	xferConfig.tx_cnt  = 0;
-	xferConfig.rx_data = buffer;
-	xferConfig.rx_cnt  = 0;
-	xferConfig.length  = bufferSize;
-
-   if( spi == SPI0 ){
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
-   } else{
-      retVal = FALSE;
+void spiXferEnd( int32_t spi )
+{
+   if(SPI_BUSY == spiStatusGet(spi))
+   {
+      if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      {
+         if( spi == SPI0 ){
+            Chip_SSP_Int_FlushData(LPC_SSP1);
+            spi0Info.status = SPI_READY;
+         } else{
+            
+         }
+      }
    }
-   
-   return retVal;	
 }
 
-
-bool_t spiWrite( int32_t spi, uint8_t* buffer, uint32_t bufferSize){
-   
-   bool_t retVal = TRUE;
-   
-   Chip_SSP_DATA_SETUP_T xferConfig;
-
-	xferConfig.tx_data = buffer;
-	xferConfig.tx_cnt  = 0;
-	xferConfig.rx_data = NULL;
-	xferConfig.rx_cnt  = 0;
-	xferConfig.length  = bufferSize;
-
-   if( spi == SPI0 ){
-      Chip_SSP_RWFrames_Blocking( LPC_SSP1, &xferConfig );
-   } else{
-      retVal = FALSE;
-   }
-   
-   return retVal;
+bool_t spiXferSingle( int32_t spi, const uint8_t* dataOut , uint8_t* dataIn )
+{
+   return spiXferStart( spi, dataOut, dataIn, 1 );
 }
 
+void spiConfig( int32_t spi, uint32_t config ){   
+   
+   // TODO: Implement
+   
+   spiMode_t mode           = config & SPI_MODE_MASK;
+   spiXferMode_t blockMode = config & SPI_BLOCK_MASK;
+   spiClockPhase_t phase         = config & SPI_PHASE_MASK;
+   spiPolarity_t polarity   = config & SPI_POLARITY_MASK;
+   spiBitOrder_t order      = config & SPI_ORDER_MASK;
+
+   spiModeSet( spi, mode );
+
+   spiXferModeSet( spi, blockMode );
+
+   spiClockPhaseSet( spi, phase);
+
+   spiPolaritySet( spi, polarity );
+
+   spiBitOrderSet( spi, order );
+
+   spiBitsSet( spi, SPI_BITS_DEFAULT );
+
+   spiFreqSet( spi, SPI_FREQ_DEFAULT );
+
+   //TODO
+}
+
+// power. Enable or disable the peripheral energy and clock
+void spiPowerSet( int32_t spi, bool_t power )
+{
+   if( spi == SPI0 )
+   {
+      if( TRUE == power )
+      {
+         Chip_SSP_Enable(LPC_SSP1);
+      }
+      else
+      {
+         Chip_SSP_Disable(LPC_SSP1);
+      }
+   }
+}
+
+bool_t spiPowerGet( int32_t spi )
+{
+   bool_t ret = FALSE;
+
+   if( spi == SPI0 )
+   {
+      ret = (LPC_SSP1->CR1 & SSP_CR1_SSP_EN) ? TRUE : FALSE;
+   }
+
+   return ret;
+}
+   
+/* -- spi properties getters and setters methods - */
+   
+// SPI mode
+void spiModeSet( int32_t spi, spiMode_t mode )
+{
+   if( spi == SPI0 )
+   {
+      if( SPI_OPMODE_MASTER == mode )
+      {
+         Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_MASTER);
+	 spi0Info.config &= ~SPI_MODE_MASK;
+         spi0Info.config |= mode;
+      }
+      else if( SPI_OPMODE_SLAVE == mode )
+      {
+         Chip_SSP_Set_Mode(LPC_SSP1, SSP_MODE_SLAVE);
+         spi0Info.config &= ~SPI_MODE_MASK;
+         spi0Info.config |= mode;
+      }
+      else
+      {
+      }
+   }
+}
+
+spiMode_t spiModeGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_MODE_MASK;
+   }
+
+   return ret;
+}
+
+// Transfer mode
+void spiXferModeSet( int32_t spi, spiXferMode_t mode )
+{
+   if( spi == SPI0 )
+   {
+      if( SPI_BLOCK == mode )
+      {
+         spi0Info.config &= ~SPI_BLOCK_MASK;
+         spi0Info.config |= mode;
+      }
+      else if( SPI_NONBLOCK == mode )
+      {
+         spi0Info.config &= ~SPI_BLOCK_MASK;
+         spi0Info.config |= mode;
+      }
+      else
+      {
+      }
+   }
+}
+
+spiXferMode_t spiXferModeGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_BLOCK_MASK;
+   }
+
+   return ret;
+}
+
+// Bits per frame
+void spiBitsSet( int32_t spi, uint8_t bits )
+{
+   if( spi == SPI0 )
+   {
+      if( bits >= 4 && bits <= 16)
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~0x0F) | (bits - 1);
+         spi0Info.bits = bits;
+      }
+      else
+      {
+      }
+   }
+}
+
+uint8_t spiBitsGet( int32_t spi )
+{
+   uint8_t ret = 0;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.bits;
+   }
+
+   return ret;
+}
+   
+// Clock phase
+void spiClockPhaseSet( int32_t spi, spiClockPhase_t phase )
+{
+   if( spi == SPI0 )
+   {
+      if( SPI_PHASE_FIRST == phase )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & (1<<7)) | SSP_CR0_CPHA_FIRST;
+         spi0Info.config &= ~SPI_PHASE_MASK;
+         spi0Info.config |= phase;
+      }
+      else if( SPI_PHASE_SECOND == phase )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & (1<<7)) | SSP_CR0_CPHA_SECOND;
+         spi0Info.config &= ~SPI_PHASE_MASK;
+         spi0Info.config |= phase;
+      }
+      else
+      {
+      }
+   }
+}
+
+bool_t spiClockPhaseGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_PHASE_MASK;
+   }
+
+   return ret;
+}
+
+// Bit transfer order
+void spiBitOrderSet( int32_t spi, spiBitOrder_t order )
+{
+   if( spi == SPI0 )
+   {
+      /* Feature not available in SSP0/1 peripherals, only in SPI. MSB is always transferred first. */
+      spi0Info.config &= ~SPI_ORDER_MASK;
+      spi0Info.config |= SPI_ORDER_MSB; /* Default value */
+   }
+}
+
+spiBitOrder_t spiBitOrderGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_ORDER_MASK;
+   }
+
+   return ret;
+}
+
+// Clock polarity
+void spiPolaritySet( int32_t spi, spiPolarity_t polarity )
+{
+   if( spi == SPI0 )
+   {
+      if( SPI_POLARITY_HIGH == polarity )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~(1<<6)) | SPI_CR_CPOL_HI;
+         spi0Info.config &= ~SPI_POLARITY_MASK;
+         spi0Info.config |= polarity;
+      }
+      else if( SPI_POLARITY_LOW == polarity )
+      {
+         LPC_SSP1->CR0 = (LPC_SSP1->CR0 & ~(1<<6)) | SPI_CR_CPOL_LO;
+         spi0Info.config &= ~SPI_POLARITY_MASK;
+         spi0Info.config |= polarity;
+      }
+      else
+      {
+      }
+   }
+}
+
+spiPolarity_t spiPolarityGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config & SPI_POLARITY_MASK;
+   }
+
+   return ret;
+}
+
+// Frequency
+void spiFreqSet( int32_t spi, uint32_t freq )
+{
+   uint32_t pClk;
+   /* Clock 208MHz. Max theoretical bitrate is 208MHz/2 = 104MHz.  PCLK / (CPSDVSR * [SCR+1]). */
+   /* TODO: Validate frequency? */
+   if( spi == SPI0 )
+   {
+      Chip_SSP_SetBitRate(LPC_SSP1, freq);
+      /* Now find out the exact frequency set */
+      pClk = Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(LPC_SSP1));
+      spi0Info.freq = pClk / (LPC_SSP1->CPSR & 0xF) * (((LPC_SSP1->CR0 >> 8) & 0xF) + 1);
+   }
+}
+
+uint32_t spiFreqGet( int32_t spi )
+{
+   uint32_t ret = 0;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.freq;
+   }
+
+   return ret;
+}
+
+spiStatus_t spiStatusGet( int32_t spi )
+{
+   uint32_t ret = -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.status;
+   }
+
+   return ret;
+}
+
+void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t callback)
+{
+   if( spi == SPI0 )
+   {
+      switch(event_mask)
+      {
+         case SPI_AFTER_XFER:
+         {
+            spi0Info.afterXferCallback = callback;
+            break;
+	 }
+         case SPI_AFTER_FRAME:
+         {
+            spi0Info.afterFrameCallback = callback;
+            break;
+	 }
+	 default:
+            break;
+      }
+   }
+}
 
 /*==================[ISR external functions definition]======================*/
 
-
+void SSP1_IRQHandler(void)
+{
+   Chip_SSP_Int_Disable(LPC_SSP1);
+   if (spi0Info.afterFrameCallback) {
+      (spi0Info.afterFrameCallback)();
+   }
+   if (spi0Info.index < spi0Info.count) {
+      /* There are frames pending for transfer */
+      /* check if RX FIFO contains data */
+      *((uint16_t*)spi0Info.bufferIn + spi0Info.index) = Chip_SSP_ReceiveFrame(LPC_SSP1);
+      Chip_SSP_SendFrame(LPC_SSP1, *((uint16_t*)spi0Info.bufferOut + spi0Info.index));
+   }
+   else {
+      /* Transfer finished */
+      if (spi0Info.afterXferCallback) {
+         (spi0Info.afterXferCallback)();
+      }
+      spi0Info.index = 0;
+      spi0Info.status = SPI_READY;
+   }
+   Chip_SSP_Int_Enable(LPC_SSP1);
+}
 
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
