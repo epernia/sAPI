@@ -52,6 +52,9 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
+#define SPI_FREQ_DEFAULT 100000
+#define SPI_BITS_DEFAULT 8
+
 /*==================[typedef]================================================*/
 
 /* SPI Config int32_t */
@@ -59,8 +62,8 @@ extern "C" {
 
 spiConfig[31:0] = spiBitOrder_t[4:4],
                   spiPolarity_t[3:3],
-                  spiPhase_t[2:2],
-                  spiBlockmode_t[1:1],
+                  spiClockPhase_t[2:2],
+                  spiXfermode_t[1:1],
                   spiMode_t[0:0]
 
                order      polar      ph         xfer          mode
@@ -92,9 +95,9 @@ spiConfig[31:0] = spiBitOrder_t[4:4],
    
 typedef enum{
    // Master mode
-   SPI_MODE_MASTER = (0 << 0),
+   SPI_OPMODE_MASTER = (0 << 0),
    // Slave mode
-   SPI_MODE_SLAVE  = (1 << 0)
+   SPI_OPMODE_SLAVE  = (1 << 0)
 } spiMode_t;
  
 typedef enum{
@@ -136,7 +139,7 @@ typedef enum{
    SPI_XFER_ERROR
 } spiEvent_t;
 
-typedef void (spiCallback_t)( void );
+typedef void (*spiCallback_t)( void );
 
 /*==================[external data declaration]==============================*/
 
@@ -145,16 +148,16 @@ typedef void (spiCallback_t)( void );
 /*==================[external functions declaration]=========================*/
 
 //Multiple frames transfer
-bool_t spiXferStart( int32_t spi, const spi_data_t* bufferout, spi_data_t* bufferin, size_t count );
+bool_t spiXferStart( int32_t spi, const uint8_t* bufferout, uint8_t* bufferin, uint32_t count );
 
 void spiXferEnd( int32_t spi );
 
 //Single frame transfer
-bool_t spiReadSingle( int32_t spi, spi_data_t* datain );
+bool_t spiReadSingle( int32_t spi, uint8_t* datain );
   
-bool_t spiWriteSingle( int32_t spi, spi_data_t* dataout );
+bool_t spiWriteSingle( int32_t spi, uint8_t* dataout );
 
-bool_t spiXferSingle( int32_t spi, spi_data_t* dataout , spi_data_t* datain );
+bool_t spiXferSingle( int32_t spi, const uint8_t* dataout , uint8_t* datain );
 
 /* --------- Peripheral configutation methods ------------------------------ */
 
@@ -203,7 +206,7 @@ spiStatus_t spiStatusGet( int32_t spi );
 void spiConfig( int32_t spi, uint32_t config );
 
 // Set the callback method for a specified event that occurs while transferring data
-void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t *callback);
+void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t callback);
 
 /*==================[cplusplus]==============================================*/
 
