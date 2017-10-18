@@ -112,7 +112,7 @@ bool_t spiXferStart( int32_t spi, const uint8_t* bufferout, uint8_t* bufferin, u
 
    if(SPI_READY == spiStatusGet(spi))
    {
-      if(SPI_IS_BLOCKING(spiConfigGet(spi)))
+      if(SPI_BLOCK == (spiConfigGet(spi) & SPI_BLOCK_MASK))
       {
          xferConfig.tx_data = (uint8_t*)bufferout;
          xferConfig.tx_cnt  = 0;
@@ -127,7 +127,7 @@ bool_t spiXferStart( int32_t spi, const uint8_t* bufferout, uint8_t* bufferin, u
             
          }
       }
-      else if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      else if(SPI_NONBLOCK == (spiConfigGet(spi) & SPI_BLOCK_MASK))
       {
          if( spi == SPI0 ){
             spi0Info.bufferOut = (uint8_t*)bufferout;
@@ -156,7 +156,7 @@ void spiXferEnd( int32_t spi )
 {
    if(SPI_BUSY == spiStatusGet(spi))
    {
-      if(SPI_IS_NONBLOCKING(spiConfigGet(spi)))
+      if(SPI_NONBLOCK == (spiConfigGet(spi) & SPI_BLOCK_MASK))
       {
          if( spi == SPI0 ){
             Chip_SSP_Int_FlushData(LPC_SSP1);
@@ -198,6 +198,18 @@ void spiConfig( int32_t spi, uint32_t config ){
    spiFreqSet( spi, SPI_FREQ_DEFAULT );
 
    //TODO
+}
+
+uint32_t spiConfigGet( int32_t spi )
+{
+   uint32_t ret = (uint32_t) -1;
+
+   if( spi == SPI0 )
+   {
+      ret = spi0Info.config;
+   }
+
+   return ret;
 }
 
 // power. Enable or disable the peripheral energy and clock
@@ -429,7 +441,7 @@ void spiFreqSet( int32_t spi, uint32_t freq )
    {
       Chip_SSP_SetBitRate(LPC_SSP1, freq);
       /* Now find out the exact frequency set */
-      pClk = Chip_Clock_GetRate(Chip_SSP_GetPeriphClockIndex(LPC_SSP1));
+      pClk = Chip_Clock_GetRate(CLK_MX_SSP1);
       spi0Info.freq = pClk / (LPC_SSP1->CPSR & 0xF) * (((LPC_SSP1->CR0 >> 8) & 0xF) + 1);
    }
 }
