@@ -220,3 +220,4 @@ void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t callba
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_SPI_H_ */
+
