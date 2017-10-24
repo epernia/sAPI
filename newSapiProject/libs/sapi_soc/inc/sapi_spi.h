@@ -205,6 +205,8 @@ spiStatus_t spiStatusGet( int32_t spi );
 // config  is an uint32_t with "an OR" of Frequency, Clock polarity, Bit transfer order, etc.
 void spiConfig( int32_t spi, uint32_t config );
 
+uint32_t spiConfigGet( int32_t spi );
+
 // Set the callback method for a specified event that occurs while transferring data
 void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t callback);
 
@@ -218,3 +220,4 @@ void spiConfigCallback( int32_t spi, spiEvent_t event_mask, spiCallback_t callba
 
 /*==================[end of file]============================================*/
 #endif /* #ifndef _SAPI_SPI_H_ */
+
