@@ -79,7 +79,8 @@ bool_t tickConfig( tick_t tickRateMSvalue, sAPI_FuncPtr_t tickHook ) {
       tickRateHz = 1000 / tickRateMSvalue;
 
       /* Init SysTick interrupt, tickRateHz ticks per second */
-      SysTick_Config( SystemCoreClock / tickRateHz);
+      // SysTick_Config argument between 0x0 to 0xFFFFFF
+      SysTick_Config( SystemCoreClock / tickRateHz); 
    }
    else{
       /* Error, tickRateMS variable not in range (1 <= tickRateMS <= 50) */
