@@ -1,0 +1,206 @@
+Bievenido al asistente de configuracion del modulo ESP8266
+Antes de continuar, por favor asegurese que su terminal
+serie dispone del terminador CR+LF (enter)
+
+A continuacion se realiza un listado de algunos de los
+comandos AT disponibles:
+
+> Saber si el modulo responde correctamente: AT
+> Version del Firmware: AT+GMR
+> Resetear el modulo: AT+RST
+> Listar todas las redes disponibles: AT+CWLAP
+> Checkear la red actual: AT+CWJAP?
+> Unirse a una red: AT+CWJAP="nombreRedInalambrica","password"
+  - NOTA: Las comillas dobles son parte del mensaje
+> Salir de la red: AT+CWQAP
+
+------- Conectar ---------
+
+AT
+
+
+OK
+AT+CWLAP
+
++CWLAP:(4,"Telecentro-4836",-81,"8c:10:d4:88:0c:a6",1,-14)
++CWLAP:(4,"WIFI-INVITADOS",-80,"26:7f:20:08:07:c7",6,-32)
++CWLAP:(3,"Summertime",-64,"1c:b7:2c:85:b5:70",6,-14)
++CWLAP:(4,"ANOXIDE",-81,"24:7f:20:08:06:c6",6,-32)
++CWLAP:(4,"casaEric",-63,"08:6a:0a:a9:aa:d0",6,-22)
++CWLAP:(4,"Speedy-67D264",-83,"e0:41:36:67:d2:66",6,-6)
++CWLAP:(3,"dd-wrt repetidor2",-49,"02:1a:70:d1:1e:09",6,31)
++CWLAP:(4,"Telecentro-87f0",-91,"8c:10:d4:90:87:f6",6,-19)
++CWLAP:(0,"HP-Print-F8-LaserJet 1102",-91,"bc:85:56:0c:23:f8",6,-16)
++CWLAP:(4,"Telecentro-73d8",-88,"8c:10:d4:89:73:de",11,-14)
++CWLAP:(2,"Telecentro-0c16",-78,"38:60:77:0b:f6:95",11,0)
+
+OK
+AT+CWJAP?
+
++CWJAP:"casaEric","08:6a:0a:a9:aa:d0",6,-61
+
+OK
+AT+CWQAP
+
+WIFI DISCONNECT
+
+OK
+AT+CWQAP
+
+
+OK
+AT+CWJAP?
+
+No AP
+
+OK
+AT+CWJAP="casaEric","fide1634"
+
+WIFI CONNECTED
+WIFI GOT IP
+
+OK
+AT+CWJAP?
+
++CWJAP:"casaEric","08:6a:0a:a9:aa:d0",6,-62
+
+OK
+
+------- Enviar ---------
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+CONNECT
+
+OK
+AT+CIPSEND=39
+
+
+OK
+> 
+Recv 39 bytes
+
+SEND OK
+
++IPD,2:14CLOSED
+AT+CIPCLOSE
+
+
+ERROR
+AT+CIPCLOSE
+
+
+ERROR
+AT+CIPSTART="TCP","api.thingspeasdsk.com",80
+
+DNS Fail
+
+ERROR
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+CONNECT
+
+OK
+AT+CIPCLOSE
+
+CLOSED
+
+OK
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+CONNECT
+
+OK
+AT+CIPSEND=39
+
+
+OK
+> 
+Recv 39 bytes
+
+SEND OK
+
++IPD,2:15CLOSED
+
+------- Recibir ---------
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+CONNECT
+
+OK
+AT+CIPSEND=61
+
+
+OK
+> 
+Recv 61 bytes
+
+SEND OK
+
++IPD,2:69CLOSED
+
+================================================================
+
+------- Conectar ---------
+
+AT
+
+AT+RST
+
+AT+CWJAP?
+
+AT+CWLAP
+
+0
+
+AT
+
+AT+CWLAP
+
+AT+CWJAP?
+
+AT+CWQAP
+
+AT+CWJAP?
+
+AT+CWJAP="casaEric","fide1634"
+
+AT+CWJAP?
+
+------- Enviar ---------
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+AT+CIPSEND=39
+
+GET /update?key=7E7IOJ276BSDLOBA&1=66
+
+AT+CIPCLOSE
+
+AT+CIPSTART="TCP","api.sasasasas.com",80
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+AT+CIPCLOSE
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+AT+CIPSEND=39
+
+GET /update?key=7E7IOJ276BSDLOBA&1=69
+
+------- Recibir ---------
+
+Recibir:
+
+AT+CIPSTART="TCP","api.thingspeak.com",80
+
+AT+CIPSEND=61
+
+GET /channels/377497/fields/1/last?api_key=L8JVCU8F1F819IXM
+
+
+
+
+
