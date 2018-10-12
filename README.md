@@ -3,30 +3,6 @@
 This library implements a simple API that acts as a HAL (Hardware Abstraction
 Layer) for microcontrollers.
 
-$$c^2 =\sqrt{b^2-4ac}$$ (2)
-
-$$
-\begin{bmatrix}
-   a & b \\
-   c & d
-\end{bmatrix}
-$$ (3)
-
-$$
-\begin{bmatrix}
-   x \\
-   y
-\end{bmatrix}
- =
-\begin{bmatrix}
-   a & b \\
-   c & d
-\end{bmatrix}
-\begin{bmatrix}
-   a & b
-\end{bmatrix}
-$$ (4)
-
 **NOTE:** Always use the [released versions](../../releases) because these are tested all examples and the API documentation is consistent. The master branch may contain inconsistencies because this library is currently under development.
 
 ## Included modules
