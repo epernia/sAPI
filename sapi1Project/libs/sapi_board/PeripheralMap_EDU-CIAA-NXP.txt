@@ -60,15 +60,16 @@ UART_485   BORN_RS485   (sin implementar)
 ADC
 ===
 
-CH1   P1_PIN13
-CH2   P1_PIN11
-CH3   P1_PIN09
+ADC0
+   CH1   P1_PIN13
+   CH2   P1_PIN11
+   CH3   P1_PIN09
 
 
 DAC
 ===
 
-DAC   P1_PIN15
+DAC0   P1_PIN15
 
 
 I2C
