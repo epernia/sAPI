@@ -3,7 +3,7 @@
 This library implements a simple API that acts as a HAL (Hardware Abstraction
 Layer) for microcontrollers.
 
-**NOTE:** Always use the [released versions](../../releases) because these are tested all examples and the API documentation is consistent. The master branch may contain inconsistencies because this library is currently under development.
+**NOTE:** OLD VERSION!!! USE [FIRMWARE V3](https://github.com/epernia/firmware_v3)!!!
 
 ## Included modules
 
